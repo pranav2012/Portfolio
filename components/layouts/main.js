@@ -18,9 +18,8 @@ const Main = ({ children, router }) => {
                     name="viewport"
                     content="width=device-width, initial-scale=1"
                 />
-                <meta name="description" content="Pranav's homepage" />
+                <meta name="description" content="Pranav's Portfolio" />
                 <meta name="author" content="Pranav Agarwal" />
-                <meta name="author" content="pranav" />
                 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
                 <link
                     rel="shortcut icon"
@@ -33,7 +32,7 @@ const Main = ({ children, router }) => {
                 <meta name="twitter:image" content="/card.png" />
                 <meta
                     property="og:site_name"
-                    content="Pranav Agarwal's Homepage"
+                    content="Pranav Agarwal's Portfolio"
                 />
                 <meta property="og:type" content="website" />
                 <meta property="og:image" content="/card.png" />

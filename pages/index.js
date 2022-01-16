@@ -7,8 +7,7 @@ import {
     Image,
     SimpleGrid,
     Button,
-    List,
-    ListItem,
+    Flex,
     Icon,
     useColorModeValue
 } from '@chakra-ui/react';
@@ -45,7 +44,7 @@ const Home = () => (
                     <Heading as="h2" variant="page-title">
                         Pranav Agarwal
                     </Heading>
-                    <p>Engineering Craftsman ( Developer )</p>
+                    <p>Software Engineering ( Developer )</p>
                 </Box>
                 <Box
                     flexShrink={0}
@@ -68,12 +67,12 @@ const Home = () => (
 
             <Section delay={0.1}>
                 <Heading as="h3" variant="section-title">
-                    Work
+                    About Me
                 </Heading>
                 <Paragraph>
-                    Pranav is a freelance and a full-stack developer based in
+                    I&apos;m a freelance and a full-stack developer based in
                     Delhi with a passion for building Applications using
-                    React.js / Next.js, and Flutter. Working on technologies
+                    React.js / Next.js, and liltle Flutter. Working on technologies
                     like Node.Js, Flask, AWS, Digital Ocean, GCP and Devops.
                     Have built scalable products which is currently being used
                     by 500+ users daily
@@ -84,7 +83,7 @@ const Home = () => (
                 </Paragraph>
                 <Box align="center" my={4}>
                     <a
-                        href="https://docs.google.com/document/d/1j-BclNZWvvoZ52XAADE7PMx0U7S0ubLqfPXv3_9RsSA"
+                        href="https://drive.google.com/file/d/1CmyKBJoTrvlW7quyOEauf-YDoHmojYbk/view"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -97,54 +96,49 @@ const Home = () => (
                     </a>
                 </Box>
             </Section>
-
             <Section delay={0.2}>
                 <Heading as="h3" variant="section-title">
-                    Bio
+                    Education
                 </Heading>
                 <BioSection>
-                    <BioYear>2001</BioYear>
-                    Born in Delhi, India.
+                    B.Tech in C.S.E from Manav Rachna International
+                    Institute of Research and Studies 
+                <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> (2023 Expected)</BioYear>
+                </BioSection>
+            </Section>
+            <Section delay={0.2}>
+                <Heading as="h3" variant="section-title">
+                    Experience
+                </Heading>
+                <BioSection>
+                    Software Intern at Moyyn! <br/>
+                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Berlin, Germany (Nov, 2020 - May, 2021)</BioYear>
                 </BioSection>
                 <BioSection>
-                    <BioYear>2023 Expected</BioYear>
-                    Graduate from a Bachelor&apos;s Program in the Computer
-                    Science and Engineering at Manav Rachna International
-                    Institute of Research and Studies
+                    Software Intern at Celebrythm! <br/>
+                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Hyderabad, India (Aug, 2021 - Oct, 2021)</BioYear>
                 </BioSection>
                 <BioSection>
-                    <BioYear>2020</BioYear>
-                    Worked as an Software Intern at Moyyn! Berlin, Germany
-                </BioSection>
-                <BioSection>
-                    <BioYear>2021</BioYear>
-                    Worked as an Software Intern at Celebrythm! Hyderabad, India
-                </BioSection>
-                <BioSection>
-                    <BioYear>2022 to present</BioYear>
-                    Works as a Software Intern at Headout! Bengaluru, India
-                </BioSection>
-                <BioSection>
-                    <BioYear>2020 to present</BioYear>
-                    Works as a freelance
+                    Software Intern at Headout! <br/>
+                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Bengaluru, India (Jan, 2022 - Present)</BioYear>
                 </BioSection>
             </Section>
 
             <Section delay={0.3}>
                 <Heading as="h3" variant="section-title">
-                    I ♥
+                    I <span style={{color: "red"}}>♥</span> learning about
                 </Heading>
                 <Paragraph>
-                    Designing, , Blockchain Development, , Machine Learning
+                    Blockchain Development, Machine Learning, Designing
                 </Paragraph>
             </Section>
 
             <Section delay={0.3}>
                 <Heading as="h3" variant="section-title">
-                    On the web
+                    Let&apos;s Connect
                 </Heading>
-                <List>
-                    <ListItem>
+                <Flex>
+                    <Box>
                         <Link
                             href="https://github.com/pranav2012"
                             target="_blank"
@@ -154,11 +148,11 @@ const Home = () => (
                                 colorScheme="teal"
                                 leftIcon={<Icon as={IoLogoGithub} />}
                             >
-                                @pranav2012
+                                Github
                             </Button>
                         </Link>
-                    </ListItem>
-                    <ListItem>
+                    </Box>
+                    <Box>
                         <Link
                             href="https://twitter.com/Pranav__agr"
                             target="_blank"
@@ -168,11 +162,11 @@ const Home = () => (
                                 colorScheme="teal"
                                 leftIcon={<Icon as={IoLogoTwitter} />}
                             >
-                                @Pranav__agr
+                                Twitter
                             </Button>
                         </Link>
-                    </ListItem>
-                    <ListItem>
+                    </Box>
+                    <Box>
                         <Link
                             href="https://www.linkedin.com/in/pranav-agarwal-579363166"
                             target="_blank"
@@ -182,11 +176,11 @@ const Home = () => (
                                 colorScheme="teal"
                                 leftIcon={<Icon as={IoLogoLinkedin} />}
                             >
-                                pranav-agarwal
+                                Linkedin
                             </Button>
                         </Link>
-                    </ListItem>
-                    <ListItem>
+                    </Box>
+                    <Box>
                         <Link
                             href="mailto:p2012agarwal@gmail.com"
                             target="_blank"
@@ -196,13 +190,13 @@ const Home = () => (
                                 colorScheme="teal"
                                 leftIcon={<Icon as={IoMail} />}
                             >
-                                p2012agarwal@gmail.com
+                                Mail Me
                             </Button>
                         </Link>
-                    </ListItem>
-                </List>
+                    </Box>
+                </Flex>
 
-                <SimpleGrid columns={[1, 2, 2]} gap={6}>
+                <SimpleGrid columns={[1, 2, 2]} gap={6} marginTop={2}>
                     <GridItem
                         href="https://www.youtube.com/channel/UCTD34th0vM-09Nt9Jf0jMWg"
                         title="Pranav Agarwal"
