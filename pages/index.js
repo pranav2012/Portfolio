@@ -7,7 +7,6 @@ import {
     Image,
     SimpleGrid,
     Button,
-    Flex,
     Icon,
     useColorModeValue
 } from '@chakra-ui/react';
