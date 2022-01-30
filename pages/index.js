@@ -137,7 +137,7 @@ const Home = () => (
                 <Heading as="h3" variant="section-title">
                     Let&apos;s Connect
                 </Heading>
-                <Flex>
+                <SimpleGrid columns={[2, 4, 4]} gap={2} marginTop={2}>
                     <Box>
                         <Link
                             href="https://github.com/pranav2012"
@@ -194,7 +194,7 @@ const Home = () => (
                             </Button>
                         </Link>
                     </Box>
-                </Flex>
+                </SimpleGrid>
 
                 <SimpleGrid columns={[1, 2, 2]} gap={6} marginTop={2}>
                     <GridItem
