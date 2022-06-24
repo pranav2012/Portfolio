@@ -58,7 +58,7 @@ const Home = () => (
                         maxWidth="100px"
                         display="inline-block"
                         borderRadius="full"
-                        src="/images/pranav.jpg"
+                        src="/images/pranav.jpeg"
                         alt="Profile image"
                     />
                 </Box>
