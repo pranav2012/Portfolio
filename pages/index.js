@@ -43,7 +43,7 @@ const Home = () => (
                     <Heading as="h2" variant="page-title">
                         Pranav Agarwal
                     </Heading>
-                    <p>Software Engineering ( Developer )</p>
+                    <p>Software Engineer ( Developer )</p>
                 </Box>
                 <Box
                     flexShrink={0}
@@ -82,7 +82,7 @@ const Home = () => (
                 </Paragraph>
                 <Box align="center" my={4}>
                     <a
-                        href="https://drive.google.com/file/d/1CmyKBJoTrvlW7quyOEauf-YDoHmojYbk/view"
+                        href="https://drive.google.com/file/d/1jcgPX1hsIQJVszaemAfQw4JnHH3EdO9_/view"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -110,16 +110,16 @@ const Home = () => (
                     Experience
                 </Heading>
                 <BioSection>
-                    Software Intern at Moyyn! <br/>
+                    Software Engineer at Moyyn! <br/>
                     <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Berlin, Germany (Nov, 2020 - May, 2021)</BioYear>
-                </BioSection>
-                <BioSection>
-                    Software Intern at Celebrythm! <br/>
-                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Hyderabad, India (Aug, 2021 - Oct, 2021)</BioYear>
                 </BioSection>
                 <BioSection>
                     Software Intern at Headout! <br/>
                     <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Bengaluru, India (Jan, 2022 - Present)</BioYear>
+                </BioSection>
+                <BioSection>
+                    Software Intern at American Express! <br/>
+                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Gurugram, India (July, 2022 - Present)</BioYear>
                 </BioSection>
             </Section>
 

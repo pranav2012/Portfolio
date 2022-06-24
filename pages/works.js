@@ -5,7 +5,7 @@ import { WorkGridItem } from '../components/grid-item';
 
 import thumbBuisness from '../public/images/works/buisness.jpg';
 import thumbCovid from '../public/images/works/covid-care.png';
-import thumbFace from '../public/images/works/facerecogination.png';
+import thumbFace from '../public/images/works/nefilus.png';
 import thumbMoyyn from '../public/images/works/moyyn.png';
 import thumbCompiler from '../public/images/works/online-compiler.png';
 import thumbKyc from '../public/images/works/open-kyc.jpg';
@@ -51,12 +51,11 @@ const Works = () => (
                 </Section>
                 <Section delay={0.1}>
                     <WorkGridItem
-                        link="https://facerecogination.firebaseapp.com"
+                        link="nefilus.vercel.app"
                         thumbnail={thumbFace}
-                        title="Face Recogination"
+                        title="Nefilus"
                     >
-                        It detects faces based on the input image given via url
-                        or a file
+                        NFT Market Place
                     </WorkGridItem>
                 </Section>
             </SimpleGrid>
