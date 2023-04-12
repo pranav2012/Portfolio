@@ -69,20 +69,22 @@ const Home = () => (
                     About Me
                 </Heading>
                 <Paragraph>
-                    I&apos;m a freelance and a full-stack developer based in
-                    Delhi with a passion for building Applications using
-                    React.js / Next.js, and liltle Flutter. Working on technologies
-                    like Node.Js, Flask, AWS, Digital Ocean, GCP and Devops.
+                    I&apos;m a freelancer and a full-stack developer based in
+                    Delhi with a passion for building Performant & Scalable Web / Mobile Applications using
+                    React.js / Next.js, and React Native. Have also worked with following technologies Spring, Web3, Node.Js, Flutter, AWS, Digital Ocean.
                     Have built scalable products which is currently being used
-                    by 500+ users daily
+                    by millions of users daily
+                    <NextLink href="https://headout.com">
+                        <Link> Headout</Link>
+                    </NextLink> &
                     <NextLink href="/works/moyyn">
                         <Link> Moyyn</Link>
-                    </NextLink>
+                    </NextLink> 
                     .
                 </Paragraph>
                 <Box align="center" my={4}>
                     <a
-                        href="https://drive.google.com/file/d/1jcgPX1hsIQJVszaemAfQw4JnHH3EdO9_/view"
+                        href="https://drive.google.com/file/d/1mqQDhM_wICCdKI6l2iQjvjnPNqqKqbio/view"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -102,7 +104,7 @@ const Home = () => (
                 <BioSection>
                     B.Tech in C.S.E from Manav Rachna International
                     Institute of Research and Studies 
-                <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> (2023 Expected)</BioYear>
+                <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> (2023)</BioYear>
                 </BioSection>
             </Section>
             <Section delay={0.2}>
@@ -110,12 +112,12 @@ const Home = () => (
                     Experience
                 </Heading>
                 <BioSection>
-                    Software Engineer at Moyyn! <br/>
-                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Berlin, Germany (Nov, 2020 - May, 2021)</BioYear>
+                    Software Engineer at Headout! <br/>
+                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Bangalore, India - Remote (Jan, 2022 - Present)</BioYear>
                 </BioSection>
                 <BioSection>
-                    Software Intern at Headout! <br/>
-                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Bengaluru, India (Jan, 2022 - Present)</BioYear>
+                    Freelancer at Moyyn! <br/>
+                    <BioYear style={{color: useColorModeValue('#65b1b0','#85d8e3')}}> Berlin, Germany - Remote (Nov, 2020 - May, 2021)</BioYear>
                 </BioSection>
                 <BioSection>
                     Software Intern at American Express! <br/>
@@ -128,7 +130,7 @@ const Home = () => (
                     I <span style={{color: "red"}}>♥</span> learning about
                 </Heading>
                 <Paragraph>
-                    Blockchain Development, Machine Learning, Designing
+                    System Architectures, Devops, Designing
                 </Paragraph>
             </Section>
 
