@@ -1,16 +1,15 @@
 import { Container, Heading, SimpleGrid, Divider } from '@chakra-ui/react';
-import Layout from '../components/layouts/article';
-import Section from '../components/section';
-import { WorkGridItem } from '../components/grid-item';
-
-import thumbBuisness from '../public/images/works/buisness.jpg';
-import thumbCovid from '../public/images/works/covid-care.png';
-import thumbFace from '../public/images/works/nefilus.png';
-import thumbMoyyn from '../public/images/works/moyyn.png';
-import thumbCompiler from '../public/images/works/online-compiler.png';
-import thumbKyc from '../public/images/works/open-kyc.jpg';
-import thumbProject from '../public/images/works/project-showcase.png';
-import thumbVideo from '../public/images/works/video-connect.png';
+import Layout from '../src/components/layouts/article';
+import Section from '../src/components/section';
+import { WorkGridItem } from '../src/components/grid-item';
+import thumbBuisness from '../src/assets/works/buisness.jpg';
+import thumbCovid from '../src/assets/works/covid-care.png';
+import thumbFace from '../src/assets/works/nefilus.png';
+import thumbMoyyn from '../src/assets/works/moyyn.png';
+import thumbCompiler from '../src/assets/works/online-compiler.png';
+import thumbKyc from '../src/assets/works/open-kyc.jpg';
+import thumbProject from '../src/assets/works/project-showcase.png';
+import thumbVideo from '../src/assets/works/video-connect.png';
 
 const Works = () => (
     <Layout title="Works">

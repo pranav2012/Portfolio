@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/inline-script-id */
 import { ChakraProvider } from '@chakra-ui/react';
-import Layout from '../components/layouts/main';
-import Fonts from '../components/fonts';
-import theme from '../lib/theme';
+import Layout from '../src/components/layouts/main';
+import Fonts from '../src/utils/fonts';
+import theme from '../src/utils/theme';
 import { AnimatePresence } from 'framer-motion';
 import Script from 'next/script';
 

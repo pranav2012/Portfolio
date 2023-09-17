@@ -11,19 +11,19 @@ import {
     useColorModeValue
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import Paragraph from '../components/paragraph';
-import { BioSection, BioYear } from '../components/bio';
-import Layout from '../components/layouts/article';
-import Section from '../components/section';
-import { GridItem } from '../components/grid-item';
+import Paragraph from '../src/components/paragraph';
+import { BioSection, BioYear } from '../src/components/bio';
+import Layout from '../src/components/layouts/article';
+import Section from '../src/components/section';
+import { GridItem } from '../src/components/grid-item';
 import {
     IoLogoTwitter,
     IoLogoLinkedin,
     IoMail,
     IoLogoGithub
 } from 'react-icons/io5';
-import thumbYouTube from '../public/images/links/youtube.png';
-import thumbInkdrop from '../public/images/works/moyyn.png';
+import thumbYouTube from '../src/assets/links/youtube.png';
+import thumbInkdrop from '../src/assets/works/moyyn.png';
 
 const Home = () => (
     <Layout>
