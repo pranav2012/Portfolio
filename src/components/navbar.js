@@ -1,4 +1,4 @@
-import Logo from './logo';
+import Logo from 'Elements/logo';
 import NextLink from 'next/link';
 import {
     Container,
@@ -15,7 +15,7 @@ import {
     useColorModeValue
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import ThemeToggleButton from './theme-toggle-button';
+import ThemeToggleButton from 'Elements/theme-toggle-button';
 
 const LinkItem = ({ href, path, _target, children, ...props }) => {
     const active = path === href;

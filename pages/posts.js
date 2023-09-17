@@ -1,11 +1,11 @@
 import { Container, Heading, SimpleGrid } from '@chakra-ui/react';
-import Layout from '../src/components/layouts/article';
-import Section from '../src/components/section';
-import { GridItem } from '../src/components/grid-item';
-import thumbHacktober2020 from '../src/assets/posts/hacktoberfest2020.webp';
-import thumbGdscUnboxing from '../src/assets/posts/gdsc-unboxing.webp';
-import thumbGdscApply from '../src/assets/posts/gdsc-apply.webp';
-import allAboutGdsc from '../src/assets/posts/all_about_gdsc.jpg';
+import Layout from 'Layouts/article';
+import Section from 'Elements/section';
+import { GridItem } from 'Elements/grid-item';
+import thumbHacktober2020 from 'Assets/posts/hacktoberfest2020.webp';
+import thumbGdscUnboxing from 'Assets/posts/gdsc-unboxing.webp';
+import thumbGdscApply from 'Assets/posts/gdsc-apply.webp';
+import allAboutGdsc from 'Assets/posts/all_about_gdsc.jpg';
 
 const Posts = () => (
     <Layout title="Posts">
