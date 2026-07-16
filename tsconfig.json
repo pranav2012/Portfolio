@@ -22,7 +22,7 @@
     "paths": {
       "Assets/*": ["assets/*"],
       "Elements/*": ["elements/*"],
-      "Components/*": ["Components/*"],
+      "Components/*": ["components/*"],
       "Layouts/*": ["layouts/*"],
 			"Utils/*": ["utils/*"],
     },

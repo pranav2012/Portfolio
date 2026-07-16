@@ -1,0 +1,10 @@
+services:
+  portfolio:
+    build: .
+    container_name: portfolio
+    restart: unless-stopped
+    mem_limit: 192m
+    ports:
+      - "100.126.38.45:3000:3000"
+    expose:
+      - "3000"
