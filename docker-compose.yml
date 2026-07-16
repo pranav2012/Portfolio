@@ -1,6 +1,7 @@
 services:
   portfolio:
-    build: .
+    image: 100.126.38.45:5000/pranav/portfolio:e30158d
+    pull_policy: always
     container_name: portfolio
     restart: unless-stopped
     mem_limit: 192m
