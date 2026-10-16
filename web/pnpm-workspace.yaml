@@ -1,0 +1,7 @@
+# Own install root: keeps the site out of the CMS's workspace and gives it
+# its own lockfile, so Cloudflare installs only the site's dependencies.
+minimumReleaseAge: 2880 # 2 days
+allowBuilds:
+    esbuild: true
+    sharp: true
+    workerd: true

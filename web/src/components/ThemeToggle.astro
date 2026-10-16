@@ -1,0 +1,81 @@
+<button
+    type="button"
+    data-theme-toggle
+    class="relative grid size-9 place-items-center rounded-full text-ink transition-colors hover:bg-line"
+    aria-label="Switch to dark theme"
+>
+    <svg viewBox="0 0 24 24" class="size-[18px]" aria-hidden="true">
+        <!-- A circle whose cut-out slides in to make a moon. -->
+        <mask id="moon-cut">
+            <rect width="24" height="24" fill="white"></rect>
+            <circle class="moon-cut" cx="24" cy="4" r="7" fill="black"></circle>
+        </mask>
+        <circle class="sun-core" cx="12" cy="12" r="5" fill="currentColor" mask="url(#moon-cut)"></circle>
+        <g class="sun-rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M12 1.5v2M12 20.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M1.5 12h2M20.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"></path>
+        </g>
+    </svg>
+</button>
+
+<style>
+    svg * {
+        transition:
+            transform 0.5s var(--ease-out-soft),
+            opacity 0.3s;
+        transform-origin: center;
+    }
+    :global([data-theme='dark']) .moon-cut {
+        transform: translate(-7px, 3px);
+    }
+    :global([data-theme='dark']) .sun-core {
+        transform: scale(1.5);
+    }
+    :global([data-theme='dark']) .sun-rays {
+        opacity: 0;
+        transform: rotate(-45deg) scale(0.6);
+    }
+</style>
+
+<script>
+    // The new theme spreads out in a circle from the button, where the
+    // browser supports view transitions.
+    const label = () => {
+        const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+        const dark = document.documentElement.dataset.theme === 'dark';
+        button?.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`);
+    };
+
+    document.addEventListener('click', event => {
+        const button = (event.target as Element).closest('[data-theme-toggle]');
+        if (!button) return;
+        const root = document.documentElement;
+        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        const apply = () => {
+            root.dataset.theme = next;
+            localStorage.setItem('theme', next);
+            label();
+        };
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!document.startViewTransition || reduce) return apply();
+
+        const rect = button.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        root.classList.add('theme-switching');
+        const transition = document.startViewTransition(apply);
+        transition.ready.then(() =>
+            root.animate(
+                { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+                {
+                    duration: 550,
+                    easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                    pseudoElement: '::view-transition-new(root)'
+                }
+            )
+        );
+        transition.finished.finally(() => root.classList.remove('theme-switching'));
+    });
+
+    document.addEventListener('astro:page-load', label);
+</script>

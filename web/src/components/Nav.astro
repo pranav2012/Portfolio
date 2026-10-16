@@ -1,0 +1,55 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+    name: string;
+}
+const { name } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+    { href: '/work', label: 'Work' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/videos', label: 'Videos' }
+];
+---
+
+<header
+    class="sticky top-0 z-40 border-b border-transparent bg-wall/80 backdrop-blur-md transition-colors [&.scrolled]:border-line"
+    data-nav
+>
+    <nav class="mx-auto flex h-16 max-w-6xl items-center gap-1 px-5 sm:gap-2 sm:px-8" aria-label="Main">
+        <a
+            href="/"
+            class="mr-auto font-display text-[1.05rem] font-semibold tracking-tight whitespace-nowrap"
+            aria-current={path === '/' ? 'page' : undefined}
+        >
+            {name}
+        </a>
+        {
+            links.map(link => {
+                const active = path === link.href || path.startsWith(`${link.href}/`);
+                return (
+                    <a
+                        href={link.href}
+                        aria-current={active ? 'page' : undefined}
+                        class:list={[
+                            'relative rounded-full px-2 py-1.5 text-[0.95rem] sm:px-3 text-muted transition-colors hover:text-ink',
+                            "after:absolute after:inset-x-0 after:-bottom-0.5 after:mx-auto after:size-1 after:rounded-full after:bg-wood after:opacity-0 after:transition-opacity aria-[current=page]:text-ink aria-[current=page]:after:opacity-100"
+                        ]}
+                    >
+                        {link.label}
+                    </a>
+                );
+            })
+        }
+        <ThemeToggle />
+    </nav>
+</header>
+
+<script>
+    // A hairline under the bar once the page scrolls under it.
+    const update = () =>
+        document.querySelector('[data-nav]')?.classList.toggle('scrolled', scrollY > 8);
+    addEventListener('scroll', update, { passive: true });
+    document.addEventListener('astro:page-load', update);
+</script>

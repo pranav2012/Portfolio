@@ -1,0 +1,32 @@
+---
+// The voxel desk in the hero. three.js loads only on pages that show it.
+---
+
+<figure class="relative min-w-0" aria-label="A voxel model of Pranav at his desk, drinking coffee">
+    <div
+        data-desk
+        class="group relative aspect-square w-full cursor-grab touch-pan-y active:cursor-grabbing"
+    >
+        <div
+            class="absolute inset-[18%] rounded-full bg-[radial-gradient(closest-side,var(--line),transparent)] transition-opacity duration-700 group-data-ready:opacity-0"
+            aria-hidden="true"
+        >
+        </div>
+    </div>
+    <figcaption class="mt-1 text-center text-sm text-muted">Drag to look around</figcaption>
+</figure>
+
+<script>
+    let unmount: (() => void) | undefined;
+
+    document.addEventListener('astro:page-load', async () => {
+        const container = document.querySelector<HTMLElement>('[data-desk]');
+        if (!container) return;
+        const { mount } = await import('../scene/mount');
+        unmount = mount(container);
+    });
+    document.addEventListener('astro:before-swap', () => {
+        unmount?.();
+        unmount = undefined;
+    });
+</script>

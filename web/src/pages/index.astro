@@ -1,0 +1,185 @@
+---
+import Base from '../layouts/Base.astro';
+import DeskScene from '../components/DeskScene.astro';
+import Section from '../components/Section.astro';
+import Timeline from '../components/Timeline.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import PostIndex from '../components/PostIndex.astro';
+import VideoCard from '../components/VideoCard.astro';
+import Connect from '../components/Connect.astro';
+import { emailOf, getPosts, getProfile, getProjects, getVideos } from '../lib/content';
+
+const [profile, projects, posts, videos] = await Promise.all([
+    getProfile(),
+    getProjects(),
+    getPosts(),
+    getVideos()
+]);
+const selected = projects.filter(p => p.showOnHome);
+const current = profile.experience?.[0];
+const [first, ...rest] = profile.name.split(' ');
+const email = emailOf(profile);
+---
+
+<Base>
+    <section class="mx-auto grid max-w-6xl items-center gap-8 px-5 pt-10 sm:px-8 lg:grid-cols-[1fr_minmax(0,34rem)] lg:pt-16">
+        <div class="min-w-0 lg:pb-16">
+            <h1
+                class="font-display text-[clamp(3.6rem,11vw,7.5rem)] leading-[0.88] font-bold tracking-[-0.035em] [font-stretch:80%]"
+            >
+                <span class="rise block overflow-hidden pb-[0.08em]"><span style="--d: 0ms">{first}</span></span>
+                <span class="rise block overflow-hidden pb-[0.08em]"><span style="--d: 90ms">{rest.join(' ')}</span></span>
+            </h1>
+            <p class="fade mt-6 text-lg font-medium" style="--d: 260ms">
+                {profile.role}{
+                    current && (
+                        <>
+                            {' at '}
+                            {current.companyUrl ? (
+                                <a href={current.companyUrl} target="_blank" rel="noopener noreferrer" class="link-quiet">
+                                    {current.company}
+                                </a>
+                            ) : (
+                                current.company
+                            )}
+                        </>
+                    )
+                }
+            </p>
+            {
+                profile.greeting && (
+                    <p class="fade mt-3 max-w-md text-lg leading-relaxed text-muted" style="--d: 340ms">
+                        {profile.greeting}
+                    </p>
+                )
+            }
+            <div class="fade mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" style="--d: 420ms">
+                <a
+                    href="/work"
+                    class="rounded-full bg-ink px-5 py-2.5 font-medium text-wall transition-transform duration-300 ease-out-soft hover:-translate-y-0.5 active:translate-y-0"
+                >
+                    See my work
+                </a>
+                {
+                    email && (
+                        <a href={`mailto:${email}`} class="link font-medium">
+                            Email me
+                        </a>
+                    )
+                }
+                {
+                    profile.resumeUrl && (
+                        <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer" class="link font-medium">
+                            Résumé
+                        </a>
+                    )
+                }
+            </div>
+        </div>
+        <DeskScene />
+    </section>
+
+    {
+        profile.aboutHtml && (
+            <Section title="About" id="about">
+                <div class="prose" set:html={profile.aboutHtml} />
+                {profile.interests && (
+                    <p class="mt-6 text-muted">
+                        Into {profile.interests.charAt(0).toLowerCase() + profile.interests.slice(1)}.
+                    </p>
+                )}
+            </Section>
+        )
+    }
+
+    {
+        profile.experience && profile.experience.length > 0 && (
+            <Section title="Experience" id="experience">
+                <Timeline jobs={profile.experience} />
+                {profile.education?.map(item => (
+                    <p class="mt-10 text-[0.95rem] text-muted">
+                        {item.degree}, {item.school}
+                        {item.year && `, ${item.year}`}
+                    </p>
+                ))}
+            </Section>
+        )
+    }
+
+    {
+        selected.length > 0 && (
+            <Section title="Selected work" id="work" wide>
+                <div class="space-y-16">
+                    {selected.map((project, i) => (
+                        <ProjectRow project={project} flip={i % 2 === 1} />
+                    ))}
+                </div>
+                <a href="/work" class="link mt-12 inline-block font-medium">
+                    All projects
+                </a>
+            </Section>
+        )
+    }
+
+    {
+        posts.length > 0 && (
+            <Section title="Writing" id="writing">
+                <PostIndex posts={posts.slice(0, 4)} />
+                {posts.length > 4 && (
+                    <a href="/blog" class="link mt-8 inline-block font-medium">
+                        All posts
+                    </a>
+                )}
+            </Section>
+        )
+    }
+
+    {
+        videos.length > 0 && (
+            <Section title="Videos" id="videos" wide>
+                <div class="grid gap-x-8 gap-y-12 md:grid-cols-2">
+                    {videos.slice(0, 2).map(video => (
+                        <VideoCard video={video} />
+                    ))}
+                </div>
+                {videos.length > 2 && (
+                    <a href="/videos" class="link mt-10 inline-block font-medium">
+                        All videos
+                    </a>
+                )}
+            </Section>
+        )
+    }
+
+    <Section title="Get in touch" id="contact" wide>
+        <p class="mb-5 max-w-xl text-lg leading-relaxed text-muted">
+            Working on something on the web or mobile, or with AI tooling? I'd like to hear about it.
+        </p>
+        <Connect email={email} socials={profile.socials ?? []} />
+    </Section>
+</Base>
+
+<style>
+    /* The one load moment: the name rises into place, then the rest
+       follows. */
+    .rise > span {
+        display: block;
+        animation: rise 0.9s var(--ease-out-soft) both;
+        animation-delay: var(--d);
+    }
+    .fade {
+        animation: fade 0.8s var(--ease-out-soft) both;
+        animation-delay: var(--d);
+    }
+    @keyframes rise {
+        from {
+            transform: translateY(105%);
+        }
+    }
+    @keyframes fade {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+    }
+</style>

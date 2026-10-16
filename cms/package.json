@@ -1,0 +1,35 @@
+{
+    "name": "portfolio-cms",
+    "version": "1.0.0",
+    "description": "Payload CMS for pranav-agarwal.com: the /admin editor and the API the static site is built from",
+    "scripts": {
+        "dev": "next dev -H 0.0.0.0 -p 3200",
+        "build": "next build",
+        "start": "next start",
+        "payload": "payload",
+        "generate:types": "payload generate:types",
+        "generate:importmap": "payload generate:importmap",
+        "migrate:create": "payload migrate:create",
+        "export": "node scripts/export-content.mjs"
+    },
+    "author": "Pranav Agarwal<p2012agarwal@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "@payloadcms/db-sqlite": "3.91.0",
+        "@payloadcms/next": "3.91.0",
+        "@payloadcms/richtext-lexical": "3.91.0",
+        "graphql": "^16.14.2",
+        "next": "^16.4.2",
+        "payload": "3.91.0",
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1",
+        "sharp": "^0.35.5"
+    },
+    "devDependencies": {
+        "@types/node": "^26.6.5",
+        "@types/react": "^19.3.0",
+        "typescript": "^6"
+    },
+    "type": "module",
+    "private": true
+}

@@ -1,0 +1,196 @@
+[
+    {
+        "id": 1,
+        "title": "grain",
+        "slug": "grain",
+        "section": "featured",
+        "showOnHome": true,
+        "order": 10,
+        "summary": "Review pull requests as user flows, not file lists. Changes are grouped by the screen they run on, in call order, with go-to-definition and optional AI explanations from your own coding agent. Runs locally through your gh login.",
+        "thumbnail": {
+            "file": "grain.png",
+            "alt": "grain",
+            "width": 1200,
+            "height": 630
+        },
+        "url": "https://grain.pranav-agarwal.com",
+        "links": [
+            {
+                "id": "6ad25ebb78e159000126ac7e",
+                "label": "GitHub",
+                "url": "https://github.com/pranav2012/grain"
+            },
+            {
+                "id": "6ad25ebb78e159000126ac7f",
+                "label": "npm",
+                "url": "https://www.npmjs.com/package/grain-ci"
+            }
+        ],
+        "year": "2026",
+        "stack": [
+            "Rust",
+            "TypeScript",
+            "GitHub API"
+        ]
+    },
+    {
+        "id": 2,
+        "title": "NomadSafe",
+        "slug": "nomadsafe",
+        "section": "featured",
+        "showOnHome": true,
+        "order": 20,
+        "summary": "An offline-first travel companion: trip replays with your best photos, day-by-day plans, fair expense splits, SOS and live location for trusted contacts, and an on-device AI travel assistant.",
+        "thumbnail": {
+            "file": "nomadsafe.png",
+            "alt": "NomadSafe",
+            "width": 1200,
+            "height": 630
+        },
+        "url": "https://nomadsafe.pranav-agarwal.com",
+        "links": [],
+        "year": "2026",
+        "stack": [
+            "React Native",
+            "Expo",
+            "Convex",
+            "On-device LLM"
+        ]
+    },
+    {
+        "id": 3,
+        "title": "react-native-liquid-tabs",
+        "slug": "react-native-liquid-tabs",
+        "section": "featured",
+        "showOnHome": null,
+        "order": 30,
+        "summary": "The iOS 26 Liquid Glass tab bar for Android: a refracting, draggable droplet lens over a real blur at 120 Hz. Native tabs on iOS, one API for both.",
+        "thumbnail": {
+            "file": "liquid-tabs.png",
+            "alt": "react-native-liquid-tabs",
+            "width": 1200,
+            "height": 630
+        },
+        "url": "https://www.npmjs.com/package/react-native-liquid-tabs",
+        "links": [
+            {
+                "id": "6ad25ebc78e159000126ac80",
+                "label": "GitHub",
+                "url": "https://github.com/pranav2012/react-native-liquid-tabs"
+            }
+        ],
+        "year": "2026",
+        "stack": [
+            "React Native",
+            "Skia",
+            "Reanimated"
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Skia GPU memory investigation",
+        "slug": "skia-gpu-memory-investigation",
+        "section": "oss",
+        "showOnHome": null,
+        "order": 40,
+        "summary": "A minimal repro and measurements of GPU memory growth in react-native-skia v3 on Android, with raw data across devices and upstream patch drafts.",
+        "thumbnail": null,
+        "url": "https://github.com/pranav2012/skia-memory-repro",
+        "links": [],
+        "year": "2026",
+        "stack": [
+            "React Native",
+            "Skia",
+            "Android"
+        ]
+    },
+    {
+        "id": 5,
+        "title": "claude-statusline-pro",
+        "slug": "claude-statusline-pro",
+        "section": "oss",
+        "showOnHome": null,
+        "order": 50,
+        "summary": "A compact statusline for Claude Code: model, tokens, cost, context window and usage limits at a glance. One npx command to install.",
+        "thumbnail": null,
+        "url": "https://github.com/pranav2012/claude-statusline-pro",
+        "links": [
+            {
+                "id": "6ad25ebc78e159000126ac81",
+                "label": "npm",
+                "url": "https://www.npmjs.com/package/@pranav2012/claude-statusline-pro"
+            }
+        ],
+        "year": "2026",
+        "stack": [
+            "Shell",
+            "Claude Code"
+        ]
+    },
+    {
+        "id": 6,
+        "title": "ABTestify",
+        "slug": "abtestify",
+        "section": "oss",
+        "showOnHome": null,
+        "order": 60,
+        "summary": "A small npm package for deterministic A/B test bucketing in JavaScript apps, with exposure and split control.",
+        "thumbnail": null,
+        "url": "https://www.npmjs.com/package/abtestify",
+        "links": [
+            {
+                "id": "6ad25ebc78e159000126ac82",
+                "label": "GitHub",
+                "url": "https://github.com/pranav2012/abtestify"
+            }
+        ],
+        "year": "2024",
+        "stack": [
+            "TypeScript",
+            "npm"
+        ]
+    },
+    {
+        "id": 7,
+        "title": "Moyyn",
+        "slug": "moyyn",
+        "section": "archive",
+        "showOnHome": null,
+        "order": 70,
+        "summary": "An AI-based reverse job search platform for a Berlin startup. Freelance frontend work.",
+        "thumbnail": {
+            "file": "moyyn.png",
+            "alt": "Moyyn",
+            "width": 1898,
+            "height": 913
+        },
+        "url": null,
+        "links": [],
+        "year": "2021",
+        "stack": [
+            "React"
+        ]
+    },
+    {
+        "id": 8,
+        "title": "Open KYC",
+        "slug": "open-kyc",
+        "section": "archive",
+        "showOnHome": null,
+        "order": 80,
+        "summary": "A blockchain-based dApp that removes repeated e-KYC across banks. Built at the American Express hackathon.",
+        "thumbnail": {
+            "file": "open-kyc.jpg",
+            "alt": "Open KYC",
+            "width": 1920,
+            "height": 1080
+        },
+        "url": "https://github.com/pranav2012/AmexHack",
+        "links": [],
+        "year": "2021",
+        "stack": [
+            "Blockchain",
+            "Open Banking"
+        ]
+    }
+]

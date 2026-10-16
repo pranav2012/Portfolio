@@ -1,0 +1,85 @@
+{
+    "id": 1,
+    "name": "Pranav Agarwal",
+    "role": "Senior Software Engineer",
+    "greeting": "Hello, I’m a frontend engineer from India building for web, mobile and AI tooling!",
+    "photo": {
+        "file": "pranav.jpeg",
+        "alt": "Pranav Agarwal",
+        "width": 400,
+        "height": 400
+    },
+    "resumeUrl": "https://drive.google.com/file/d/1mqQDhM_wICCdKI6l2iQjvjnPNqqKqbio/view",
+    "experience": [
+        {
+            "id": "6ad25ebc78e159000126ac83",
+            "role": "Senior Software Engineer",
+            "company": "Headout",
+            "companyUrl": "https://www.headout.com",
+            "location": "Bangalore, India · Remote",
+            "period": "Jan 2022 – Present",
+            "description": "Micro-frontends, payments and AI-integrated developer tooling."
+        },
+        {
+            "id": "6ad25ebc78e159000126ac84",
+            "role": "Software Engineering Intern",
+            "company": "American Express",
+            "companyUrl": "https://www.americanexpress.com",
+            "location": "Gurugram, India",
+            "period": "Jul 2022",
+            "description": null
+        },
+        {
+            "id": "6ad25ebc78e159000126ac85",
+            "role": "Freelance Frontend Developer",
+            "company": "Moyyn",
+            "companyUrl": null,
+            "location": "Berlin, Germany · Remote",
+            "period": "Nov 2020 – May 2021",
+            "description": null
+        }
+    ],
+    "education": [
+        {
+            "id": "6ad25ebc78e159000126ac86",
+            "degree": "B.Tech, Computer Science & Engineering",
+            "school": "Manav Rachna International Institute of Research and Studies",
+            "year": "2023"
+        }
+    ],
+    "interests": "Frontend performance, AI-native developer tools, design, and travel",
+    "socials": [
+        {
+            "id": "6ad25ebc78e159000126ac87",
+            "platform": "github",
+            "label": "GitHub",
+            "url": "https://github.com/pranav2012"
+        },
+        {
+            "id": "6ad25ebc78e159000126ac88",
+            "platform": "x",
+            "label": "X",
+            "url": "https://x.com/pranav__agr"
+        },
+        {
+            "id": "6ad25ebc78e159000126ac89",
+            "platform": "linkedin",
+            "label": "LinkedIn",
+            "url": "https://www.linkedin.com/in/pranav-agarwal-579363166"
+        },
+        {
+            "id": "6ad272481da93f0001170dac",
+            "platform": "youtube",
+            "label": "YouTube",
+            "url": "https://www.youtube.com/channel/UCTD34th0vM-09Nt9Jf0jMWg"
+        },
+        {
+            "id": "6ad25ebc78e159000126ac8a",
+            "platform": "email",
+            "label": "Email",
+            "url": "mailto:p2012agarwal@gmail.com"
+        }
+    ],
+    "globalType": "profile",
+    "aboutHtml": "<p>I’m a senior frontend engineer at <a href=\"https://www.headout.com\" rel=\"noopener noreferrer\" target=\"_blank\">Headout</a>, where I work on micro-frontends, payments and AI-integrated developer tooling. I care about fast, native-feeling interfaces on the web and on mobile.</p><p>Outside work I build things I want to use myself: <a href=\"https://nomadsafe.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">NomadSafe</a>, a travel companion app, and <a href=\"https://grain.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">grain</a>, a tool for reviewing pull requests as user flows. Most days that means React, Next.js, React Native and TypeScript, with some Rust and Go when the problem asks for it.</p>"
+}

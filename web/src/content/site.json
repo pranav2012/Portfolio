@@ -1,0 +1,14 @@
+{
+    "id": 1,
+    "title": "Pranav Agarwal",
+    "description": "Pranav Agarwal, senior frontend engineer at Headout. Projects, writing and experiments across web, mobile and AI tooling.",
+    "ogImage": {
+        "file": "og-card.png",
+        "alt": "Pranav Agarwal",
+        "width": 862,
+        "height": 470
+    },
+    "twitterHandle": "@pranav__agr",
+    "analyticsId": "G-D1FQW8B99F",
+    "globalType": "site"
+}

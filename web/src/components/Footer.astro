@@ -1,0 +1,12 @@
+---
+interface Props {
+    name: string;
+}
+const { name } = Astro.props;
+---
+
+<footer class="mx-auto mt-24 flex w-full max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 border-t border-line px-5 py-8 text-sm text-muted sm:px-8">
+    <p class="mr-auto">© {new Date().getFullYear()} {name}</p>
+    <a href="/rss.xml" class="link">RSS</a>
+    <a href="/sitemap-index.xml" class="link">Sitemap</a>
+</footer>

@@ -1,0 +1,22 @@
+---
+// Remix Icon glyphs, inlined at build time.
+import icons from '@iconify-json/ri/icons.json';
+
+interface Props {
+    name: string;
+    class?: string;
+}
+const { name, class: className } = Astro.props;
+const icon = (icons.icons as Record<string, { body: string }>)[name];
+if (!icon) throw new Error(`Unknown icon: ${name}`);
+---
+
+<svg
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
+    fill="currentColor"
+    aria-hidden="true"
+    class={className}
+    set:html={icon.body}
+/>
