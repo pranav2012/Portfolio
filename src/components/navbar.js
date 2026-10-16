@@ -8,31 +8,30 @@ import {
     Heading,
     Flex,
     Menu,
-    MenuItem,
-    MenuList,
-    MenuButton,
-    IconButton,
-    useColorModeValue
+    Portal,
+    IconButton
 } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { IoMenu } from 'react-icons/io5';
 import ThemeToggleButton from 'Elements/theme-toggle-button';
 
 const LinkItem = ({ href, path, _target, children, ...props }) => {
     const active = path === href;
-    const inactiveColor = useColorModeValue('gray200', 'whiteAlpha.900');
     return (
-        <NextLink href={href} passHref>
-            <Link
-                p={2}
-                borderRadius={8}
-                bg={active ? 'grassTeal' : undefined}
-                color={active ? '#202023' : inactiveColor}
-                _target={_target}
-                {...props}
-            >
-                {children}
-            </Link>
-        </NextLink>
+        <Link
+            asChild
+            p={2}
+            borderRadius={8}
+            bg={active ? 'grassTeal' : undefined}
+            color={
+                active
+                    ? '#202023'
+                    : { base: 'gray.800', _dark: 'whiteAlpha.900' }
+            }
+            target={_target}
+            {...props}
+        >
+            <NextLink href={href}>{children}</NextLink>
+        </Link>
     );
 };
 
@@ -44,7 +43,7 @@ const Navbar = props => {
             position="fixed"
             as="nav"
             w="100%"
-            bg={useColorModeValue('#ffffff40', '#20202380')}
+            bg={{ base: '#ffffff40', _dark: '#20202380' }}
             style={{ backdropFilter: 'blur(10px)' }}
             zIndex={1}
             {...props}
@@ -52,10 +51,10 @@ const Navbar = props => {
             <Container
                 display="flex"
                 p={2}
-                maxW="container.md"
-                wrap="wrap"
-                align="center"
-                justify="space-between"
+                maxW="3xl"
+                flexWrap="wrap"
+                alignItems="center"
+                justifyContent="space-between"
             >
                 <Flex align="center" mr={5}>
                     <Heading as="h1" size="lg" letterSpacing={'tighter'}>
@@ -79,29 +78,39 @@ const Navbar = props => {
                     </LinkItem>
                 </Stack>
 
-                <Box flex={1} align="right">
+                <Box flex={1} textAlign="right">
                     <ThemeToggleButton />
 
                     <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
-                        <Menu>
-                            <MenuButton
-                                as={IconButton}
-                                icon={<HamburgerIcon />}
-                                variant="outline"
-                                aria-label="Options"
-                            />
-                            <MenuList>
-                                <NextLink href="/" passHref>
-                                    <MenuItem as={Link}>About</MenuItem>
-                                </NextLink>
-                                <NextLink href="/works" passHref>
-                                    <MenuItem as={Link}>Works</MenuItem>
-                                </NextLink>
-                                <NextLink href="/posts" passHref>
-                                    <MenuItem as={Link}>Posts</MenuItem>
-                                </NextLink>
-                            </MenuList>
-                        </Menu>
+                        <Menu.Root>
+                            <Menu.Trigger asChild>
+                                <IconButton
+                                    variant="outline"
+                                    aria-label="Options"
+                                >
+                                    <IoMenu />
+                                </IconButton>
+                            </Menu.Trigger>
+                            <Portal>
+                                <Menu.Positioner>
+                                    <Menu.Content>
+                                        <Menu.Item value="about" asChild>
+                                            <NextLink href="/">About</NextLink>
+                                        </Menu.Item>
+                                        <Menu.Item value="works" asChild>
+                                            <NextLink href="/works">
+                                                Works
+                                            </NextLink>
+                                        </Menu.Item>
+                                        <Menu.Item value="posts" asChild>
+                                            <NextLink href="/posts">
+                                                Posts
+                                            </NextLink>
+                                        </Menu.Item>
+                                    </Menu.Content>
+                                </Menu.Positioner>
+                            </Portal>
+                        </Menu.Root>
                     </Box>
                 </Box>
             </Container>
