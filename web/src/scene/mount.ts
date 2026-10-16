@@ -5,8 +5,8 @@ import { buildPranav, VOXEL, CENTER_Y } from './voxel-pranav-model.js';
 
 const easeOutCirc = (x: number) => Math.sqrt(1 - Math.pow(x - 1, 4));
 
-// He sits facing the viewer, so the camera sways across the front instead
-// of going all the way round.
+// He sits facing the viewer, so dragging turns the camera across the front
+// only, and it settles back at HOME_ANGLE (the poster's angle) afterwards.
 const HOME_ANGLE = 0.2 * Math.PI;
 const MIN_ANGLE = 0.05 * Math.PI;
 const MAX_ANGLE = 0.35 * Math.PI;
@@ -141,8 +141,6 @@ export function mount(container: HTMLElement, { zoom, skipIntro = false }: Optio
     themeWatcher.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.autoRotate = !reduceMotion;
-    controls.autoRotateSpeed = 0.6;
     controls.minAzimuthAngle = MIN_ANGLE;
     controls.maxAzimuthAngle = MAX_ANGLE;
     controls.minPolarAngle = 0.25 * Math.PI;
@@ -150,6 +148,20 @@ export function mount(container: HTMLElement, { zoom, skipIntro = false }: Optio
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.target = target;
+
+    // A second after a drag ends, the camera eases back to where it started.
+    const home = new THREE.Spherical().setFromVector3(cameraAt(HOME_ANGLE).sub(target));
+    const spherical = new THREE.Spherical();
+    const offset = new THREE.Vector3();
+    let returning = false;
+    let returnTimer = 0;
+    controls.addEventListener('start', () => {
+        clearTimeout(returnTimer);
+        returning = false;
+    });
+    controls.addEventListener('end', () => {
+        returnTimer = window.setTimeout(() => (returning = true), reduceMotion ? 0 : 1000);
+    });
 
     // He follows the pointer anywhere on the page, and goes back to idling a
     // few seconds after it stops.
@@ -218,11 +230,20 @@ export function mount(container: HTMLElement, { zoom, skipIntro = false }: Optio
             camera.position.copy(cameraAt(HOME_ANGLE + 1.2 * (1 - ease)));
             camera.lookAt(target);
         } else {
-            // Turn back at either end of the arc. (A positive speed
-            // decreases the azimuth.)
-            const angle = controls.getAzimuthalAngle();
-            if (angle >= MAX_ANGLE - 0.01) controls.autoRotateSpeed = 0.6;
-            if (angle <= MIN_ANGLE + 0.01) controls.autoRotateSpeed = -0.6;
+            if (returning) {
+                // Exponential ease, so the speed doesn't depend on frame rate.
+                const k = reduceMotion ? 1 : 1 - Math.exp(-timer.getDelta() * 5);
+                spherical.setFromVector3(offset.copy(camera.position).sub(target));
+                spherical.theta += (home.theta - spherical.theta) * k;
+                spherical.phi += (home.phi - spherical.phi) * k;
+                if (Math.abs(home.theta - spherical.theta) + Math.abs(home.phi - spherical.phi) < 1e-4) {
+                    spherical.theta = home.theta;
+                    spherical.phi = home.phi;
+                    returning = false;
+                }
+                camera.position.copy(target).add(offset.setFromSpherical(spherical));
+                camera.lookAt(target);
+            }
             controls.update();
         }
 
@@ -236,6 +257,7 @@ export function mount(container: HTMLElement, { zoom, skipIntro = false }: Optio
     return () => {
         cancelAnimationFrame(req);
         clearTimeout(idleTimer);
+        clearTimeout(returnTimer);
         removeEventListener('pointermove', onPointerMove);
         themeWatcher.disconnect();
         observer.disconnect();
