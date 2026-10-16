@@ -32,5 +32,56 @@ export const videos = [
         description: 'A tour of the desk I work from.',
         publishedAt: '2022-02-10',
         order: 40
+    },
+    // From robodue (youtube.com/@robodue5720), my earlier Arduino and IoT
+    // channel.
+    {
+        title: 'Home automation with Amazon Alexa and NodeMCU',
+        url: 'https://www.youtube.com/watch?v=Uib0XXfhzd4',
+        description: 'Controlling home appliances by voice with an Echo and an ESP8266 NodeMCU.',
+        publishedAt: '2018-01-11',
+        order: 110
+    },
+    {
+        title: 'RFID module Arduino projects',
+        url: 'https://www.youtube.com/watch?v=pflue7IYzeo',
+        description: 'How an RFID reader works and how to use one in Arduino builds.',
+        publishedAt: '2018-04-01',
+        order: 120
+    },
+    {
+        title: 'Tank water level alarm',
+        url: 'https://www.youtube.com/watch?v=fXDE_OnE8go',
+        description: 'Building a water level indicator that sounds an alarm when the tank is full.',
+        publishedAt: '2017-11-26',
+        order: 130
+    },
+    {
+        title: 'Laser security alarm',
+        url: 'https://www.youtube.com/watch?v=18j66XzOfgs',
+        description: 'A DIY laser tripwire that sets off an alarm when the beam breaks.',
+        publishedAt: '2017-11-13',
+        order: 140
+    },
+    {
+        title: 'What is Arduino?',
+        url: 'https://www.youtube.com/watch?v=CzgH40cwmXM',
+        description: 'What an Arduino is, what it can do and how to get started.',
+        publishedAt: '2017-11-09',
+        order: 150
+    },
+    {
+        title: 'Amazon Echo Dot unboxing and review',
+        url: 'https://www.youtube.com/watch?v=u6ixYip9Dzo',
+        description: 'Unboxing the Echo Dot and first impressions of Alexa in India.',
+        publishedAt: '2017-12-13',
+        order: 160
+    },
+    {
+        title: 'How to install Kali Linux 2019.1 in VMware',
+        url: 'https://www.youtube.com/watch?v=L2hEp1eqtFg',
+        description: 'A step-by-step install of Kali Linux in VMware Workstation.',
+        publishedAt: '2019-05-16',
+        order: 170
     }
 ];

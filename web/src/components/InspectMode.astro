@@ -1,0 +1,132 @@
+<!-- Devtools-style overlay: outlines components and shows the box model of
+     whatever is under the pointer. Toggled from the nav, ⌘K or the I key. -->
+<div data-xray-layer hidden aria-hidden="true" class="pointer-events-none fixed inset-0 z-[60]">
+    <div data-box class="absolute">
+        <div data-margin class="absolute border-[#f59e0b]/30"></div>
+        <div data-padding class="absolute inset-0 border-[#22c55e]/35 bg-[#3b82f6]/15"></div>
+    </div>
+    <div
+        data-tag
+        class="absolute rounded-md border border-line-strong bg-card px-2 py-1 font-mono text-[11px] whitespace-nowrap text-ink shadow-lg"
+    >
+    </div>
+</div>
+<div
+    data-xray-hud
+    hidden
+    class="fixed bottom-5 left-1/2 z-[61] flex -translate-x-1/2 items-center gap-3 rounded-full border border-line-strong bg-card/90 py-2 pr-2 pl-4 font-mono text-xs text-dim shadow-xl backdrop-blur"
+>
+    <span class="size-2 rounded-full bg-accent shadow-[0_0_0_3px_var(--glow)]"></span>
+    <span>Inspect mode: hover or tap anything</span>
+    <span data-breakpoint class="chip"></span>
+    <button type="button" data-xray-toggle class="rounded-full px-2.5 py-1 text-ink hover:bg-raised">
+        Exit <span class="kbd ml-1">I</span>
+    </button>
+</div>
+
+<style is:global>
+    html[data-xray] [data-component] {
+        outline: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent);
+        outline-offset: 2px;
+    }
+    html[data-xray] body {
+        cursor: crosshair;
+    }
+</style>
+
+<script>
+    const layer = () => document.querySelector<HTMLElement>('[data-xray-layer]')!;
+    const hud = () => document.querySelector<HTMLElement>('[data-xray-hud]')!;
+    let current: Element | null = null;
+    // Kept here as well as on <html>, which page navigations replace.
+    let active = false;
+
+    const breakpoint = () => {
+        const w = innerWidth;
+        const name = w >= 1280 ? 'xl' : w >= 1024 ? 'lg' : w >= 768 ? 'md' : w >= 640 ? 'sm' : 'base';
+        return `${name} · ${w}px`;
+    };
+
+    // A short selector for an element, e.g. h3.text-lg
+    const describe = (el: Element) => {
+        const cls = [...el.classList].find(c => !c.includes(':') && !c.includes('['));
+        return el.tagName.toLowerCase() + (cls ? `.${cls}` : '');
+    };
+
+    const draw = (el: Element) => {
+        current = el;
+        const rect = el.getBoundingClientRect();
+        const s = getComputedStyle(el);
+        const px = (v: string) => parseFloat(v) || 0;
+        const [mt, mr, mb, ml] = [s.marginTop, s.marginRight, s.marginBottom, s.marginLeft].map(px);
+        const [pt, pr, pb, pl] = [s.paddingTop, s.paddingRight, s.paddingBottom, s.paddingLeft].map(px);
+
+        const box = layer().querySelector<HTMLElement>('[data-box]')!;
+        Object.assign(box.style, { left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px` });
+        Object.assign(layer().querySelector<HTMLElement>('[data-margin]')!.style, {
+            inset: `-${mt}px -${mr}px -${mb}px -${ml}px`,
+            borderWidth: `${mt}px ${mr}px ${mb}px ${ml}px`
+        });
+        layer().querySelector<HTMLElement>('[data-padding]')!.style.borderWidth = `${pt}px ${pr}px ${pb}px ${pl}px`;
+
+        const component = el.closest<HTMLElement>('[data-component]')?.dataset.component;
+        const tag = layer().querySelector<HTMLElement>('[data-tag]')!;
+        const name = component ? `<${component} />${el.matches('[data-component]') ? '' : ` › ${describe(el)}`}` : describe(el);
+        const padding = pt || pr || pb || pl ? `  ·  p ${[pt, pr, pb, pl].map(Math.round).join(' ')}` : '';
+        tag.innerHTML = `<span style="color:var(--accent)">${name.replace(/</g, '&lt;')}</span>  ${Math.round(rect.width)} × ${Math.round(rect.height)}${padding}`;
+        const below = rect.top < 40;
+        tag.style.left = `${Math.max(8, Math.min(rect.left, innerWidth - tag.offsetWidth - 8))}px`;
+        tag.style.top = `${below ? rect.bottom + 6 : rect.top - tag.offsetHeight - 6}px`;
+    };
+
+    const set = (on: boolean) => {
+        active = on;
+        if (on) document.documentElement.dataset.xray = '';
+        else delete document.documentElement.dataset.xray;
+        layer().hidden = !on;
+        hud().hidden = !on;
+        hud().querySelector<HTMLElement>('[data-breakpoint]')!.textContent = breakpoint();
+        document.querySelectorAll('[data-xray-toggle]').forEach(b => b.setAttribute('aria-pressed', String(on)));
+        current = null;
+        layer().querySelector<HTMLElement>('[data-box]')!.style.width = '0';
+        layer().querySelector<HTMLElement>('[data-tag]')!.textContent = '';
+    };
+    const on = () => active;
+
+    const target = (event: Event) => {
+        const el = event.target as Element;
+        return el.closest('[data-xray-hud], dialog, header button, header summary') ? null : el;
+    };
+
+    document.addEventListener('click', event => {
+        if ((event.target as Element).closest('[data-xray-toggle]')) return set(!on());
+        if (!on()) return;
+        const el = target(event);
+        if (!el) return;
+        // While inspecting, a tap picks an element instead of following a link.
+        event.preventDefault();
+        event.stopPropagation();
+        draw(el);
+    }, true);
+
+    document.addEventListener('pointermove', event => {
+        if (!on() || event.pointerType !== 'mouse') return;
+        const el = target(event);
+        if (el && el !== current) draw(el);
+    });
+
+    document.addEventListener('keydown', event => {
+        const el = event.target as HTMLElement;
+        if (event.metaKey || event.ctrlKey || event.altKey || el.closest?.('input, textarea, select, [contenteditable], dialog')) return;
+        if (event.key === 'i' || event.key === 'I') set(!on());
+        if (event.key === 'Escape' && on()) set(false);
+    });
+
+    addEventListener('scroll', () => current && on() && draw(current), { passive: true });
+    addEventListener('resize', () => {
+        if (!on()) return;
+        hud().querySelector<HTMLElement>('[data-breakpoint]')!.textContent = breakpoint();
+        if (current) draw(current);
+    });
+    document.addEventListener('astro:after-swap', () => set(on()));
+</script>

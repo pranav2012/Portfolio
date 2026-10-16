@@ -1,0 +1,34 @@
+[
+    {
+        "repo": "wcandillon/react-native-skia",
+        "url": "https://github.com/wcandillon/react-native-skia",
+        "description": "High-performance React Native Graphics using Skia",
+        "stars": 8732,
+        "language": "TypeScript",
+        "avatar": "https://avatars.githubusercontent.com/u/306134?v=4",
+        "prs": [
+            {
+                "number": 4177,
+                "title": "fix(🤖): don't use MSAARenderToSingleSampled on Android",
+                "url": "https://github.com/wcandillon/react-native-skia/pull/4177",
+                "mergedAt": "2026-10-13T09:45:40Z"
+            }
+        ]
+    },
+    {
+        "repo": "thedevdojo/tails-components",
+        "url": "https://github.com/thedevdojo/tails-components",
+        "description": "The Tails Open Source Components are a (no-config) copy'n paste free collection of hand-crafted templates and components built in TailwindCSS.",
+        "stars": 804,
+        "language": "HTML",
+        "avatar": "https://avatars.githubusercontent.com/u/3056664?v=4",
+        "prs": [
+            {
+                "number": 59,
+                "title": "Add newsletter component (#48)",
+                "url": "https://github.com/thedevdojo/tails-components/pull/59",
+                "mergedAt": "2020-10-04T09:50:32Z"
+            }
+        ]
+    }
+]

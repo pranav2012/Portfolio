@@ -38,5 +38,82 @@
         "publishedAt": "2022-02-10T00:00:00.000Z",
         "order": 40,
         "thumbnail": null
+    },
+    {
+        "id": 5,
+        "title": "Home automation with Amazon Alexa and NodeMCU",
+        "url": "https://www.youtube.com/watch?v=Uib0XXfhzd4",
+        "youtubeId": "Uib0XXfhzd4",
+        "description": "Controlling home appliances by voice with an Echo and an ESP8266 NodeMCU.",
+        "publishedAt": "2018-01-11T00:00:00.000Z",
+        "order": 110,
+        "thumbnail": null,
+        "channel": "robodue"
+    },
+    {
+        "id": 6,
+        "title": "RFID module Arduino projects",
+        "url": "https://www.youtube.com/watch?v=pflue7IYzeo",
+        "youtubeId": "pflue7IYzeo",
+        "description": "How an RFID reader works and how to use one in Arduino builds.",
+        "publishedAt": "2018-04-01T00:00:00.000Z",
+        "order": 120,
+        "thumbnail": null,
+        "channel": "robodue"
+    },
+    {
+        "id": 7,
+        "title": "Tank water level alarm",
+        "url": "https://www.youtube.com/watch?v=fXDE_OnE8go",
+        "youtubeId": "fXDE_OnE8go",
+        "description": "Building a water level indicator that sounds an alarm when the tank is full.",
+        "publishedAt": "2017-11-26T00:00:00.000Z",
+        "order": 130,
+        "thumbnail": null,
+        "channel": "robodue"
+    },
+    {
+        "id": 8,
+        "title": "Laser security alarm",
+        "url": "https://www.youtube.com/watch?v=18j66XzOfgs",
+        "youtubeId": "18j66XzOfgs",
+        "description": "A DIY laser tripwire that sets off an alarm when the beam breaks.",
+        "publishedAt": "2017-11-13T00:00:00.000Z",
+        "order": 140,
+        "thumbnail": null,
+        "channel": "robodue"
+    },
+    {
+        "id": 9,
+        "title": "What is Arduino?",
+        "url": "https://www.youtube.com/watch?v=CzgH40cwmXM",
+        "youtubeId": "CzgH40cwmXM",
+        "description": "What an Arduino is, what it can do and how to get started.",
+        "publishedAt": "2017-11-09T00:00:00.000Z",
+        "order": 150,
+        "thumbnail": null,
+        "channel": "robodue"
+    },
+    {
+        "id": 10,
+        "title": "Amazon Echo Dot unboxing and review",
+        "url": "https://www.youtube.com/watch?v=u6ixYip9Dzo",
+        "youtubeId": "u6ixYip9Dzo",
+        "description": "Unboxing the Echo Dot and first impressions of Alexa in India.",
+        "publishedAt": "2017-12-13T00:00:00.000Z",
+        "order": 160,
+        "thumbnail": null,
+        "channel": "robodue"
+    },
+    {
+        "id": 11,
+        "title": "How to install Kali Linux 2019.1 in VMware",
+        "url": "https://www.youtube.com/watch?v=L2hEp1eqtFg",
+        "youtubeId": "L2hEp1eqtFg",
+        "description": "A step-by-step install of Kali Linux in VMware Workstation.",
+        "publishedAt": "2019-05-16T00:00:00.000Z",
+        "order": 170,
+        "thumbnail": null,
+        "channel": "robodue"
     }
 ]

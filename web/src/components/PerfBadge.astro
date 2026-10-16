@@ -1,0 +1,324 @@
+---
+// This page's own performance, measured in the visitor's browser: a compact
+// badge that opens into a devtools-style vitals panel.
+
+type Metric = { key: string; label: string; hint: string };
+const groups: { title: string; metrics: Metric[] }[] = [
+    {
+        title: 'Loading',
+        metrics: [
+            { key: 'ttfb', label: 'TTFB', hint: 'Time to first byte from the server' },
+            { key: 'fcp', label: 'FCP', hint: 'First contentful paint' },
+            { key: 'lcp', label: 'LCP', hint: 'Largest contentful paint (Core Web Vital)' }
+        ]
+    },
+    {
+        title: 'Responsiveness',
+        metrics: [
+            { key: 'inp', label: 'INP', hint: 'Slowest interaction so far (Core Web Vital); click around to measure' },
+            { key: 'tbt', label: 'Blocking', hint: 'Main-thread time blocked by long tasks (over 50 ms)' }
+        ]
+    },
+    {
+        title: 'Stability',
+        metrics: [{ key: 'cls', label: 'CLS', hint: 'Cumulative layout shift (Core Web Vital)' }]
+    },
+    {
+        title: 'Weight',
+        metrics: [
+            { key: 'js', label: 'JS', hint: 'JavaScript needed to load the page' },
+            { key: 'lazy', label: '3D', hint: 'three.js scene, loaded lazily once the page is idle' },
+            { key: 'total', label: 'Total', hint: 'Everything transferred for this page' },
+            { key: 'requests', label: 'Requests', hint: 'Network requests, and how many came from cache' }
+        ]
+    },
+    {
+        title: 'Runtime',
+        metrics: [
+            { key: 'fps', label: 'Frame rate', hint: 'Frames per second while this panel is open' },
+            { key: 'dom', label: 'DOM', hint: 'Elements on the page' },
+            { key: 'heap', label: 'Heap', hint: 'JavaScript memory in use (Chromium only)' },
+            { key: 'net', label: 'Network', hint: 'Connection type and device pixel ratio' }
+        ]
+    }
+];
+---
+
+<div class="relative" data-perf data-component="PerfBadge">
+    <button
+        type="button"
+        data-perf-toggle
+        aria-expanded="false"
+        aria-controls="perf-panel"
+        title="Measured live in your browser on this visit. Click for more."
+        class="inline-flex items-center gap-2.5 rounded-full border border-line bg-card py-1.5 pr-2.5 pl-2.5 font-mono text-[11.5px] text-dim transition-colors hover:border-line-strong aria-expanded:border-accent/40"
+    >
+        <span class="size-1.5 rounded-full bg-accent shadow-[0_0_0_3px_var(--glow)]"></span>
+        <span class="text-faint">this page</span>
+        <span>LCP <b data-metric="lcp" class="inline-block min-w-[4ch] text-left font-medium text-ink">…</b></span>
+        <span>CLS <b data-metric="cls" class="inline-block min-w-[4ch] text-left font-medium text-ink">…</b></span>
+        <span class="hidden sm:inline">JS <b data-metric="js" class="inline-block min-w-[5ch] text-left font-medium text-ink">…</b></span>
+        {import.meta.env.DEV && <span class="rounded bg-[#f59e0b]/15 px-1 text-[#f59e0b]">dev</span>}
+        <svg viewBox="0 0 24 24" class="chevron size-3.5 text-faint transition-transform" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6"></path>
+        </svg>
+    </button>
+
+    <div
+        id="perf-panel"
+        data-perf-panel
+        hidden
+        class="absolute top-full left-0 z-20 mt-2 w-[min(400px,calc(100vw-4rem))] rounded-2xl border border-line-strong bg-card/95 p-4 font-mono text-[11.5px] shadow-2xl backdrop-blur-md"
+    >
+        <div class="mb-3 flex items-center justify-between">
+            <span class="text-ink">vitals · this visit</span>
+            <span class="flex items-center gap-2.5 text-[10.5px] text-faint">
+                <span class="flex items-center gap-1"><i class="dot" data-rating="good"></i>good</span>
+                <span class="flex items-center gap-1"><i class="dot" data-rating="ni"></i>ok</span>
+                <span class="flex items-center gap-1"><i class="dot" data-rating="poor"></i>poor</span>
+            </span>
+        </div>
+        {
+            groups.map(group => (
+                <section class="border-t border-line py-2.5 first-of-type:border-t-0 first-of-type:pt-0">
+                    <h3 class="mb-1.5 font-mono text-[10px] font-normal tracking-wider text-faint uppercase">{group.title}</h3>
+                    <dl class="grid grid-cols-2 gap-x-4 gap-y-1">
+                        {group.metrics.map(metric => (
+                            <div class="flex items-baseline justify-between gap-2" title={metric.hint}>
+                                <dt class="text-dim">{metric.label}</dt>
+                                <dd class="flex items-center gap-1.5 text-ink">
+                                    <i class="dot" data-dot={metric.key} />
+                                    <span data-metric={metric.key}>…</span>
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                    {group.title === 'Runtime' && (
+                        <div class="mt-2 flex h-6 items-end gap-px" data-fps-graph aria-hidden="true">
+                            {Array.from({ length: 48 }, () => (
+                                <span class="w-full rounded-[1px] bg-accent/70" style="height: 2px" />
+                            ))}
+                        </div>
+                    )}
+                </section>
+            ))
+        }
+        {
+            import.meta.env.DEV && (
+                <p class="mt-1 border-t border-line pt-2.5 text-[10.5px] leading-relaxed text-[#f59e0b]">
+                    Dev server: unbundled and unminified, so these aren't the numbers visitors see.
+                </p>
+            )
+        }
+    </div>
+</div>
+
+<style>
+    .dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--line-strong);
+    }
+    .dot[data-rating='good'] {
+        background: #22c55e;
+    }
+    .dot[data-rating='ni'] {
+        background: #f59e0b;
+    }
+    .dot[data-rating='poor'] {
+        background: #ef4444;
+    }
+    [aria-expanded='true'] > .chevron {
+        transform: rotate(180deg);
+    }
+</style>
+
+<script>
+    type Rating = 'good' | 'ni' | 'poor';
+    type LayoutShift = PerformanceEntry & { value: number; hadRecentInput: boolean };
+    type EventTiming = PerformanceEntry & { interactionId?: number };
+
+    // Google's thresholds: [good up to, poor from].
+    const thresholds: Record<string, [number, number]> = {
+        ttfb: [800, 1800],
+        fcp: [1800, 3000],
+        lcp: [2500, 4000],
+        inp: [200, 500],
+        tbt: [200, 600],
+        cls: [0.1, 0.25]
+    };
+    const rate = (key: string, value: number): Rating | undefined => {
+        const t = thresholds[key];
+        if (!t) return undefined;
+        return value <= t[0] ? 'good' : value <= t[1] ? 'ni' : 'poor';
+    };
+
+    const state = {
+        lcp: undefined as number | undefined,
+        fcp: undefined as number | undefined,
+        inp: undefined as number | undefined,
+        cls: 0,
+        tbt: 0,
+        settled: false
+    };
+
+    const ms = (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(2)}s` : `${Math.round(v)}ms`);
+    const kb = (bytes: number) =>
+        bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
+    const navigation = () => performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+
+    // Transfer sizes, with first-party JavaScript split into what the page
+    // needed before it finished loading and what streamed in afterwards (the
+    // 3D scene).
+    const weight = () => {
+        const nav = navigation();
+        const loaded = nav?.loadEventEnd || Infinity;
+        let critical = 0;
+        let lazy = 0;
+        let total = nav ? nav.transferSize || nav.encodedBodySize : 0;
+        let cached = 0;
+        const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+        for (const r of resources) {
+            const bytes = r.transferSize || r.encodedBodySize;
+            total += r.transferSize;
+            if (r.transferSize === 0 && r.decodedBodySize > 0) cached++;
+            if (new URL(r.name).origin !== location.origin || !/\.m?[jt]s(\?|$)/.test(r.name)) continue;
+            if (r.startTime <= loaded) critical += bytes;
+            else lazy += bytes;
+        }
+        return { critical, lazy, total, requests: resources.length + 1, cached };
+    };
+
+    const set = (key: string, text: string | undefined, rating?: Rating) => {
+        if (text === undefined) return;
+        document.querySelectorAll<HTMLElement>(`[data-perf] [data-metric="${key}"]`).forEach(el => {
+            if (el.textContent !== text) el.textContent = text;
+        });
+        document.querySelectorAll<HTMLElement>(`[data-perf] [data-dot="${key}"]`).forEach(el => {
+            if (rating) el.dataset.rating = rating;
+            else delete el.dataset.rating;
+        });
+    };
+
+    // Writes only changed values, so updating the badge can't itself cause
+    // the layout shifts it reports.
+    const render = () => {
+        const nav = navigation() as (PerformanceNavigationTiming & { activationStart?: number }) | undefined;
+        if (nav) {
+            const ttfb = Math.max(0, nav.responseStart - (nav.activationStart ?? 0));
+            set('ttfb', ms(ttfb), rate('ttfb', ttfb));
+        }
+        if (state.fcp !== undefined) set('fcp', ms(state.fcp), rate('fcp', state.fcp));
+        if (state.lcp !== undefined) set('lcp', ms(state.lcp), rate('lcp', state.lcp));
+        else if (state.settled) set('lcp', '—');
+        set('cls', state.cls.toFixed(2), rate('cls', state.cls));
+        if (state.inp !== undefined) set('inp', ms(state.inp), rate('inp', state.inp));
+        else set('inp', 'interact');
+        set('tbt', ms(state.tbt), rate('tbt', state.tbt));
+
+        const w = weight();
+        set('js', kb(w.critical), w.critical < 50 * 1024 ? 'good' : w.critical < 200 * 1024 ? 'ni' : 'poor');
+        set('lazy', w.lazy ? `+${kb(w.lazy)}` : 'idle…');
+        set('total', kb(w.total));
+        set('requests', `${w.requests}${w.cached ? ` · ${w.cached} cached` : ''}`);
+        set('dom', `${document.getElementsByTagName('*').length} nodes`);
+        const memory = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory;
+        set('heap', memory ? kb(memory.usedJSHeapSize) : 'n/a');
+        const connection = (navigator as Navigator & { connection?: { effectiveType?: string } }).connection;
+        set('net', `${connection?.effectiveType ?? '—'} · ${devicePixelRatio}x`);
+    };
+    const schedule = () => requestAnimationFrame(render);
+
+    const observe = (type: string, callback: (entries: PerformanceEntry[]) => void, extra: Record<string, unknown> = {}) => {
+        if (!PerformanceObserver.supportedEntryTypes?.includes(type)) return;
+        new PerformanceObserver(list => {
+            callback(list.getEntries());
+            schedule();
+        }).observe({ type, buffered: true, ...extra } as PerformanceObserverInit);
+    };
+    observe('paint', entries => {
+        const fcp = entries.find(e => e.name === 'first-contentful-paint');
+        if (fcp) state.fcp = fcp.startTime;
+    });
+    observe('largest-contentful-paint', entries => (state.lcp = entries.at(-1)?.startTime));
+    observe('layout-shift', entries => {
+        for (const e of entries as LayoutShift[]) if (!e.hadRecentInput) state.cls += e.value;
+    });
+    observe('longtask', entries => {
+        for (const e of entries) state.tbt += Math.max(0, e.duration - 50);
+    });
+    // INP, simplified: the slowest interaction seen so far.
+    observe(
+        'event',
+        entries => {
+            for (const e of entries as EventTiming[]) if (e.interactionId) state.inp = Math.max(state.inp ?? 0, e.duration);
+        },
+        { durationThreshold: 16 }
+    );
+
+    // Frame rate, sampled only while the panel is open.
+    let fpsFrame = 0;
+    const samples: number[] = [];
+    const measureFps = () => {
+        let frames = 0;
+        let start = performance.now();
+        const tick = (now: number) => {
+            frames++;
+            if (now - start >= 500) {
+                const fps = Math.round((frames * 1000) / (now - start));
+                frames = 0;
+                start = now;
+                samples.push(fps);
+                if (samples.length > 48) samples.shift();
+                set('fps', `${fps} fps`, fps >= 55 ? 'good' : fps >= 30 ? 'ni' : 'poor');
+                const bars = document.querySelectorAll<HTMLElement>('[data-fps-graph] > span');
+                bars.forEach((bar, i) => {
+                    const value = samples[samples.length - bars.length + i];
+                    bar.style.height = value === undefined ? '2px' : `${Math.max(2, Math.min(24, (value / 60) * 24))}px`;
+                });
+                render();
+            }
+            fpsFrame = requestAnimationFrame(tick);
+        };
+        fpsFrame = requestAnimationFrame(tick);
+    };
+
+    const toggle = (open: boolean) => {
+        const button = document.querySelector<HTMLElement>('[data-perf-toggle]');
+        const panel = document.querySelector<HTMLElement>('[data-perf-panel]');
+        if (!button || !panel) return;
+        button.setAttribute('aria-expanded', String(open));
+        panel.hidden = !open;
+        cancelAnimationFrame(fpsFrame);
+        if (open) {
+            render();
+            measureFps();
+        }
+    };
+
+    document.addEventListener('click', event => {
+        const target = event.target as Element;
+        if (target.closest('[data-perf-toggle]')) {
+            toggle(document.querySelector('[data-perf-toggle]')?.getAttribute('aria-expanded') !== 'true');
+        } else if (!target.closest('[data-perf-panel]')) {
+            toggle(false);
+        }
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') toggle(false);
+    });
+
+    document.addEventListener('astro:page-load', () => {
+        schedule();
+        // Gives up on LCP (Safari and background tabs never report one) and
+        // picks up the 3D scene's script once it has loaded.
+        setTimeout(() => {
+            state.settled = true;
+            schedule();
+        }, 2500);
+        setTimeout(schedule, 6000);
+    });
+    document.addEventListener('astro:before-swap', () => toggle(false));
+</script>

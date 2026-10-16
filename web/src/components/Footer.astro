@@ -5,6 +5,16 @@ interface Props {
 const { name } = Astro.props;
 ---
 
-<footer class="pt-10 pb-8 text-center text-sm opacity-40">
-    &copy; {new Date().getFullYear()} {name}. All Rights Reserved.
+<footer
+    class="mt-20 flex flex-col items-center justify-between gap-3 border-t border-line py-8 text-[13px] text-faint sm:flex-row"
+    data-component="Footer"
+>
+    <span>&copy; {new Date().getFullYear()} {name}</span>
+    <span class="flex items-center gap-2">
+        Built with Astro &amp; three.js
+        <span aria-hidden="true">·</span>
+        <button type="button" data-command-open class="flex items-center gap-1.5 hover:text-ink">
+            Press <span class="kbd">⌘K</span>
+        </button>
+    </span>
 </footer>
