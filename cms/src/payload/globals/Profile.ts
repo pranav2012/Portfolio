@@ -27,7 +27,23 @@ export const Profile: GlobalConfig = {
         { name: 'photo', type: 'upload', relationTo: 'media' },
         { name: 'about', type: 'richText' },
         htmlOf('about'),
-        { name: 'resumeUrl', type: 'text', label: 'Resume link' },
+        {
+            name: 'resume',
+            type: 'upload',
+            relationTo: 'media',
+            label: 'Résumé (PDF)',
+            filterOptions: { mimeType: { equals: 'application/pdf' } },
+            admin: {
+                description:
+                    'Published at pranav-agarwal.com/resume.pdf. Upload a new one to replace it.'
+            }
+        },
+        {
+            name: 'resumeUrl',
+            type: 'text',
+            label: 'Résumé link',
+            admin: { description: 'Used only when no PDF is uploaded.' }
+        },
         {
             name: 'experience',
             type: 'array',

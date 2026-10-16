@@ -5,6 +5,7 @@ import { getImage } from 'astro:assets';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Interactions from '../components/Interactions.astro';
+import DeskScene from '../components/DeskScene.astro';
 import { getProfile, getSite, image as imageOf } from '../lib/content';
 
 interface Props {
@@ -44,8 +45,8 @@ const ogUrl = new URL(ogImage, Astro.site).href;
         <meta property="og:image" content={ogUrl} />
         <meta name="twitter:card" content="summary_large_image" />
         {site.twitterHandle && <meta name="twitter:creator" content={site.twitterHandle} />}
-        <meta name="theme-color" content="#eef1f4" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#121726" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#f0e7db" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#202023" media="(prefers-color-scheme: dark)" />
 
         <script is:inline>
             // Set the theme before the first paint, and again after each
@@ -80,18 +81,21 @@ const ogUrl = new URL(ogImage, Astro.site).href;
             )
         }
     </head>
-    <body class="flex min-h-dvh flex-col">
+    <body>
         <a
             href="#main"
-            class="sr-only rounded-full bg-ink px-4 py-2 text-wall focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+            class="sr-only rounded-md bg-teal px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
         >
             Skip to content
         </a>
         <Nav name={profile.name} />
-        <main id="main" class="flex-1">
-            <slot />
-        </main>
-        <Footer name={profile.name} />
+        <div class="mx-auto max-w-3xl px-4 pt-14">
+            <DeskScene />
+            <main id="main" class="mx-auto max-w-[60ch]">
+                <slot />
+            </main>
+            <Footer name={profile.name} />
+        </div>
         <Interactions />
     </body>
 </html>

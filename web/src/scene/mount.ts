@@ -33,15 +33,8 @@ export function mount(container: HTMLElement) {
     renderer.domElement.classList.add('absolute', 'inset-0', 'size-full');
     container.appendChild(renderer.domElement);
 
-    const scale = 5.2;
-    const camera = new THREE.OrthographicCamera(
-        -scale,
-        scale,
-        scale,
-        -scale,
-        0.01,
-        1000
-    );
+    // The frustum is set by resize().
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.01, 1000);
     camera.position.copy(
         cameraAt(reduceMotion ? HOME_ANGLE : HOME_ANGLE + 1.2)
     );
@@ -80,9 +73,13 @@ export function mount(container: HTMLElement) {
     const resize = () => {
         const { clientWidth: w, clientHeight: h } = container;
         renderer.setSize(w, h, false);
+        // Zoom with the container, as the original site did.
+        const scale = h * 0.005 + 4.8;
         const aspect = w / h;
         camera.left = -scale * aspect;
         camera.right = scale * aspect;
+        camera.top = scale;
+        camera.bottom = -scale;
         camera.updateProjectionMatrix();
     };
     const observer = new ResizeObserver(resize);

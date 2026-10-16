@@ -1,32 +1,23 @@
 ---
-// The voxel desk in the hero. three.js loads only on pages that show it.
+// The voxel desk at the top of every page. It's kept mounted across page
+// navigations; three.js loads once.
 ---
 
-<figure class="relative min-w-0" aria-label="A voxel model of Pranav at his desk, drinking coffee">
-    <div
-        data-desk
-        class="group relative aspect-square w-full cursor-grab touch-pan-y active:cursor-grabbing"
-    >
-        <div
-            class="absolute inset-[18%] rounded-full bg-[radial-gradient(closest-side,var(--line),transparent)] transition-opacity duration-700 group-data-ready:opacity-0"
-            aria-hidden="true"
-        >
-        </div>
-    </div>
-    <figcaption class="mt-1 text-center text-sm text-muted">Drag to look around</figcaption>
-</figure>
+<div
+    transition:persist="desk"
+    data-desk
+    role="img"
+    aria-label="A voxel model of Pranav at his desk, drinking coffee"
+    class="relative mx-auto -mt-5 -mb-10 size-[280px] cursor-grab touch-pan-y active:cursor-grabbing sm:-mt-15 sm:-mb-35 sm:size-[480px] md:-mt-30 md:-mb-50 md:size-[640px]"
+>
+</div>
 
 <script>
-    let unmount: (() => void) | undefined;
-
     document.addEventListener('astro:page-load', async () => {
         const container = document.querySelector<HTMLElement>('[data-desk]');
-        if (!container) return;
+        if (!container || container.dataset.mounted !== undefined) return;
+        container.dataset.mounted = '';
         const { mount } = await import('../scene/mount');
-        unmount = mount(container);
-    });
-    document.addEventListener('astro:before-swap', () => {
-        unmount?.();
-        unmount = undefined;
+        mount(container);
     });
 </script>

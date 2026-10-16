@@ -1,26 +1,33 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import PostIndex from '../../components/PostIndex.astro';
-import { getPosts } from '../../lib/content';
+import { formatDate, getPosts } from '../../lib/content';
 
-const posts = await getPosts();
+const posts = getPosts();
 ---
 
 <Base title="Blog" description="Notes on frontend craft, mobile and AI-native development.">
-    <PageHeader title="Blog" intro="Notes on frontend craft, mobile and AI-native development." />
-    <div class="mx-auto mt-14 max-w-6xl px-5 sm:px-8">
-        <div class="max-w-3xl">
-            {
-                posts.length > 0 ? (
-                    <PostIndex posts={posts} />
-                ) : (
-                    <p class="border-t border-line pt-6 text-muted">
-                        No posts yet. Follow the <a href="/rss.xml" class="link-quiet">RSS feed</a> to get the
-                        first one.
-                    </p>
-                )
-            }
-        </div>
-    </div>
+    <section class="reveal">
+        <h1 class="mb-4 text-xl">Blog</h1>
+        {
+            posts.length > 0 ? (
+                <ul class="space-y-3">
+                    {posts.map(post => (
+                        <li class="relative rounded-lg bg-soft p-4 transition-colors hover:bg-line">
+                            <p class="text-xs opacity-60">{formatDate(post.publishedAt)}</p>
+                            <h2 class="mt-1 font-heading text-lg">
+                                <a href={`/blog/${post.slug}`} class="after:absolute after:inset-0 hover:underline">
+                                    {post.title}
+                                </a>
+                            </h2>
+                            {post.excerpt && <p class="mt-1 text-sm">{post.excerpt}</p>}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p class="opacity-70">
+                    No posts yet. Follow the <a href="/rss.xml" class="link">RSS feed</a> to get the first one.
+                </p>
+            )
+        }
+    </section>
 </Base>

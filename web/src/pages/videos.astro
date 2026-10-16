@@ -1,25 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
 import VideoCard from '../components/VideoCard.astro';
 import { getProfile, getVideos } from '../lib/content';
 
-const [videos, profile] = await Promise.all([getVideos(), getProfile()]);
-const channel = profile.socials?.find(s => s.platform === 'youtube')?.url;
+const videos = getVideos();
+const channel = getProfile().socials?.find(s => s.platform === 'youtube')?.url;
 ---
 
 <Base title="Videos" description="Videos by Pranav Agarwal on YouTube.">
-    <PageHeader title="Videos" intro="From my YouTube channel. They play right here." />
-    <div class="mx-auto mt-14 max-w-6xl px-5 sm:px-8">
-        <div class="grid gap-x-8 gap-y-14 md:grid-cols-2">
+    <section class="reveal">
+        <h1 class="mb-4 text-xl">Videos</h1>
+        <div class="grid gap-x-6 gap-y-10 sm:grid-cols-2">
             {videos.map(video => <VideoCard video={video} />)}
         </div>
         {
             channel && (
-                <a href={channel} target="_blank" rel="noopener noreferrer" class="link mt-14 inline-block font-medium">
-                    More on YouTube
-                </a>
+                <p class="my-8 text-center">
+                    <a href={channel} target="_blank" rel="noopener noreferrer" class="btn">
+                        My YouTube channel
+                    </a>
+                </p>
             )
         }
-    </div>
+    </section>
 </Base>

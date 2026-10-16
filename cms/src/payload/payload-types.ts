@@ -563,6 +563,13 @@ export interface Profile {
     [k: string]: unknown;
   } | null;
   aboutHtml?: string | null;
+  /**
+   * Published at pranav-agarwal.com/resume.pdf. Upload a new one to replace it.
+   */
+  resume?: (number | null) | Media;
+  /**
+   * Used only when no PDF is uploaded.
+   */
   resumeUrl?: string | null;
   experience?:
     | {
@@ -623,6 +630,7 @@ export interface ProfileSelect<T extends boolean = true> {
   photo?: T;
   about?: T;
   aboutHtml?: T;
+  resume?: T;
   resumeUrl?: T;
   experience?:
     | T

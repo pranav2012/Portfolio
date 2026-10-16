@@ -1,43 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
-import Section from '../components/Section.astro';
-import ProjectRow from '../components/ProjectRow.astro';
-import ProjectList from '../components/ProjectList.astro';
+import WorkCard from '../components/WorkCard.astro';
 import { getProjects } from '../lib/content';
 
-const projects = await getProjects();
-const featured = projects.filter(p => p.section === 'featured');
-const oss = projects.filter(p => p.section === 'oss');
-const archive = projects.filter(p => p.section === 'archive');
+const projects = getProjects();
+const groups = [
+    { title: 'Works', items: projects.filter(p => p.section === 'featured') },
+    { title: 'Open source & tools', items: projects.filter(p => p.section === 'oss') },
+    { title: 'Earlier work', items: projects.filter(p => p.section === 'archive') }
+].filter(group => group.items.length > 0);
 ---
 
-<Base title="Work" description="Things Pranav Agarwal has built: apps, developer tools and open source.">
-    <PageHeader title="Work" intro="Apps, developer tools and open source I've built, newest first." />
-
+<Base title="Works" description="Things Pranav Agarwal has built: apps, developer tools and open source.">
     {
-        featured.length > 0 && (
-            <Section title="Featured" id="featured" wide>
-                <div class="space-y-16">
-                    {featured.map((project, i) => (
-                        <ProjectRow project={project} flip={i % 2 === 1} />
+        groups.map((group, i) => (
+            <section class="reveal" style={`--delay: ${i * 0.15}s`}>
+                {i > 0 && <hr class="my-6 border-line" />}
+                <h1 class="mb-4 text-xl">{group.title}</h1>
+                <div class="grid gap-x-6 gap-y-10 sm:grid-cols-2">
+                    {group.items.map(project => (
+                        <WorkCard project={project} />
                     ))}
                 </div>
-            </Section>
-        )
-    }
-    {
-        oss.length > 0 && (
-            <Section title="Open source and tools" id="open-source">
-                <ProjectList projects={oss} />
-            </Section>
-        )
-    }
-    {
-        archive.length > 0 && (
-            <Section title="Earlier work" id="earlier">
-                <ProjectList projects={archive} />
-            </Section>
-        )
+            </section>
+        ))
     }
 </Base>

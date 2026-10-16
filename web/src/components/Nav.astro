@@ -7,49 +7,66 @@ interface Props {
 const { name } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const links = [
-    { href: '/work', label: 'Work' },
+    { href: '/work', label: 'Works' },
     { href: '/blog', label: 'Blog' },
     { href: '/videos', label: 'Videos' }
 ];
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
 
-<header
-    class="sticky top-0 z-40 border-b border-transparent bg-wall/80 backdrop-blur-md transition-colors [&.scrolled]:border-line"
-    data-nav
->
-    <nav class="mx-auto flex h-16 max-w-6xl items-center gap-1 px-5 sm:gap-2 sm:px-8" aria-label="Main">
-        <a
-            href="/"
-            class="mr-auto font-display text-[1.05rem] font-semibold tracking-tight whitespace-nowrap"
-            aria-current={path === '/' ? 'page' : undefined}
-        >
-            {name}
+<header class="fixed inset-x-0 top-0 z-40 bg-white/25 backdrop-blur-md dark:bg-[#20202380]">
+    <nav class="mx-auto flex h-14 max-w-3xl items-center gap-1 px-2" aria-label="Main">
+        <a href="/" class="group mr-2 flex items-center gap-3 px-2.5 py-2 font-heading text-lg font-bold">
+            <img
+                src="/images/logo.png"
+                width="20"
+                height="20"
+                alt=""
+                class="rounded-full transition-transform duration-300 group-hover:rotate-[20deg]"
+            />
+            <span class="whitespace-nowrap">{name}</span>
         </a>
-        {
-            links.map(link => {
-                const active = path === link.href || path.startsWith(`${link.href}/`);
-                return (
+        <div class="hidden items-center gap-1 sm:flex">
+            {
+                links.map(link => (
                     <a
                         href={link.href}
-                        aria-current={active ? 'page' : undefined}
-                        class:list={[
-                            'relative rounded-full px-2 py-1.5 text-[0.95rem] sm:px-3 text-muted transition-colors hover:text-ink',
-                            "after:absolute after:inset-x-0 after:-bottom-0.5 after:mx-auto after:size-1 after:rounded-full after:bg-wood after:opacity-0 after:transition-opacity aria-[current=page]:text-ink aria-[current=page]:after:opacity-100"
-                        ]}
+                        aria-current={isActive(link.href) ? 'page' : undefined}
+                        class="rounded-lg p-2 transition-colors hover:underline aria-[current=page]:bg-grass aria-[current=page]:text-[#202023] aria-[current=page]:hover:no-underline"
                     >
                         {link.label}
                     </a>
-                );
-            })
-        }
-        <ThemeToggle />
+                ))
+            }
+        </div>
+        <div class="ml-auto flex items-center gap-2">
+            <ThemeToggle />
+            <details class="relative sm:hidden" data-menu>
+                <summary
+                    class="grid size-10 cursor-pointer list-none place-items-center rounded-md border border-line [&::-webkit-details-marker]:hidden"
+                    aria-label="Menu"
+                >
+                    <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M4 7h16M4 12h16M4 17h16"></path>
+                    </svg>
+                </summary>
+                <div class="absolute right-0 mt-2 w-44 rounded-md border border-line bg-page p-1 shadow-lg">
+                    {
+                        [{ href: '/', label: 'About' }, ...links].map(link => (
+                            <a href={link.href} class="block rounded px-3 py-2 hover:bg-line">
+                                {link.label}
+                            </a>
+                        ))
+                    }
+                </div>
+            </details>
+        </div>
     </nav>
 </header>
 
 <script>
-    // A hairline under the bar once the page scrolls under it.
-    const update = () =>
-        document.querySelector('[data-nav]')?.classList.toggle('scrolled', scrollY > 8);
-    addEventListener('scroll', update, { passive: true });
-    document.addEventListener('astro:page-load', update);
+    // Close the mobile menu after picking a page.
+    document.addEventListener('astro:after-swap', () =>
+        document.querySelector('[data-menu]')?.removeAttribute('open')
+    );
 </script>

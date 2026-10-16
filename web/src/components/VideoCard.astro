@@ -9,23 +9,19 @@ const { video } = Astro.props;
 const thumbnail = youtubeThumbnail(video);
 ---
 
-<article>
-    <div class="relative overflow-hidden rounded-2xl border border-line bg-black" data-video={video.youtubeId}>
-        <button
-            type="button"
-            class="group relative block w-full cursor-pointer"
-            aria-label={`Play ${video.title}`}
-        >
+<article class="text-center">
+    <div class="overflow-hidden rounded-xl bg-black" data-video={video.youtubeId}>
+        <button type="button" class="group relative block w-full cursor-pointer" aria-label={`Play ${video.title}`}>
             <Image
                 src={thumbnail}
                 alt=""
                 inferSize={typeof thumbnail === 'string'}
-                widths={[480, 720]}
-                sizes="(min-width: 768px) 420px, 100vw"
-                class="aspect-video w-full object-cover opacity-90 transition-[transform,opacity] duration-700 ease-out-soft group-hover:scale-[1.03] group-hover:opacity-100"
+                widths={[400, 720]}
+                sizes="(min-width: 640px) 300px, 100vw"
+                class="aspect-video w-full object-cover transition-transform duration-500 ease-out-soft group-hover:scale-105"
             />
             <span
-                class="absolute top-1/2 left-1/2 grid size-14 -translate-1/2 place-items-center rounded-full bg-wall/90 text-ink shadow-lg backdrop-blur transition-transform duration-300 ease-out-soft group-hover:scale-110 group-active:scale-95"
+                class="absolute top-1/2 left-1/2 grid size-12 -translate-1/2 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition-transform duration-300 group-hover:scale-110"
                 aria-hidden="true"
             >
                 <svg viewBox="0 0 24 24" class="ml-0.5 size-6" fill="currentColor">
@@ -34,17 +30,11 @@ const thumbnail = youtubeThumbnail(video);
             </span>
         </button>
     </div>
-    <h3 class="mt-4 font-display text-lg leading-snug font-semibold tracking-tight">
-        <a href={video.url} target="_blank" rel="noopener noreferrer" class="link">
+    <h3 class="mt-3 font-heading text-lg leading-snug">
+        <a href={video.url} target="_blank" rel="noopener noreferrer" class="hover:underline">
             {video.title}
         </a>
     </h3>
-    {video.description && <p class="mt-1 text-[0.95rem] leading-relaxed text-muted">{video.description}</p>}
-    {
-        video.publishedAt && (
-            <time datetime={video.publishedAt} class="mt-1 block text-sm text-muted">
-                {formatDate(video.publishedAt)}
-            </time>
-        )
-    }
+    {video.description && <p class="mt-1 text-sm">{video.description}</p>}
+    {video.publishedAt && <p class="mt-1 text-xs opacity-60">{formatDate(video.publishedAt)}</p>}
 </article>

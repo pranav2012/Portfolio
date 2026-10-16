@@ -6,7 +6,7 @@ import * as THREE from 'three';
 
 export const VOXEL = 0.215;
 // Height the camera orbits around, in voxels.
-export const CENTER_Y = 12;
+export const CENTER_Y = 9;
 
 const C = {
     skin: '#c98d63',

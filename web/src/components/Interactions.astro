@@ -5,15 +5,6 @@
 
     const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Project images: a light that follows the cursor.
-    document.addEventListener('pointermove', event => {
-        const card = (event.target as Element).closest<HTMLElement>('[data-glow]');
-        if (!card) return;
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty('--x', `${event.clientX - rect.left}px`);
-        card.style.setProperty('--y', `${event.clientY - rect.top}px`);
-    });
-
     // Videos play in place: the thumbnail gives way to the player.
     document.addEventListener('click', event => {
         const button = (event.target as Element).closest('[data-video] > button');
@@ -27,26 +18,12 @@
         iframe.className = 'aspect-video w-full';
         button.replaceWith(iframe);
         if (!reduce()) {
-            animate(frame, { transform: ['scale(0.97)', 'scale(1)'] }, { type: spring, bounce: 0.3, duration: 0.5 });
+            animate(
+                frame,
+                { transform: ['scale(0.97)', 'scale(1)'] },
+                { type: spring, bounce: 0.3, duration: 0.5 }
+            );
             animate(iframe, { opacity: [0, 1] }, { duration: 0.4 });
         }
     });
-
-    // The email link leans towards the cursor, and springs back.
-    const magnetic = () => {
-        document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach(el => {
-            if (el.dataset.bound || reduce()) return;
-            el.dataset.bound = '';
-            el.addEventListener('pointermove', event => {
-                const rect = el.getBoundingClientRect();
-                const x = (event.clientX - rect.left - rect.width / 2) * 0.12;
-                const y = (event.clientY - rect.top - rect.height / 2) * 0.25;
-                animate(el, { transform: `translate(${x}px, ${y}px)` }, { type: spring, stiffness: 300, damping: 20 });
-            });
-            el.addEventListener('pointerleave', () =>
-                animate(el, { transform: 'translate(0px, 0px)' }, { type: spring, stiffness: 200, damping: 12 })
-            );
-        });
-    };
-    document.addEventListener('astro:page-load', magnetic);
 </script>

@@ -26,7 +26,7 @@ for attempt in 1 2 3; do
     git_ fetch --quiet --depth 1 origin "$BRANCH"
     git reset --quiet --hard "origin/$BRANCH"
     node "$EXPORT" "$DIR/web/src/content"
-    git add -A web/src/content
+    git add -A web/src/content web/public
     if git diff --cached --quiet; then
         echo "Content unchanged; nothing to publish"
         exit 0
