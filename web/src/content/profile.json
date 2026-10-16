@@ -9,42 +9,60 @@
         "width": 400,
         "height": 400
     },
-    "resumeUrl": "https://drive.google.com/file/d/1mqQDhM_wICCdKI6l2iQjvjnPNqqKqbio/view",
+    "resumeUrl": "/resume.pdf",
     "experience": [
         {
-            "id": "6ad25ebc78e159000126ac83",
+            "id": "6ad29a7df2cb79000104d444",
             "role": "Senior Software Engineer",
             "company": "Headout",
             "companyUrl": "https://www.headout.com",
-            "location": "Bangalore, India · Remote",
-            "period": "Jan 2022 – Present",
-            "description": "Micro-frontends, payments and AI-integrated developer tooling."
+            "location": "Bangalore, India",
+            "period": "May 2025 – Present",
+            "description": "An LLM-powered interface that answers experience questions, an app sync engine for offline ticket data, and an internal app debugging tool."
         },
         {
-            "id": "6ad25ebc78e159000126ac84",
+            "id": "6ad29a7df2cb79000104d445",
+            "role": "Software Engineer",
+            "company": "Headout",
+            "companyUrl": "https://www.headout.com",
+            "location": "Bangalore, India",
+            "period": "May 2023 – Apr 2025",
+            "description": "Web-to-app handoff (+61% app adoption, +33% retention), personalised homepages (+20% conversion, 60% faster), a shared A/B testing framework, and push nudges that took opt-in from 18% to 38%."
+        },
+        {
+            "id": "6ad29a7df2cb79000104d446",
+            "role": "Software Engineering Intern",
+            "company": "Headout",
+            "companyUrl": "https://www.headout.com",
+            "location": "Bangalore, India · Remote",
+            "period": "Jan 2022 – Apr 2023",
+            "description": "Moved the mailing and ticketing systems from JSP to Next.js, and sent payment receipts to customers automatically."
+        },
+        {
+            "id": "6ad29a7df2cb79000104d447",
             "role": "Software Engineering Intern",
             "company": "American Express",
             "companyUrl": "https://www.americanexpress.com",
-            "location": "Gurugram, India",
-            "period": "Jul 2022",
-            "description": null
+            "location": "Gurugram, India · Remote",
+            "period": "Jun 2022 – Aug 2022",
+            "description": "A call automation API for the IVR, so calls arrive with the customer’s context."
         },
         {
-            "id": "6ad25ebc78e159000126ac85",
-            "role": "Freelance Frontend Developer",
+            "id": "6ad29a7df2cb79000104d448",
+            "role": "Founding Engineer",
             "company": "Moyyn",
             "companyUrl": null,
             "location": "Berlin, Germany · Remote",
-            "period": "Nov 2020 – May 2021",
-            "description": null
+            "period": "Nov 2020 – Jan 2022",
+            "description": "A GDPR-compliant candidate sourcing platform and recruitment automation that made sourcing-to-hire 70% more efficient."
         }
     ],
     "education": [
         {
-            "id": "6ad25ebc78e159000126ac86",
-            "degree": "B.Tech, Computer Science & Engineering",
+            "id": "6ad29a7df2cb79000104d449",
+            "degree": "B.Tech, Computer Science & Engineering (Cyber Security & Forensics)",
             "school": "Manav Rachna International Institute of Research and Studies",
-            "year": "2023"
+            "year": "2019 – 2023"
         }
     ],
     "interests": "Frontend performance, AI-native developer tools, design, and travel",
@@ -68,7 +86,7 @@
             "url": "https://www.linkedin.com/in/pranav-agarwal-579363166"
         },
         {
-            "id": "6ad272481da93f0001170dac",
+            "id": "6ad29a5ef2cb79000104d443",
             "platform": "youtube",
             "label": "YouTube",
             "url": "https://www.youtube.com/channel/UCTD34th0vM-09Nt9Jf0jMWg"
@@ -81,5 +99,5 @@
         }
     ],
     "globalType": "profile",
-    "aboutHtml": "<p>I’m a senior frontend engineer at <a href=\"https://www.headout.com\" rel=\"noopener noreferrer\" target=\"_blank\">Headout</a>, where I work on micro-frontends, payments and AI-integrated developer tooling. I care about fast, native-feeling interfaces on the web and on mobile.</p><p>Outside work I build things I want to use myself: <a href=\"https://nomadsafe.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">NomadSafe</a>, a travel companion app, and <a href=\"https://grain.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">grain</a>, a tool for reviewing pull requests as user flows. Most days that means React, Next.js, React Native and TypeScript, with some Rust and Go when the problem asks for it.</p>"
+    "aboutHtml": "<p>I’m a senior frontend engineer at <a href=\"https://www.headout.com\" rel=\"noopener noreferrer\" target=\"_blank\">Headout</a>, working across the React Native app and the Next.js web: an LLM-powered assistant that answers questions about experiences, an offline sync engine for tickets, and the web-to-app journey that grew app adoption by 61%.</p><p>Outside work I build things I want to use myself: <a href=\"https://nomadsafe.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">NomadSafe</a>, a travel companion app, and <a href=\"https://grain.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">grain</a>, a tool for reviewing pull requests as user flows. Most days that means React, Next.js, React Native and TypeScript, with some Rust and Go when the problem asks for it.</p>"
 }

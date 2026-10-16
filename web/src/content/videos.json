@@ -7,6 +7,7 @@
         "description": "Unboxing the kit Google sends new GDSC leads.",
         "publishedAt": "2021-11-22T00:00:00.000Z",
         "order": 10,
+        "channel": null,
         "thumbnail": null
     },
     {
@@ -17,6 +18,7 @@
         "description": "What Google Developer Student Clubs are, the opportunities, and my interview experience.",
         "publishedAt": "2022-03-12T00:00:00.000Z",
         "order": 20,
+        "channel": null,
         "thumbnail": null
     },
     {
@@ -27,6 +29,7 @@
         "description": "The application video that got me selected as a DSC lead.",
         "publishedAt": "2021-04-19T00:00:00.000Z",
         "order": 30,
+        "channel": null,
         "thumbnail": null
     },
     {
@@ -37,6 +40,7 @@
         "description": "A tour of the desk I work from.",
         "publishedAt": "2022-02-10T00:00:00.000Z",
         "order": 40,
+        "channel": null,
         "thumbnail": null
     },
     {
@@ -47,8 +51,8 @@
         "description": "Controlling home appliances by voice with an Echo and an ESP8266 NodeMCU.",
         "publishedAt": "2018-01-11T00:00:00.000Z",
         "order": 110,
-        "thumbnail": null,
-        "channel": "robodue"
+        "channel": "robodue",
+        "thumbnail": null
     },
     {
         "id": 6,
@@ -58,8 +62,8 @@
         "description": "How an RFID reader works and how to use one in Arduino builds.",
         "publishedAt": "2018-04-01T00:00:00.000Z",
         "order": 120,
-        "thumbnail": null,
-        "channel": "robodue"
+        "channel": "robodue",
+        "thumbnail": null
     },
     {
         "id": 7,
@@ -69,8 +73,8 @@
         "description": "Building a water level indicator that sounds an alarm when the tank is full.",
         "publishedAt": "2017-11-26T00:00:00.000Z",
         "order": 130,
-        "thumbnail": null,
-        "channel": "robodue"
+        "channel": "robodue",
+        "thumbnail": null
     },
     {
         "id": 8,
@@ -80,8 +84,8 @@
         "description": "A DIY laser tripwire that sets off an alarm when the beam breaks.",
         "publishedAt": "2017-11-13T00:00:00.000Z",
         "order": 140,
-        "thumbnail": null,
-        "channel": "robodue"
+        "channel": "robodue",
+        "thumbnail": null
     },
     {
         "id": 9,
@@ -91,8 +95,8 @@
         "description": "What an Arduino is, what it can do and how to get started.",
         "publishedAt": "2017-11-09T00:00:00.000Z",
         "order": 150,
-        "thumbnail": null,
-        "channel": "robodue"
+        "channel": "robodue",
+        "thumbnail": null
     },
     {
         "id": 10,
@@ -102,8 +106,8 @@
         "description": "Unboxing the Echo Dot and first impressions of Alexa in India.",
         "publishedAt": "2017-12-13T00:00:00.000Z",
         "order": 160,
-        "thumbnail": null,
-        "channel": "robodue"
+        "channel": "robodue",
+        "thumbnail": null
     },
     {
         "id": 11,
@@ -113,7 +117,7 @@
         "description": "A step-by-step install of Kali Linux in VMware Workstation.",
         "publishedAt": "2019-05-16T00:00:00.000Z",
         "order": 170,
-        "thumbnail": null,
-        "channel": "robodue"
+        "channel": "robodue",
+        "thumbnail": null
     }
 ]
