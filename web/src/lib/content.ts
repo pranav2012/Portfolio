@@ -1,5 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
+import { codeToHtml } from 'shiki';
 import site from '../content/site.json';
 import profile from '../content/profile.json';
 import projects from '../content/projects.json';
@@ -129,6 +130,25 @@ export const localiseImages = async (html: string) => {
             `src="media:${file}"`,
             `src="${optimised.src}" loading="lazy" decoding="async"`
         );
+    }
+    return html;
+};
+
+// Code blocks arrive as <pre data-language="…"><code>escaped</code></pre>;
+// highlight them, with colours for both themes.
+const languageAliases: Record<string, string> = { shell: 'bash', plaintext: 'text' };
+const unescape = (value: string) =>
+    value.replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&quot;', '"').replaceAll('&#39;', "'").replaceAll('&amp;', '&');
+
+export const highlightCode = async (html: string) => {
+    const blocks = [...html.matchAll(/<pre data-language="([^"]*)"><code>([\s\S]*?)<\/code><\/pre>/g)];
+    for (const [block, language, code] of blocks) {
+        const highlighted = await codeToHtml(unescape(code), {
+            lang: languageAliases[language] ?? (language || 'text'),
+            themes: { light: 'github-light', dark: 'github-dark' },
+            defaultColor: false
+        });
+        html = html.replace(block, highlighted);
     }
     return html;
 };

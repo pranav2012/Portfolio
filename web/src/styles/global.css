@@ -251,6 +251,81 @@
     .prose img {
         border-radius: 12px;
     }
+    .prose :not(pre) > code {
+        color: var(--ink);
+    }
+    .prose pre {
+        overflow-x: auto;
+        padding: 1em 1.1em;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--raised);
+        font-size: 0.85rem;
+        line-height: 1.6;
+    }
+    .prose pre code {
+        padding: 0;
+        background: none;
+        font-size: inherit;
+    }
+    .prose .shiki,
+    .prose .shiki span {
+        color: var(--shiki-light);
+    }
+    [data-theme='dark'] .prose .shiki,
+    [data-theme='dark'] .prose .shiki span {
+        color: var(--shiki-dark);
+    }
+    .prose figure {
+        margin-block: 1.75em;
+    }
+    .prose figure img {
+        width: 100%;
+        height: auto;
+        border: 1px solid var(--line);
+    }
+    .prose figcaption {
+        margin-top: 0.6em;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--faint);
+    }
+    .prose table {
+        display: block;
+        overflow-x: auto;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+    .prose th,
+    .prose td {
+        padding: 0.45em 0.9em;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+    }
+    .prose td:first-child,
+    .prose th {
+        white-space: nowrap;
+    }
+    /* Diagrams, code and tables use the full column, wider than the text. */
+    .prose-wide :is(figure, pre, table) {
+        position: relative;
+        left: 50%;
+        width: min(45.5rem, 100vw - 2.5rem);
+        max-width: none;
+        translate: -50%;
+    }
+    .prose th {
+        color: var(--ink);
+        font-weight: 600;
+        border-bottom-color: var(--line-strong);
+    }
+    .prose strong {
+        color: var(--ink);
+    }
+    .prose hr {
+        border-color: var(--line);
+    }
 
     /* Sections fade up in turn as a page opens. */
     .reveal {

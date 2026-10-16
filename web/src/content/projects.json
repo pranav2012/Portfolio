@@ -87,24 +87,6 @@
         ]
     },
     {
-        "id": 4,
-        "title": "Skia GPU memory investigation",
-        "slug": "skia-gpu-memory-investigation",
-        "section": "oss",
-        "showOnHome": true,
-        "order": 40,
-        "summary": "A minimal repro and measurements of GPU memory growth in react-native-skia v3 on Android, with raw data across devices and upstream patch drafts.",
-        "thumbnail": null,
-        "url": "https://github.com/pranav2012/skia-memory-repro",
-        "links": [],
-        "year": "2026",
-        "stack": [
-            "React Native",
-            "Skia",
-            "Android"
-        ]
-    },
-    {
         "id": 5,
         "title": "claude-statusline-pro",
         "slug": "claude-statusline-pro",
@@ -149,28 +131,6 @@
             "TypeScript",
             "Node",
             "npm"
-        ]
-    },
-    {
-        "id": 8,
-        "title": "Open KYC",
-        "slug": "open-kyc",
-        "section": "archive",
-        "showOnHome": null,
-        "order": 80,
-        "summary": "A blockchain dApp that removes repeated e-KYC across banks. Won the American Express CodeStreet ’21 hackathon.",
-        "thumbnail": {
-            "file": "open-kyc.jpg",
-            "alt": "Open KYC",
-            "width": 1920,
-            "height": 1080
-        },
-        "url": "https://github.com/pranav2012/AmexHack",
-        "links": [],
-        "year": "2021",
-        "stack": [
-            "Blockchain",
-            "Open Banking"
         ]
     },
     {

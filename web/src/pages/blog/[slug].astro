@@ -1,14 +1,20 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import { formatDate, getPosts, image, localiseImages, type Post } from '../../lib/content';
+import { formatDate, getPosts, highlightCode, image, localiseImages, type Post } from '../../lib/content';
 
 export function getStaticPaths() {
     return getPosts().map(post => ({ params: { slug: post.slug }, props: { post } }));
 }
 
 const { post } = Astro.props as { post: Post };
-const html = post.contentHtml ? await localiseImages(post.contentHtml) : '';
+// Diagrams open full size when clicked.
+const html = post.contentHtml
+    ? (await highlightCode(await localiseImages(post.contentHtml))).replace(
+          /<figure><img src="([^"]+)"([^>]*)\/>/g,
+          '<figure><a href="$1" target="_blank" rel="noopener"><img src="$1"$2/></a>'
+      )
+    : '';
 ---
 
 <Base title={post.title} description={post.excerpt} type="article">
@@ -33,6 +39,6 @@ const html = post.contentHtml ? await localiseImages(post.contentHtml) : '';
                 />
             )
         }
-        <div class="prose mt-6" set:html={html} />
+        <div class="prose prose-wide mt-6" set:html={html} />
     </article>
 </Base>
