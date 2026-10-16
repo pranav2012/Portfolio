@@ -31,7 +31,7 @@ export const Profile: GlobalConfig = {
             name: 'resume',
             type: 'upload',
             relationTo: 'media',
-            label: 'Résumé (PDF)',
+            label: 'Resume (PDF)',
             filterOptions: { mimeType: { equals: 'application/pdf' } },
             admin: {
                 description:
@@ -41,7 +41,7 @@ export const Profile: GlobalConfig = {
         {
             name: 'resumeUrl',
             type: 'text',
-            label: 'Résumé link',
+            label: 'Resume link',
             admin: { description: 'Used only when no PDF is uploaded.' }
         },
         {

@@ -15,7 +15,7 @@ const CMS_URL = (process.env.CMS_URL || 'http://localhost:3200').replace(
 );
 const out = path.resolve(process.argv[2] || '../web/src/content');
 const mediaDir = path.join(out, 'media');
-// The résumé is served at a fixed address: /resume.pdf.
+// The resume is served at a fixed address: /resume.pdf.
 const resumePath = path.resolve(out, '../../public/resume.pdf');
 
 const get = async apiPath => {
@@ -86,7 +86,7 @@ const content = {
 };
 delete content.profile.about;
 
-// An uploaded résumé replaces the résumé link.
+// An uploaded resume replaces the resume link.
 const resume = content.profile.resume;
 delete content.profile.resume;
 if (resume?.file) {
@@ -95,7 +95,7 @@ if (resume?.file) {
         `${CMS_URL}/api/media/file/${encodeURIComponent(resume.file)}`
     );
     if (!res.ok)
-        throw new Error(`Downloading the résumé failed (${res.status})`);
+        throw new Error(`Downloading the resume failed (${res.status})`);
     await mkdir(path.dirname(resumePath), { recursive: true });
     await writeFile(resumePath, Buffer.from(await res.arrayBuffer()));
     content.profile.resumeUrl = '/resume.pdf';

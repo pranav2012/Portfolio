@@ -15,7 +15,7 @@ export const Media: CollectionConfig = {
     },
     upload: {
         staticDir: path.resolve(process.env.MEDIA_DIR || 'data/media'),
-        // Images, plus PDFs for the résumé.
+        // Images, plus PDFs for the resume.
         mimeTypes: ['image/*', 'application/pdf'],
         imageSizes: [{ name: 'card', width: 800 }],
         adminThumbnail: 'card'
