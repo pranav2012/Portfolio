@@ -262,6 +262,10 @@ export interface Video {
    */
   order?: number | null;
   /**
+   * Leave empty for the main channel.
+   */
+  channel?: 'robodue' | null;
+  /**
    * Optional. YouTube's thumbnail is used otherwise.
    */
   thumbnail?: (number | null) | Media;
@@ -433,6 +437,7 @@ export interface VideosSelect<T extends boolean = true> {
   description?: T;
   publishedAt?: T;
   order?: T;
+  channel?: T;
   thumbnail?: T;
   updatedAt?: T;
   createdAt?: T;

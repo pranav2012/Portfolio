@@ -67,6 +67,15 @@ export const Videos: CollectionConfig = {
             }
         },
         {
+            name: 'channel',
+            type: 'select',
+            options: [{ label: 'Robodue', value: 'robodue' }],
+            admin: {
+                position: 'sidebar',
+                description: 'Leave empty for the main channel.'
+            }
+        },
+        {
             name: 'thumbnail',
             type: 'upload',
             relationTo: 'media',
