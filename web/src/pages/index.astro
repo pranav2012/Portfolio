@@ -4,15 +4,12 @@ import Icon from '../components/Icon.astro';
 import WorkCard from '../components/WorkCard.astro';
 import DeskScene from '../components/DeskScene.astro';
 import PerfBadge from '../components/PerfBadge.astro';
-import { formatDate, getPosts, getProfile, getProjects } from '../lib/content';
+import PostRow from '../components/PostRow.astro';
+import { getPosts, getProfile, getProjects } from '../lib/content';
 
 const profile = getProfile();
 const projects = getProjects().filter(p => p.showOnHome);
 const posts = getPosts().slice(0, 3);
-
-// Rough reading time from the post's HTML, at about 225 words a minute.
-const readingTime = (html?: string | null) =>
-    html ? Math.max(1, Math.round(html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length / 225)) : undefined;
 const email = profile.socials?.find(s => s.platform === 'email')?.url;
 const socials = profile.socials?.filter(s => s.platform !== 'email') ?? [];
 
@@ -160,29 +157,9 @@ const years = (period?: string | null) => {
                     </a>
                 </div>
                 <ol class="card divide-y divide-line overflow-hidden">
-                    {posts.map(post => {
-                        const minutes = readingTime(post.contentHtml);
-                        return (
-                            <li class="group relative grid gap-x-6 gap-y-1 px-5 py-4 transition-colors hover:bg-raised sm:grid-cols-[110px_1fr_auto] sm:items-baseline">
-                                <time datetime={post.publishedAt} class="font-mono text-xs text-faint">
-                                    {formatDate(post.publishedAt)}
-                                </time>
-                                <div class="min-w-0">
-                                    <h3 class="text-[15px] font-medium">
-                                        <a href={`/blog/${post.slug}`} class="after:absolute after:inset-0 group-hover:text-accent">
-                                            {post.title}
-                                        </a>
-                                    </h3>
-                                    {post.excerpt && <p class="mt-1 line-clamp-2 text-[13.5px] leading-relaxed text-dim">{post.excerpt}</p>}
-                                </div>
-                                <span class="flex items-center gap-3 font-mono text-xs text-faint">
-                                    {post.tags?.slice(0, 2).map(tag => <span class="chip hidden md:inline-flex">{tag}</span>)}
-                                    {minutes && <span>{minutes} min</span>}
-                                    <span class="transition-transform group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true">→</span>
-                                </span>
-                            </li>
-                        );
-                    })}
+                    {posts.map(post => (
+                        <PostRow post={post} />
+                    ))}
                 </ol>
             </section>
         )

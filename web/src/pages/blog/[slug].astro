@@ -1,44 +1,212 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import { formatDate, getPosts, highlightCode, image, localiseImages, type Post } from '../../lib/content';
+import Icon from '../../components/Icon.astro';
+import {
+    anchorHeadings,
+    formatDate,
+    getPosts,
+    highlightCode,
+    image,
+    localiseImages,
+    readingTime,
+    type Post
+} from '../../lib/content';
 
 export function getStaticPaths() {
     return getPosts().map(post => ({ params: { slug: post.slug }, props: { post } }));
 }
 
 const { post } = Astro.props as { post: Post };
-// Diagrams open full size when clicked.
-const html = post.contentHtml
-    ? (await highlightCode(await localiseImages(post.contentHtml))).replace(
-          /<figure><img src="([^"]+)"([^>]*)\/>/g,
-          '<figure><a href="$1" target="_blank" rel="noopener"><img src="$1"$2/></a>'
-      )
-    : '';
+// Diagrams open full size when clicked; tables scroll inside a frame.
+const { html, headings } = anchorHeadings(
+    post.contentHtml
+        ? (await highlightCode(await localiseImages(post.contentHtml)))
+              .replace(
+                  /<figure><img src="([^"]+)"([^>]*)\/>/g,
+                  '<figure><a href="$1" target="_blank" rel="noopener"><img src="$1"$2/></a>'
+              )
+              .replaceAll('<table>', '<div class="table-wrap"><table>')
+              .replaceAll('</table>', '</table></div>')
+        : ''
+);
+const minutes = readingTime(post.contentHtml);
+
+const posts = getPosts();
+const index = posts.findIndex(p => p.slug === post.slug);
+const adjacent = [
+    { post: posts[index + 1], label: 'Previous' },
+    { post: posts[index - 1], label: 'Next' }
+].filter(item => item.post);
+const toc = headings.length >= 4 ? headings : [];
 ---
 
-<Base title={post.title} description={post.excerpt} type="article">
-    <article class="reveal">
-        <p class="text-sm">
-            <a href="/blog" class="link">Blog</a>
-            <span class="opacity-50"> / </span>
-        </p>
-        <h1 class="mt-2 text-3xl leading-tight">{post.title}</h1>
-        <p class="mt-2 flex flex-wrap gap-2 text-xs opacity-70">
-            <span>{formatDate(post.publishedAt)}</span>
-            {post.tags?.map(tag => <span class="rounded bg-line px-1.5 py-0.5">{tag}</span>)}
-        </p>
+<Base title={post.title} description={post.excerpt} type="article" wide>
+    <div class="xl:grid xl:grid-cols-[minmax(0,42rem)_14rem] xl:justify-between xl:gap-14">
+        <article class="reveal mx-auto max-w-[42rem] pt-8 md:pt-14 xl:mx-0 xl:w-full">
+            <a href="/blog" class="group inline-flex items-center gap-1.5 text-sm text-dim hover:text-ink">
+                <Icon name="arrow-left-line" class="size-4 transition-transform group-hover:-translate-x-0.5" />
+                All posts
+            </a>
+
+            <header class="mt-8">
+                <h1 class="text-[2rem] leading-[1.12] tracking-[-0.035em] text-balance sm:text-[2.75rem]">{post.title}</h1>
+                {post.excerpt && <p class="mt-5 text-lg leading-relaxed text-pretty text-dim">{post.excerpt}</p>}
+                <div class="mt-7 flex flex-wrap items-center gap-x-3 gap-y-3 border-y border-line py-3.5 font-mono text-xs text-faint">
+                    <time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+                    {
+                        minutes && (
+                            <>
+                                <span aria-hidden="true">·</span>
+                                <span>{minutes} min read</span>
+                            </>
+                        )
+                    }
+                    {
+                        post.tags && post.tags.length > 0 && (
+                            <span class="flex flex-wrap gap-1.5 sm:ml-auto">
+                                {post.tags.map(tag => <span class="chip">{tag}</span>)}
+                            </span>
+                        )
+                    }
+                </div>
+            </header>
+
+            {
+                post.cover && (
+                    <Image
+                        src={image(post.cover)}
+                        alt={post.cover.alt}
+                        widths={[640, 1200]}
+                        sizes="(min-width: 640px) 680px, 100vw"
+                        class="mt-8 w-full rounded-xl border border-line"
+                    />
+                )
+            }
+
+            {
+                toc.length > 0 && (
+                    <details class="card group mt-8 xl:hidden">
+                        <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-medium [&::-webkit-details-marker]:hidden">
+                            <span class="flex items-center gap-2">
+                                <Icon name="list-unordered" class="size-4 text-faint" />
+                                On this page
+                            </span>
+                            <Icon name="arrow-down-s-line" class="size-4 text-faint transition-transform group-open:rotate-180" />
+                        </summary>
+                        <ol class="space-y-2 border-t border-line px-4 py-3 text-sm">
+                            {toc.map(h => (
+                                <li class:list={[h.level === 3 && 'pl-4']}>
+                                    <a href={`#${h.id}`} class="text-dim hover:text-ink">
+                                        {h.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </details>
+                )
+            }
+
+            <div class="prose prose-post mt-10" set:html={html} />
+
+            <footer class="mt-16 border-t border-line pt-8">
+                {
+                    adjacent.length > 0 && (
+                        <nav class="grid gap-3 sm:grid-cols-2" aria-label="More posts">
+                            {adjacent.map(({ post: other, label }) => (
+                                <a
+                                    href={`/blog/${other.slug}`}
+                                    class:list={[
+                                        'card group flex flex-col gap-1.5 p-4 transition-colors hover:border-line-strong hover:bg-raised',
+                                        label === 'Next' && 'sm:col-start-2 sm:text-right'
+                                    ]}
+                                >
+                                    <span class="font-mono text-xs text-faint">
+                                        {label === 'Previous' ? '← Previous' : 'Next →'}
+                                    </span>
+                                    <span class="text-[15px] leading-snug font-medium text-pretty group-hover:text-accent">{other.title}</span>
+                                </a>
+                            ))}
+                        </nav>
+                    )
+                }
+                <p class="mt-8 flex items-center justify-between text-sm text-dim">
+                    <a href="/blog" class="group inline-flex items-center gap-1.5 hover:text-ink">
+                        <Icon name="arrow-left-line" class="size-4 transition-transform group-hover:-translate-x-0.5" />
+                        All posts
+                    </a>
+                    <a href="/rss.xml" class="inline-flex items-center gap-1.5 hover:text-ink">
+                        <Icon name="rss-line" class="size-4" />
+                        Subscribe via RSS
+                    </a>
+                </p>
+            </footer>
+        </article>
+
         {
-            post.cover && (
-                <Image
-                    src={image(post.cover)}
-                    alt={post.cover.alt}
-                    widths={[640, 1200]}
-                    sizes="(min-width: 640px) 600px, 100vw"
-                    class="mt-6 w-full rounded-xl"
-                />
+            toc.length > 0 && (
+                <aside class="hidden xl:block">
+                    <nav class="sticky top-24 pt-14" aria-label="On this page">
+                        <p class="font-mono text-xs font-medium tracking-[0.06em] text-faint uppercase">On this page</p>
+                        <ol class="mt-4 border-l border-line text-[13px] leading-snug">
+                            {toc.map(h => (
+                                <li>
+                                    <a
+                                        href={`#${h.id}`}
+                                        data-toc-link
+                                        class:list={[
+                                            '-ml-px block border-l border-transparent py-1.5 text-faint transition-colors hover:text-ink data-[active]:border-accent data-[active]:text-ink',
+                                            h.level === 3 ? 'pl-7' : 'pl-4'
+                                        ]}
+                                    >
+                                        {h.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                        <button type="button" data-to-top class="mt-6 inline-flex items-center gap-1.5 text-[13px] text-faint hover:text-ink">
+                            <Icon name="arrow-up-line" class="size-3.5" />
+                            Back to top
+                        </button>
+                    </nav>
+                </aside>
             )
         }
-        <div class="prose prose-wide mt-6" set:html={html} />
-    </article>
+    </div>
 </Base>
+
+<script>
+    // Copy buttons on code blocks; delegated, so it survives page swaps.
+    document.addEventListener('click', async event => {
+        const target = event.target as Element;
+        if (target.closest('[data-to-top]')) scrollTo({ top: 0, behavior: 'smooth' });
+        const button = target.closest<HTMLButtonElement>('[data-copy]');
+        if (!button) return;
+        const code = button.closest('.code-block')?.querySelector('pre')?.textContent ?? '';
+        await navigator.clipboard.writeText(code);
+        button.textContent = 'Copied';
+        setTimeout(() => (button.textContent = 'Copy'), 1500);
+    });
+
+    // Highlights the section being read in the table of contents.
+    let observer: IntersectionObserver | undefined;
+    document.addEventListener('astro:page-load', () => {
+        observer?.disconnect();
+        const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+        if (!links.length) return;
+        const headings = links.map(link => document.getElementById(link.hash.slice(1))).filter(h => h !== null);
+        const visible = new Set<Element>();
+        const update = () => {
+            const current = headings.find(h => visible.has(h)) ?? headings.findLast(h => h.getBoundingClientRect().top < 120);
+            links.forEach(link => link.toggleAttribute('data-active', link.hash === `#${current?.id}`));
+        };
+        observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(e => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+                update();
+            },
+            { rootMargin: '-80px 0px -60% 0px' }
+        );
+        headings.forEach(h => observer!.observe(h));
+    });
+</script>

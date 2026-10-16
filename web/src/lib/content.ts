@@ -140,18 +140,49 @@ const languageAliases: Record<string, string> = { shell: 'bash', plaintext: 'tex
 const unescape = (value: string) =>
     value.replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&quot;', '"').replaceAll('&#39;', "'").replaceAll('&amp;', '&');
 
+// Each block gets a header with its language and a copy button.
 export const highlightCode = async (html: string) => {
     const blocks = [...html.matchAll(/<pre data-language="([^"]*)"><code>([\s\S]*?)<\/code><\/pre>/g)];
     for (const [block, language, code] of blocks) {
+        const lang = languageAliases[language] ?? (language || 'text');
         const highlighted = await codeToHtml(unescape(code), {
-            lang: languageAliases[language] ?? (language || 'text'),
+            lang,
             themes: { light: 'github-light', dark: 'github-dark' },
             defaultColor: false
         });
-        html = html.replace(block, highlighted);
+        html = html.replace(
+            block,
+            `<div class="code-block"><div class="code-head"><span>${lang === 'text' ? '' : lang}</span>` +
+                `<button type="button" data-copy aria-label="Copy code">Copy</button></div>${highlighted}</div>`
+        );
     }
     return html;
 };
+
+export type Heading = { id: string; text: string; level: 2 | 3 };
+
+// Gives h2/h3 headings ids and self-links, and lists them for the table
+// of contents.
+export const anchorHeadings = (html: string) => {
+    const headings: Heading[] = [];
+    const seen = new Map<string, number>();
+    const anchored = html.replace(/<h([23])>([\s\S]*?)<\/h\1>/g, (_, level: string, inner: string) => {
+        const text = unescape(inner.replace(/<[^>]+>/g, ''));
+        let id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const count = seen.get(id) ?? 0;
+        seen.set(id, count + 1);
+        if (count) id += `-${count}`;
+        headings.push({ id, text, level: Number(level) as 2 | 3 });
+        return `<h${level} id="${id}"><a href="#${id}">${inner}</a></h${level}>`;
+    });
+    return { html: anchored, headings };
+};
+
+// Rough reading time from a post's HTML, at about 225 words a minute.
+export const readingTime = (html?: string | null) =>
+    html
+        ? Math.max(1, Math.round(html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length / 225))
+        : undefined;
 
 export const formatDate = (value?: string | null) =>
     value
@@ -162,6 +193,9 @@ export const formatDate = (value?: string | null) =>
               timeZone: 'UTC'
           })
         : '';
+
+export const formatDay = (value: string) =>
+    new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 
 export const emailOf = (profile: Profile) =>
     profile.socials
