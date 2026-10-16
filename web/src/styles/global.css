@@ -301,7 +301,19 @@
         padding: 0.45em 0.9em;
         border-bottom: 1px solid var(--line);
         text-align: left;
+        vertical-align: top;
+    }
+    .prose td:first-child,
+    .prose th {
         white-space: nowrap;
+    }
+    /* Diagrams, code and tables use the full column, wider than the text. */
+    .prose-wide :is(figure, pre, table) {
+        position: relative;
+        left: 50%;
+        width: min(45.5rem, 100vw - 2.5rem);
+        max-width: none;
+        translate: -50%;
     }
     .prose th {
         color: var(--ink);
