@@ -10,7 +10,10 @@
         "directory": "./dist",
         "not_found_handling": "404-page",
         "html_handling": "auto-trailing-slash"
-    }
+    },
+    // Lets Workers Builds publish a preview for each pull request
+    // (`wrangler preview`). Empty: previews reuse the settings above.
+    "previews": {}
     // Custom domains (pranav-agarwal.com, www) are attached in the Cloudflare
     // dashboard, so deploys never touch DNS.
 }
