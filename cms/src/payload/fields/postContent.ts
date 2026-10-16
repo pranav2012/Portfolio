@@ -10,6 +10,7 @@ import {
 // Languages offered for code blocks. The site highlights them at build time.
 export const codeLanguages = {
     typescript: 'TypeScript',
+    ts: 'TypeScript (ts)',
     tsx: 'TSX',
     javascript: 'JavaScript',
     kotlin: 'Kotlin',
@@ -19,12 +20,16 @@ export const codeLanguages = {
     rust: 'Rust',
     go: 'Go',
     shell: 'Shell',
+    bash: 'Bash',
+    sh: 'sh',
+    python: 'Python',
     yaml: 'YAML',
     json: 'JSON',
     dockerfile: 'Dockerfile',
     ini: 'INI',
     diff: 'Diff',
-    plaintext: 'Plain text'
+    plaintext: 'Plain text',
+    text: 'Text'
 };
 
 // A post's body: the default editor plus code blocks, tables, and a caption
