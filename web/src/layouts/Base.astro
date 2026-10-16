@@ -4,16 +4,21 @@ import { ClientRouter } from 'astro:transitions';
 import { getImage } from 'astro:assets';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import Interactions from '../components/Interactions.astro';
+import DeskScene from '../components/DeskScene.astro';
+import CommandMenu from '../components/CommandMenu.astro';
+import InspectMode from '../components/InspectMode.astro';
 import { getProfile, getSite, image as imageOf } from '../lib/content';
+import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
 
 interface Props {
     title?: string;
     description?: string | null;
     image?: string;
     type?: 'website' | 'article';
+    // The home page lays out its own wide hero, with the desk inside it.
+    wide?: boolean;
 }
-const { title, description, image, type = 'website' } = Astro.props;
+const { title, description, image, type = 'website', wide = false } = Astro.props;
 const [site, profile] = await Promise.all([getSite(), getProfile()]);
 
 const pageTitle = title ? `${title} | ${site.title}` : site.title;
@@ -35,6 +40,7 @@ const ogUrl = new URL(ogImage, Astro.site).href;
         {summary && <meta name="description" content={summary} />}
         <meta name="author" content={profile.name} />
         <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+        <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
         <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
         <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
@@ -44,8 +50,8 @@ const ogUrl = new URL(ogImage, Astro.site).href;
         <meta property="og:image" content={ogUrl} />
         <meta name="twitter:card" content="summary_large_image" />
         {site.twitterHandle && <meta name="twitter:creator" content={site.twitterHandle} />}
-        <meta name="theme-color" content="#eef1f4" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#121726" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
 
         <script is:inline>
             // Set the theme before the first paint, and again after each
@@ -62,37 +68,59 @@ const ogUrl = new URL(ogImage, Astro.site).href;
 
         {
             site.analyticsId && (
-                <>
-                    <script
-                        is:inline
-                        async
-                        src={`https://www.googletagmanager.com/gtag/js?id=${site.analyticsId}`}
-                    />
-                    <script is:inline define:vars={{ id: site.analyticsId }}>
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag() {
-                            dataLayer.push(arguments);
-                        }
-                        gtag('js', new Date());
-                        gtag('config', id);
-                    </script>
-                </>
+                <script is:inline define:vars={{ id: site.analyticsId }}>
+                    // Analytics loads once the page is idle, so it never
+                    // competes with the page itself.
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() {
+                        dataLayer.push(arguments);
+                    }
+                    gtag('js', new Date());
+                    gtag('config', id);
+                    const loadAnalytics = () => {
+                        const script = document.createElement('script');
+                        script.async = true;
+                        script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+                        document.head.append(script);
+                    };
+                    addEventListener(
+                        'load',
+                        () => ('requestIdleCallback' in window ? requestIdleCallback(loadAnalytics, { timeout: 4000 }) : setTimeout(loadAnalytics, 2000)),
+                        { once: true }
+                    );
+                </script>
             )
         }
     </head>
-    <body class="flex min-h-dvh flex-col">
+    <body class="relative isolate min-h-screen">
         <a
             href="#main"
-            class="sr-only rounded-full bg-ink px-4 py-2 text-wall focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+            class="sr-only rounded-md bg-ink px-4 py-2 text-page focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
         >
             Skip to content
         </a>
+        <div aria-hidden="true" class="grid-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[720px] opacity-70"></div>
         <Nav name={profile.name} />
-        <main id="main" class="flex-1">
-            <slot />
-        </main>
-        <Footer name={profile.name} />
-        <Interactions />
+        {
+            wide ? (
+                <div class="mx-auto max-w-6xl px-5 pt-16 sm:px-8">
+                    <main id="main">
+                        <slot />
+                    </main>
+                    <Footer name={profile.name} />
+                </div>
+            ) : (
+                <div class="mx-auto max-w-3xl px-5 pt-16">
+                    <DeskScene />
+                    <main id="main" class="mx-auto max-w-[60ch]">
+                        <slot />
+                    </main>
+                    <Footer name={profile.name} />
+                </div>
+            )
+        }
+        <CommandMenu />
+        <InspectMode />
     </body>
 </html>
 

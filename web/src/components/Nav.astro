@@ -11,45 +11,88 @@ const links = [
     { href: '/blog', label: 'Blog' },
     { href: '/videos', label: 'Videos' }
 ];
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
 
-<header
-    class="sticky top-0 z-40 border-b border-transparent bg-wall/80 backdrop-blur-md transition-colors [&.scrolled]:border-line"
-    data-nav
->
-    <nav class="mx-auto flex h-16 max-w-6xl items-center gap-1 px-5 sm:gap-2 sm:px-8" aria-label="Main">
-        <a
-            href="/"
-            class="mr-auto font-display text-[1.05rem] font-semibold tracking-tight whitespace-nowrap"
-            aria-current={path === '/' ? 'page' : undefined}
-        >
-            {name}
+<header class="fixed inset-x-0 top-0 z-40 border-b border-line bg-page/70 backdrop-blur-xl" data-component="Nav">
+    <nav class="mx-auto flex h-16 max-w-6xl items-center gap-3 px-5 sm:px-8" aria-label="Main">
+        <a href="/" class="group mr-auto flex items-center gap-2.5 text-[15px] font-semibold tracking-tight">
+            <img
+                src="/images/logo.png"
+                width="26"
+                height="26"
+                alt=""
+                class="rounded-lg transition-transform duration-300 group-hover:rotate-[20deg]"
+            />
+            <span class="whitespace-nowrap">{name}</span>
         </a>
-        {
-            links.map(link => {
-                const active = path === link.href || path.startsWith(`${link.href}/`);
-                return (
+        <div class="hidden items-center gap-1 rounded-full border border-line bg-soft p-1 sm:flex">
+            {
+                links.map(link => (
                     <a
                         href={link.href}
-                        aria-current={active ? 'page' : undefined}
-                        class:list={[
-                            'relative rounded-full px-2 py-1.5 text-[0.95rem] sm:px-3 text-muted transition-colors hover:text-ink',
-                            "after:absolute after:inset-x-0 after:-bottom-0.5 after:mx-auto after:size-1 after:rounded-full after:bg-wood after:opacity-0 after:transition-opacity aria-[current=page]:text-ink aria-[current=page]:after:opacity-100"
-                        ]}
+                        aria-current={isActive(link.href) ? 'page' : undefined}
+                        class="rounded-full px-3.5 py-1.5 text-[13.5px] text-dim transition-colors hover:text-ink aria-[current=page]:bg-raised aria-[current=page]:text-ink"
                     >
                         {link.label}
                     </a>
-                );
-            })
-        }
-        <ThemeToggle />
+                ))
+            }
+        </div>
+        <div class="flex items-center gap-2">
+            <button
+                type="button"
+                data-command-open
+                class="hidden h-9 items-center gap-2 rounded-[10px] border border-line px-2.5 text-[13px] text-faint transition-colors hover:border-line-strong hover:text-ink md:flex"
+                aria-label="Open command menu"
+            >
+                <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-3.5-3.5"></path>
+                </svg>
+                Search
+                <span class="kbd">⌘K</span>
+            </button>
+            <button
+                type="button"
+                data-xray-toggle
+                class="icon-btn aria-pressed:border-accent aria-pressed:text-accent"
+                aria-pressed="false"
+                aria-label="Inspect mode (I)"
+                title="Inspect mode (I)"
+            >
+                <svg viewBox="0 0 24 24" class="size-[18px]" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"></path>
+                    <path d="m10 10 7 2.5-3 1.5-1.5 3z"></path>
+                </svg>
+            </button>
+            <ThemeToggle />
+            <details class="relative sm:hidden" data-menu>
+                <summary class="icon-btn cursor-pointer list-none [&::-webkit-details-marker]:hidden" aria-label="Menu">
+                    <svg viewBox="0 0 24 24" class="size-[18px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M4 7h16M4 12h16M4 17h16"></path>
+                    </svg>
+                </summary>
+                <div class="card absolute right-0 mt-2 w-48 p-1.5 shadow-xl">
+                    {
+                        [{ href: '/', label: 'Home' }, ...links].map(link => (
+                            <a href={link.href} class="block rounded-lg px-3 py-2 text-sm hover:bg-raised">
+                                {link.label}
+                            </a>
+                        ))
+                    }
+                    <button type="button" data-command-open class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-raised">
+                        Search…
+                    </button>
+                </div>
+            </details>
+        </div>
     </nav>
 </header>
 
 <script>
-    // A hairline under the bar once the page scrolls under it.
-    const update = () =>
-        document.querySelector('[data-nav]')?.classList.toggle('scrolled', scrollY > 8);
-    addEventListener('scroll', update, { passive: true });
-    document.addEventListener('astro:page-load', update);
+    // Close the mobile menu after picking a page.
+    document.addEventListener('astro:after-swap', () =>
+        document.querySelector('[data-menu]')?.removeAttribute('open')
+    );
 </script>

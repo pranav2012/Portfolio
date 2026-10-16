@@ -1,185 +1,214 @@
 ---
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import WorkCard from '../components/WorkCard.astro';
 import DeskScene from '../components/DeskScene.astro';
-import Section from '../components/Section.astro';
-import Timeline from '../components/Timeline.astro';
-import ProjectRow from '../components/ProjectRow.astro';
-import PostIndex from '../components/PostIndex.astro';
-import VideoCard from '../components/VideoCard.astro';
-import Connect from '../components/Connect.astro';
-import { emailOf, getPosts, getProfile, getProjects, getVideos } from '../lib/content';
+import PerfBadge from '../components/PerfBadge.astro';
+import { formatDate, getPosts, getProfile, getProjects } from '../lib/content';
 
-const [profile, projects, posts, videos] = await Promise.all([
-    getProfile(),
-    getProjects(),
-    getPosts(),
-    getVideos()
-]);
-const selected = projects.filter(p => p.showOnHome);
-const current = profile.experience?.[0];
-const [first, ...rest] = profile.name.split(' ');
-const email = emailOf(profile);
+const profile = getProfile();
+const projects = getProjects().filter(p => p.showOnHome);
+const posts = getPosts().slice(0, 3);
+
+// Rough reading time from the post's HTML, at about 225 words a minute.
+const readingTime = (html?: string | null) =>
+    html ? Math.max(1, Math.round(html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length / 225)) : undefined;
+const email = profile.socials?.find(s => s.platform === 'email')?.url;
+const socials = profile.socials?.filter(s => s.platform !== 'email') ?? [];
+
+const icons: Record<string, string> = {
+    github: 'github-fill',
+    linkedin: 'linkedin-box-fill',
+    x: 'twitter-x-fill',
+    email: 'mail-fill',
+    medium: 'medium-fill',
+    youtube: 'youtube-fill',
+    stackoverflow: 'stack-overflow-fill',
+    website: 'global-line'
+};
+
+
+// Short year ranges for the timeline, e.g. "Jan 2022 – Present" → "2022 — Now".
+const years = (period?: string | null) => {
+    if (!period) return '';
+    const [from, to] = period.split(/\s*[–-]\s*/).map(part => part.match(/\d{4}/)?.[0] ?? (/present/i.test(part) ? 'Now' : part));
+    return to && to !== from ? `${from} — ${to}` : from;
+};
 ---
 
-<Base>
-    <section class="mx-auto grid max-w-6xl items-center gap-8 px-5 pt-10 sm:px-8 lg:grid-cols-[1fr_minmax(0,34rem)] lg:pt-16">
-        <div class="min-w-0 lg:pb-16">
-            <h1
-                class="font-display text-[clamp(3.6rem,11vw,7.5rem)] leading-[0.88] font-bold tracking-[-0.035em] [font-stretch:80%]"
-            >
-                <span class="rise block overflow-hidden pb-[0.08em]"><span style="--d: 0ms">{first}</span></span>
-                <span class="rise block overflow-hidden pb-[0.08em]"><span style="--d: 90ms">{rest.join(' ')}</span></span>
-            </h1>
-            <p class="fade mt-6 text-lg font-medium" style="--d: 260ms">
-                {profile.role}{
-                    current && (
-                        <>
-                            {' at '}
-                            {current.companyUrl ? (
-                                <a href={current.companyUrl} target="_blank" rel="noopener noreferrer" class="link-quiet">
-                                    {current.company}
-                                </a>
-                            ) : (
-                                current.company
-                            )}
-                        </>
-                    )
-                }
-            </p>
+<Base wide>
+    <section class="grid items-center gap-10 pt-6 pb-4 md:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12" data-component="Hero">
+        <div class="reveal flex flex-col items-start gap-6">
+            <div>
+                <h1 class="bg-gradient-to-r from-ink to-dim bg-clip-text text-5xl leading-[1.02] tracking-[-0.045em] text-transparent sm:text-6xl lg:text-[68px]">
+                    {profile.name}
+                </h1>
+                <p class="mt-4 text-lg tracking-tight text-dim sm:text-xl">
+                    <span class="font-medium text-ink">Frontend engineer</span> crafting fast, native-feeling interfaces for web, mobile &amp; AI tooling.
+                </p>
+            </div>
+            {profile.aboutHtml && <div class="prose hidden max-w-[52ch] text-[15px] sm:block [&>p:not(:first-child)]:hidden" set:html={profile.aboutHtml} />}
             {
-                profile.greeting && (
-                    <p class="fade mt-3 max-w-md text-lg leading-relaxed text-muted" style="--d: 340ms">
-                        {profile.greeting}
-                    </p>
+                profile.experience && profile.experience.length > 0 && (
+                    <div class="w-full max-w-[460px]" data-component="Experience">
+                        <p class="mb-3 font-mono text-[11px] tracking-wider text-faint uppercase">Experience</p>
+                        <ol class="relative space-y-3 pl-6 before:absolute before:top-2 before:bottom-2 before:left-[5px] before:w-px before:bg-gradient-to-b before:from-accent before:via-line-strong before:to-line">
+                            {profile.experience.map((job, i) => (
+                                <li class="relative flex items-baseline justify-between gap-4 text-sm">
+                                    <span
+                                        class:list={[
+                                            'absolute top-[5px] -left-6 size-[11px] rounded-full border-2',
+                                            i === 0 ? 'border-accent bg-page shadow-[0_0_0_4px_var(--glow),0_0_12px_var(--accent)]' : 'border-line-strong bg-page'
+                                        ]}
+                                    />
+                                    <span class="min-w-0 truncate">
+                                        {job.companyUrl ? (
+                                            <a href={job.companyUrl} target="_blank" rel="noopener noreferrer" class:list={['hover:text-accent', i === 0 ? 'font-semibold' : 'font-medium']}>
+                                                {job.company}
+                                            </a>
+                                        ) : (
+                                            <span class:list={[i === 0 ? 'font-semibold' : 'font-medium']}>{job.company}</span>
+                                        )}
+                                        <span class="hidden text-dim sm:inline"> · {job.role}</span>
+                                    </span>
+                                    <span class:list={['shrink-0 font-mono text-xs', i === 0 ? 'text-accent' : 'text-faint']}>{years(job.period)}</span>
+                                </li>
+                            ))}
+                        </ol>
+                    </div>
                 )
             }
-            <div class="fade mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" style="--d: 420ms">
-                <a
-                    href="/work"
-                    class="rounded-full bg-ink px-5 py-2.5 font-medium text-wall transition-transform duration-300 ease-out-soft hover:-translate-y-0.5 active:translate-y-0"
-                >
-                    See my work
-                </a>
-                {
-                    email && (
-                        <a href={`mailto:${email}`} class="link font-medium">
-                            Email me
-                        </a>
-                    )
-                }
+            <div class="flex flex-wrap items-center gap-3">
                 {
                     profile.resumeUrl && (
-                        <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer" class="link font-medium">
-                            Résumé
+                        <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer" class="btn">
+                            <Icon name="file-text-line" class="size-4" />
+                            Resume
                         </a>
                     )
                 }
+                {
+                    email && (
+                        <a href={email} class="btn-ghost">
+                            <Icon name="mail-line" class="size-4" />
+                            Get in touch
+                        </a>
+                    )
+                }
+                <span class="mx-1 hidden h-6 w-px bg-line-strong sm:block" />
+                <ul class="flex gap-1.5">
+                    {
+                        socials.map(social => (
+                            <li>
+                                <a href={social.url} target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label={social.label} title={social.label}>
+                                    <Icon name={icons[social.platform] ?? 'global-line'} class="size-[18px]" />
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
             </div>
         </div>
-        <DeskScene />
+
+        <div class="reveal relative z-10 order-first lg:order-none" style="--delay: 0.1s">
+            <!-- Outside the card's clipping, so the vitals panel can overflow it. -->
+            <div class="absolute top-0 left-0 z-10 p-4"><PerfBadge /></div>
+            <div class="card relative aspect-[4/3] overflow-hidden rounded-3xl bg-[radial-gradient(circle_at_50%_55%,var(--glow),transparent_62%)] sm:aspect-[5/4] lg:aspect-square">
+                <DeskScene persist="desk-hero" class="absolute inset-0" withPoster />
+                <p class="pointer-events-none absolute inset-x-0 bottom-4 text-center font-mono text-[11px] text-faint">
+                    drag to rotate · click him to say hi
+                </p>
+            </div>
+        </div>
     </section>
 
-    {
-        profile.aboutHtml && (
-            <Section title="About" id="about">
-                <div class="prose" set:html={profile.aboutHtml} />
-                {profile.interests && (
-                    <p class="mt-6 text-muted">
-                        Into {profile.interests.charAt(0).toLowerCase() + profile.interests.slice(1)}.
-                    </p>
-                )}
-            </Section>
-        )
-    }
 
     {
-        profile.experience && profile.experience.length > 0 && (
-            <Section title="Experience" id="experience">
-                <Timeline jobs={profile.experience} />
-                {profile.education?.map(item => (
-                    <p class="mt-10 text-[0.95rem] text-muted">
-                        {item.degree}, {item.school}
-                        {item.year && `, ${item.year}`}
-                    </p>
-                ))}
-            </Section>
-        )
-    }
-
-    {
-        selected.length > 0 && (
-            <Section title="Selected work" id="work" wide>
-                <div class="space-y-16">
-                    {selected.map((project, i) => (
-                        <ProjectRow project={project} flip={i % 2 === 1} />
+        projects.length > 0 && (
+            <section class="reveal mt-14 sm:mt-24" style="--delay: 0.2s" data-component="SelectedWork">
+                <div class="mb-6 flex items-end justify-between gap-4">
+                    <div>
+                        <p class="eyebrow">Selected work</p>
+                        <h2 class="mt-2 text-[26px]">Things I've built</h2>
+                    </div>
+                    <a href="/work" class="group flex items-center gap-1 text-sm text-dim hover:text-ink">
+                        All work
+                        <Icon name="arrow-right-line" class="size-4 transition-transform group-hover:translate-x-0.5" />
+                    </a>
+                </div>
+                <div class="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] *:w-[85%] *:shrink-0 *:snap-start sm:-mx-8 sm:scroll-px-8 sm:px-8 sm:*:w-[60%] md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 md:*:w-auto">
+                    {projects.map(project => (
+                        <WorkCard project={project} />
                     ))}
                 </div>
-                <a href="/work" class="link mt-12 inline-block font-medium">
-                    All projects
-                </a>
-            </Section>
+            </section>
         )
     }
+
 
     {
         posts.length > 0 && (
-            <Section title="Writing" id="writing">
-                <PostIndex posts={posts.slice(0, 4)} />
-                {posts.length > 4 && (
-                    <a href="/blog" class="link mt-8 inline-block font-medium">
+            <section class="reveal mt-14 sm:mt-24" style="--delay: 0.25s" data-component="LatestPosts">
+                <div class="mb-6 flex items-end justify-between gap-4">
+                    <div>
+                        <p class="eyebrow">Writing</p>
+                        <h2 class="mt-2 text-[26px]">Latest from the blog</h2>
+                    </div>
+                    <a href="/blog" class="group flex items-center gap-1 text-sm text-dim hover:text-ink">
                         All posts
+                        <Icon name="arrow-right-line" class="size-4 transition-transform group-hover:translate-x-0.5" />
                     </a>
-                )}
-            </Section>
-        )
-    }
-
-    {
-        videos.length > 0 && (
-            <Section title="Videos" id="videos" wide>
-                <div class="grid gap-x-8 gap-y-12 md:grid-cols-2">
-                    {videos.slice(0, 2).map(video => (
-                        <VideoCard video={video} />
-                    ))}
                 </div>
-                {videos.length > 2 && (
-                    <a href="/videos" class="link mt-10 inline-block font-medium">
-                        All videos
-                    </a>
-                )}
-            </Section>
+                <ol class="card divide-y divide-line overflow-hidden">
+                    {posts.map(post => {
+                        const minutes = readingTime(post.contentHtml);
+                        return (
+                            <li class="group relative grid gap-x-6 gap-y-1 px-5 py-4 transition-colors hover:bg-raised sm:grid-cols-[110px_1fr_auto] sm:items-baseline">
+                                <time datetime={post.publishedAt} class="font-mono text-xs text-faint">
+                                    {formatDate(post.publishedAt)}
+                                </time>
+                                <div class="min-w-0">
+                                    <h3 class="text-[15px] font-medium">
+                                        <a href={`/blog/${post.slug}`} class="after:absolute after:inset-0 group-hover:text-accent">
+                                            {post.title}
+                                        </a>
+                                    </h3>
+                                    {post.excerpt && <p class="mt-1 line-clamp-2 text-[13.5px] leading-relaxed text-dim">{post.excerpt}</p>}
+                                </div>
+                                <span class="flex items-center gap-3 font-mono text-xs text-faint">
+                                    {post.tags?.slice(0, 2).map(tag => <span class="chip hidden md:inline-flex">{tag}</span>)}
+                                    {minutes && <span>{minutes} min</span>}
+                                    <span class="transition-transform group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true">→</span>
+                                </span>
+                            </li>
+                        );
+                    })}
+                </ol>
+            </section>
         )
     }
 
-    <Section title="Get in touch" id="contact" wide>
-        <p class="mb-5 max-w-xl text-lg leading-relaxed text-muted">
-            Working on something on the web or mobile, or with AI tooling? I'd like to hear about it.
-        </p>
-        <Connect email={email} socials={profile.socials ?? []} />
-    </Section>
+    <section
+        class="reveal card mt-14 flex sm:mt-24 flex-col items-start justify-between gap-6 bg-[radial-gradient(circle_at_100%_0%,var(--glow),transparent_55%)] p-8 sm:flex-row sm:items-center sm:p-10"
+        style="--delay: 0.3s"
+        data-component="ContactCard"
+    >
+        <div>
+            <h2 class="text-2xl">Let's build something fast.</h2>
+            <p class="mt-1.5 text-[15px] text-dim">Open to interesting frontend and mobile problems.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button type="button" data-command-open class="btn-ghost">
+                Press <span class="kbd">⌘K</span>
+            </button>
+            {
+                email && (
+                    <a href={email} class="btn">
+                        Email me
+                        <Icon name="arrow-right-up-line" class="size-4" />
+                    </a>
+                )
+            }
+        </div>
+    </section>
 </Base>
-
-<style>
-    /* The one load moment: the name rises into place, then the rest
-       follows. */
-    .rise > span {
-        display: block;
-        animation: rise 0.9s var(--ease-out-soft) both;
-        animation-delay: var(--d);
-    }
-    .fade {
-        animation: fade 0.8s var(--ease-out-soft) both;
-        animation-delay: var(--d);
-    }
-    @keyframes rise {
-        from {
-            transform: translateY(105%);
-        }
-    }
-    @keyframes fade {
-        from {
-            opacity: 0;
-            transform: translateY(8px);
-        }
-    }
-</style>

@@ -2,14 +2,13 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Page not found">
-    <div class="mx-auto max-w-6xl px-5 pt-20 sm:px-8">
-        <h1 class="font-display text-[clamp(2.75rem,8vw,5rem)] leading-[0.95] font-bold tracking-[-0.03em] [font-stretch:85%]">
-            Nothing at this address
-        </h1>
-        <p class="mt-5 max-w-xl text-lg text-muted">
-            The page may have moved. Head to the <a href="/" class="link-quiet">home page</a>, or see my
-            <a href="/work" class="link-quiet">work</a>.
+<Base title="Not found">
+    <section class="reveal">
+        <h1 class="text-3xl">Not found</h1>
+        <p class="mt-2">The page you're looking for was not found.</p>
+        <hr class="my-6 border-line" />
+        <p class="text-center">
+            <a href="/" class="btn">Return to home</a>
         </p>
-    </div>
+    </section>
 </Base>

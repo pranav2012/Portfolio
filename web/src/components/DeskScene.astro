@@ -1,32 +1,111 @@
 ---
-// The voxel desk in the hero. three.js loads only on pages that show it.
+// The voxel desk. Inner pages show it above the content and keep it mounted
+// across navigations; the home page sets it inside its hero card instead.
+import { Image } from 'astro:assets';
+import posterLight from '../assets/desk-poster-light.png';
+import posterDark from '../assets/desk-poster-dark.png';
+
+interface Props {
+    class?: string;
+    persist?: string;
+    // Paint a pre-rendered frame (one per theme, since the lighting follows
+    // it; lazy, so the hidden one is never fetched) straight away and load
+    // three.js only once the page is idle, keeping it off the critical path.
+    withPoster?: boolean;
+}
+const {
+    class: className = 'relative mx-auto -mt-5 -mb-10 size-[280px] sm:-mt-15 sm:-mb-35 sm:size-[480px] md:-mt-30 md:-mb-50 md:size-[640px]',
+    persist = 'desk',
+    withPoster = false
+} = Astro.props;
+
+// The poster was rendered at this zoom; the live scene must match it.
+const POSTER_ZOOM = 6.8;
 ---
 
-<figure class="relative min-w-0" aria-label="A voxel model of Pranav at his desk, drinking coffee">
-    <div
-        data-desk
-        class="group relative aspect-square w-full cursor-grab touch-pan-y active:cursor-grabbing"
-    >
-        <div
-            class="absolute inset-[18%] rounded-full bg-[radial-gradient(closest-side,var(--line),transparent)] transition-opacity duration-700 group-data-ready:opacity-0"
-            aria-hidden="true"
-        >
-        </div>
-    </div>
-    <figcaption class="mt-1 text-center text-sm text-muted">Drag to look around</figcaption>
-</figure>
+<div
+    transition:persist={persist}
+    data-desk
+    data-component="DeskScene"
+    data-zoom={withPoster ? POSTER_ZOOM : undefined}
+    data-poster={withPoster ? '' : undefined}
+    role="img"
+    aria-label="A voxel model of Pranav at his desk, drinking coffee. He follows your pointer and waves when clicked."
+    class:list={['desk cursor-grab touch-pan-y active:cursor-grabbing', className]}
+>
+    {
+        withPoster &&
+            [
+                { src: posterLight, theme: 'dark:hidden' },
+                { src: posterDark, theme: 'hidden dark:block' }
+            ].map(({ src, theme }) => (
+                <Image
+                    src={src}
+                    alt=""
+                    widths={[360, 560, 760, 1000]}
+                    sizes="(min-width: 1024px) 470px, 80vw"
+                    loading="lazy"
+                    fetchpriority="high"
+                    class:list={['desk-poster pointer-events-none absolute top-1/2 left-1/2 h-full w-auto max-w-none -translate-1/2 select-none', theme]}
+                />
+            ))
+    }
+</div>
+
+<style is:global>
+    .desk canvas {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    .desk[data-ready] canvas {
+        opacity: 1;
+    }
+    .desk-poster {
+        transition: opacity 0.5s ease;
+    }
+    .desk[data-ready] .desk-poster {
+        opacity: 0;
+    }
+</style>
 
 <script>
-    let unmount: (() => void) | undefined;
+    const teardowns = new Map<HTMLElement, () => void>();
+
+    // Resolves once the page has loaded, the main thread is idle and the
+    // element is on screen.
+    const whenIdleAndVisible = (el: HTMLElement) =>
+        new Promise<void>(resolve => {
+            const idle = () =>
+                'requestIdleCallback' in window ? requestIdleCallback(() => onScreen(), { timeout: 1500 }) : setTimeout(onScreen, 200);
+            const onScreen = () => {
+                const io = new IntersectionObserver(([entry]) => {
+                    if (!entry.isIntersecting) return;
+                    io.disconnect();
+                    resolve();
+                });
+                io.observe(el);
+            };
+            if (document.readyState === 'complete') idle();
+            else addEventListener('load', idle, { once: true });
+        });
 
     document.addEventListener('astro:page-load', async () => {
         const container = document.querySelector<HTMLElement>('[data-desk]');
-        if (!container) return;
+        if (!container || teardowns.has(container)) return;
+        teardowns.set(container, () => {});
+        await whenIdleAndVisible(container);
         const { mount } = await import('../scene/mount');
-        unmount = mount(container);
+        if (!container.isConnected) return;
+        const zoom = container.dataset.zoom ? Number(container.dataset.zoom) : undefined;
+        teardowns.set(container, mount(container, { zoom, skipIntro: container.dataset.poster !== undefined }));
     });
-    document.addEventListener('astro:before-swap', () => {
-        unmount?.();
-        unmount = undefined;
+
+    // Stop scenes that a navigation took off the page.
+    document.addEventListener('astro:after-swap', () => {
+        for (const [container, teardown] of teardowns) {
+            if (container.isConnected) continue;
+            teardown();
+            teardowns.delete(container);
+        }
     });
 </script>

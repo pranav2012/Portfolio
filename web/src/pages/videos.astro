@@ -1,25 +1,89 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
+import Icon from '../components/Icon.astro';
 import VideoCard from '../components/VideoCard.astro';
+import Interactions from '../components/Interactions.astro';
 import { getProfile, getVideos } from '../lib/content';
 
-const [videos, profile] = await Promise.all([getVideos(), getProfile()]);
-const channel = profile.socials?.find(s => s.platform === 'youtube')?.url;
+const videos = getVideos();
+const mainChannel = getProfile().socials?.find(s => s.platform === 'youtube')?.url;
+
+// Videos without a channel are on the main one.
+const channels = [
+    {
+        key: null,
+        name: 'Pranav Agarwal',
+        blurb: 'Developer communities, GDSC and how I work.',
+        url: mainChannel
+    },
+    {
+        key: 'robodue',
+        name: 'Robodue',
+        blurb: 'My earlier channel: Arduino, IoT and home automation builds, 2017–19.',
+        url: 'https://www.youtube.com/@robodue5720/videos'
+    }
+];
+
+const newestFirst = (a: { publishedAt?: string | null }, b: { publishedAt?: string | null }) =>
+    (b.publishedAt ?? '').localeCompare(a.publishedAt ?? '');
+
+const [featured] = videos;
+const sections = channels
+    .map(channel => ({
+        ...channel,
+        total: videos.filter(v => (v.channel ?? null) === channel.key).length,
+        videos: videos.filter(v => v !== featured && (v.channel ?? null) === channel.key).sort(newestFirst)
+    }))
+    .filter(section => section.videos.length > 0);
 ---
 
-<Base title="Videos" description="Videos by Pranav Agarwal on YouTube.">
-    <PageHeader title="Videos" intro="From my YouTube channel. They play right here." />
-    <div class="mx-auto mt-14 max-w-6xl px-5 sm:px-8">
-        <div class="grid gap-x-8 gap-y-14 md:grid-cols-2">
-            {videos.map(video => <VideoCard video={video} />)}
-        </div>
-        {
-            channel && (
-                <a href={channel} target="_blank" rel="noopener noreferrer" class="link mt-14 inline-block font-medium">
-                    More on YouTube
-                </a>
-            )
-        }
-    </div>
+<Base title="Videos" description="Videos by Pranav Agarwal on YouTube." wide>
+    <header class="reveal pt-10 md:pt-14">
+        <p class="eyebrow">Videos</p>
+        <h1 class="mt-2 text-4xl tracking-[-0.035em] sm:text-5xl">On camera</h1>
+        <p class="mt-3 max-w-[56ch] text-[15px] leading-relaxed text-dim">
+            {videos.length} videos across two channels, from early Arduino builds to running a developer community. They play right here.
+        </p>
+    </header>
+
+    {
+        featured && (
+            <section class="reveal mt-10" style="--delay: 0.1s">
+                <VideoCard video={featured} featured />
+            </section>
+        )
+    }
+
+    {
+        sections.map((section, i) => (
+            <section class="reveal mt-16" style={`--delay: ${0.15 + i * 0.05}s`} data-component="ChannelSection">
+                <div class="mb-5 flex flex-wrap items-end justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="grid size-10 place-items-center rounded-[10px] border border-line bg-raised text-[#ff3d3d]">
+                            <Icon name="youtube-fill" class="size-5" />
+                        </span>
+                        <div>
+                            <h2 class="flex items-center gap-2 text-xl">
+                                {section.name}
+                                <span class="chip">{section.total}</span>
+                            </h2>
+                            <p class="mt-0.5 text-[13.5px] text-dim">{section.blurb}</p>
+                        </div>
+                    </div>
+                    {section.url && (
+                        <a href={section.url} target="_blank" rel="noopener noreferrer" class="btn-ghost">
+                            Visit channel
+                            <Icon name="arrow-right-up-line" class="size-4" />
+                        </a>
+                    )}
+                </div>
+                <div class:list={['grid gap-4 sm:grid-cols-2', section.videos.length > 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3']}>
+                    {section.videos.map(video => (
+                        <VideoCard video={video} />
+                    ))}
+                </div>
+            </section>
+        ))
+    }
+    <Interactions />
 </Base>

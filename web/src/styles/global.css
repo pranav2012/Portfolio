@@ -1,151 +1,267 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/bricolage-grotesque/standard.css';
-@import '@fontsource-variable/instrument-sans';
+@import '@fontsource-variable/geist/wght.css';
+@import '@fontsource-variable/geist-mono/wght.css';
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
-/* The palette is taken from the desk scene in the hero: the wall, his navy
-   tee, the teal rug, the wooden floor and the code on the monitor. */
+/* Zinc surfaces, hairline borders and a single teal accent. */
 @theme {
-    --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, sans-serif;
-    --font-sans: 'Instrument Sans Variable', ui-sans-serif, sans-serif;
+    --font-heading: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace;
 
-    --color-wall: var(--wall);
-    --color-surface: var(--surface);
+    --color-page: var(--page);
+    --color-card: var(--card);
+    --color-raised: var(--raised);
     --color-ink: var(--ink);
-    --color-muted: var(--muted);
+    --color-dim: var(--dim);
+    --color-faint: var(--faint);
+    --color-muted: var(--dim);
     --color-line: var(--line);
+    --color-line-strong: var(--line-strong);
+    --color-soft: var(--soft);
+    --color-link: var(--accent);
+    --color-year: var(--accent);
     --color-accent: var(--accent);
-    --color-wood: #c9a27a;
-    --color-highlight: #ff63c3;
+    --color-grass: var(--accent);
+    --color-teal: var(--accent);
 
     --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
-    --wall: #eef1f4;
-    --surface: #f8f9fb;
-    --ink: #1b2340;
-    --muted: #59607a;
-    --line: rgb(27 35 64 / 0.12);
-    --accent: #3f7f86;
+    --page: #fafafa;
+    --card: #ffffff;
+    --raised: #f4f4f5;
+    --ink: #09090b;
+    --dim: #52525b;
+    --faint: #71717a;
+    --line: rgb(0 0 0 / 0.08);
+    --line-strong: rgb(0 0 0 / 0.14);
+    --soft: rgb(0 0 0 / 0.03);
+    --accent: #0d9488;
+    --glow: rgb(13 148 136 / 0.14);
     color-scheme: light;
 }
 
 [data-theme='dark'] {
-    --wall: #121726;
-    --surface: #1a2033;
-    --ink: #e7eaf2;
-    --muted: #9aa2b8;
-    --line: rgb(231 234 242 / 0.12);
-    --accent: #6fb3b9;
+    --page: #09090b;
+    --card: #111113;
+    --raised: #18181b;
+    --ink: #ededef;
+    --dim: #a1a1aa;
+    --faint: #8b8b94;
+    --line: rgb(255 255 255 / 0.08);
+    --line-strong: rgb(255 255 255 / 0.15);
+    --soft: rgb(255 255 255 / 0.03);
+    --accent: #2dd4bf;
+    --glow: rgb(45 212 191 / 0.14);
     color-scheme: dark;
 }
 
 @layer base {
     html {
-        background: var(--wall);
+        background: var(--page);
         color: var(--ink);
         font-family: var(--font-sans);
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
     }
-    ::selection {
-        background: var(--color-highlight);
-        color: #fff;
-    }
-    :focus-visible {
-        outline: 2px solid var(--color-highlight);
-        outline-offset: 3px;
-        border-radius: 4px;
-    }
     h1,
     h2,
     h3 {
-        font-family: var(--font-display);
-        text-wrap: balance;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        letter-spacing: -0.025em;
     }
-    p {
-        text-wrap: pretty;
+    ::selection {
+        background: var(--accent);
+        color: var(--page);
+    }
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 6px;
     }
 }
 
 @layer components {
-    /* Text links: an underline that draws in from the left. */
+    /* A faint grid that fades out below the hero. */
+    .grid-backdrop {
+        background-image:
+            linear-gradient(var(--line) 1px, transparent 1px),
+            linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 25%, transparent 75%);
+    }
+    .card {
+        border: 1px solid var(--line);
+        background: var(--card);
+        border-radius: 1.125rem;
+    }
+    .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--accent);
+    }
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--dim);
+        border: 1px solid var(--line);
+        background: var(--soft);
+        border-radius: 0.4375rem;
+        padding: 0.2rem 0.55rem;
+    }
+    .kbd {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        color: var(--faint);
+        border: 1px solid var(--line);
+        border-bottom-width: 2px;
+        border-radius: 0.375rem;
+        padding: 0.05rem 0.35rem;
+    }
+    .section-title {
+        font-family: var(--font-heading);
+        font-size: 1.375rem;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        margin-top: 0.75rem;
+        margin-bottom: 1rem;
+    }
     .link {
-        background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px
-            no-repeat;
-        transition: background-size 0.35s var(--ease-out-soft);
+        color: var(--accent);
+        text-underline-offset: 3px;
     }
-    .link:hover,
-    .link:focus-visible {
-        background-size: 100% 1.5px;
-    }
-    .link-quiet {
+    .link:hover {
         text-decoration: underline;
-        text-decoration-color: var(--line);
-        text-underline-offset: 0.2em;
-        text-decoration-thickness: 1.5px;
-        transition: text-decoration-color 0.2s;
     }
-    .link-quiet:hover {
-        text-decoration-color: currentColor;
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 0.625rem;
+        background: var(--ink);
+        color: var(--page);
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 0.6rem 1rem;
+        transition:
+            opacity 0.2s,
+            transform 0.2s var(--ease-out-soft);
+    }
+    .btn:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+    }
+    .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 0.625rem;
+        border: 1px solid var(--line-strong);
+        background: var(--soft);
+        color: var(--ink);
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 0.6rem 1rem;
+        transition:
+            background 0.2s,
+            border-color 0.2s;
+    }
+    .btn-ghost:hover {
+        background: var(--raised);
+    }
+    .icon-btn {
+        display: grid;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.625rem;
+        border: 1px solid var(--line);
+        color: var(--dim);
+        transition:
+            color 0.2s,
+            background 0.2s,
+            border-color 0.2s;
+    }
+    .icon-btn:hover {
+        color: var(--ink);
+        background: var(--raised);
+        border-color: var(--line-strong);
     }
 
     /* Long-form text from the CMS. */
     .prose {
         line-height: 1.7;
-        font-size: 1.0625rem;
+        color: var(--dim);
     }
     .prose > * + * {
-        margin-top: 1.1em;
+        margin-top: 1em;
     }
     .prose a {
-        color: var(--accent);
+        color: var(--ink);
         text-decoration: underline;
-        text-underline-offset: 0.2em;
-        text-decoration-thickness: 1.5px;
+        text-decoration-color: var(--line-strong);
+        text-underline-offset: 3px;
+    }
+    .prose a:hover {
+        text-decoration-color: var(--accent);
     }
     .prose h2,
     .prose h3,
     .prose h4 {
-        margin-top: 2em;
-        line-height: 1.25;
-        font-weight: 650;
+        margin-top: 1.6em;
+        line-height: 1.3;
+        color: var(--ink);
     }
     .prose h2 {
-        font-size: 1.5rem;
+        font-size: 1.35rem;
     }
     .prose h3 {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
     }
     .prose ul {
         list-style: disc;
-        padding-left: 1.25em;
+        padding-left: 1.5em;
     }
     .prose ol {
         list-style: decimal;
-        padding-left: 1.25em;
-    }
-    .prose li + li {
-        margin-top: 0.35em;
+        padding-left: 1.5em;
     }
     .prose blockquote {
-        border-left: 3px solid var(--color-wood);
+        border-left: 3px solid var(--accent);
         padding-left: 1em;
-        color: var(--muted);
+        font-style: italic;
     }
     .prose code {
-        font-size: 0.9em;
-        padding: 0.1em 0.35em;
-        border-radius: 5px;
-        background: var(--line);
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        padding: 0.1em 0.3em;
+        border-radius: 4px;
+        background: var(--raised);
     }
     .prose img {
         border-radius: 12px;
     }
-    .prose hr {
-        border-color: var(--line);
+
+    /* Sections fade up in turn as a page opens. */
+    .reveal {
+        animation: reveal 0.8s var(--ease-out-soft) both;
+        animation-delay: var(--delay, 0s);
+    }
+    @keyframes reveal {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
     }
 }
 

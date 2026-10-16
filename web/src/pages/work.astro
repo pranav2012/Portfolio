@@ -1,43 +1,333 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
-import Section from '../components/Section.astro';
-import ProjectRow from '../components/ProjectRow.astro';
-import ProjectList from '../components/ProjectList.astro';
-import { getProjects } from '../lib/content';
+import { formatDate, getProjects, image, type Project } from '../lib/content';
+import { getContributions } from '../lib/contributions';
 
-const projects = await getProjects();
+const projects = getProjects();
 const featured = projects.filter(p => p.section === 'featured');
-const oss = projects.filter(p => p.section === 'oss');
-const archive = projects.filter(p => p.section === 'archive');
+
+const sections = [
+    { key: 'featured', label: 'Featured' },
+    { key: 'oss', label: 'Open source' },
+    { key: 'archive', label: 'Earlier' }
+] as const;
+
+// What each project is, in a couple of words, for the index.
+const kinds: Record<string, string> = {
+    grain: 'PR review tool',
+    nomadsafe: 'Travel app',
+    'react-native-liquid-tabs': 'RN library',
+    'skia-gpu-memory-investigation': 'Research',
+    'claude-statusline-pro': 'CLI',
+    abtestify: 'npm package',
+    moyyn: 'Freelance',
+    'open-kyc': 'Hackathon'
+};
+const kindOf = (p: Project) => kinds[p.slug] ?? sections.find(s => s.key === p.section)?.label ?? '';
+const hrefOf = (p: Project) => p.url ?? p.links?.[0]?.url;
+const contributions = await getContributions();
+const compact = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
+const index = [...projects].sort((a, b) => (b.year ?? '').localeCompare(a.year ?? ''));
 ---
 
-<Base title="Work" description="Things Pranav Agarwal has built: apps, developer tools and open source.">
-    <PageHeader title="Work" intro="Apps, developer tools and open source I've built, newest first." />
+<Base title="Work" description="Things Pranav Agarwal has built: apps, developer tools and open source." wide>
+    <header class="reveal flex flex-wrap items-end justify-between gap-4 pt-10 md:pt-14">
+        <div>
+            <p class="eyebrow">Work</p>
+            <h1 class="mt-2 text-4xl tracking-[-0.035em] sm:text-5xl">Things I've built</h1>
+            <p class="mt-3 max-w-[56ch] text-[15px] leading-relaxed text-dim">
+                Apps, libraries and tools, mostly frontend and mobile. The newest are at the top.
+            </p>
+        </div>
+        <p class="font-mono text-xs text-faint">{projects.length} projects</p>
+    </header>
+
+    <section class="reveal -mx-5 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0" style="--delay: 0.1s" aria-label="Featured" data-component="FeaturedStrip">
+        {
+            featured.map(project => (
+                <article class="card group relative w-[78%] shrink-0 snap-start overflow-hidden transition sm:w-[46%] md:w-auto duration-300 ease-out-soft hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_24px_60px_-28px_var(--glow)]">
+                    <div class="overflow-hidden border-b border-line bg-raised">
+                        {project.thumbnail && (
+                            <Image
+                                src={image(project.thumbnail)}
+                                alt=""
+                                widths={[400, 800]}
+                                sizes="(min-width: 768px) 360px, 100vw"
+                                class="aspect-[1200/630] w-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-[1.04]"
+                            />
+                        )}
+                    </div>
+                    <div class="flex items-center justify-between gap-3 p-4">
+                        <div class="min-w-0">
+                            <h2 class="truncate text-[15px]">
+                                <a href={hrefOf(project)} target="_blank" rel="noopener noreferrer" class="after:absolute after:inset-0">
+                                    {project.title}
+                                </a>
+                            </h2>
+                            <p class="mt-0.5 text-[13px] text-dim">{kindOf(project)}</p>
+                        </div>
+                        <span class="font-mono text-xs text-faint transition-colors group-hover:text-accent">{project.year} ↗</span>
+                    </div>
+                </article>
+            ))
+        }
+    </section>
 
     {
-        featured.length > 0 && (
-            <Section title="Featured" id="featured" wide>
-                <div class="space-y-16">
-                    {featured.map((project, i) => (
-                        <ProjectRow project={project} flip={i % 2 === 1} />
-                    ))}
+        contributions.length > 0 && (
+            <section class="reveal mt-16" style="--delay: 0.15s" data-component="Contributions">
+                <div class="mb-5">
+                    <h2 class="text-xl">Open source contributions</h2>
+                    <p class="mt-1 text-[13.5px] text-dim">Merged pull requests to projects other people maintain.</p>
                 </div>
-            </Section>
+                <div class="grid gap-4 md:grid-cols-2">
+                    {contributions.map(c => {
+                        const [owner, name] = c.repo.split('/');
+                        return (
+                            <article class="card flex flex-col p-5 transition-colors hover:border-line-strong">
+                                <div class="flex items-center gap-3">
+                                    <img src={c.avatar} alt="" width="36" height="36" loading="lazy" decoding="async" class="size-9 rounded-[10px] border border-line" />
+                                    <div class="min-w-0 grow">
+                                        <a href={c.url} target="_blank" rel="noopener noreferrer" class="block truncate text-[15px] font-medium hover:text-accent">
+                                            <span class="text-dim">{owner}/</span>
+                                            {name}
+                                        </a>
+                                        <p class="mt-0.5 flex items-center gap-3 font-mono text-xs text-faint">
+                                            <span class="flex items-center gap-1">
+                                                <svg viewBox="0 0 16 16" class="size-3" fill="currentColor" aria-hidden="true">
+                                                    <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" />
+                                                </svg>
+                                                {compact.format(c.stars)}
+                                            </span>
+                                            {c.language && <span>{c.language}</span>}
+                                        </p>
+                                    </div>
+                                </div>
+                                {c.description && <p class="mt-3 line-clamp-2 text-[13.5px] leading-relaxed text-dim">{c.description}</p>}
+                                <ul class="mt-4 space-y-1 border-t border-line pt-3">
+                                    {c.prs.map(pr => (
+                                        <li>
+                                            <a href={pr.url} target="_blank" rel="noopener noreferrer" class="group -mx-2 flex items-start gap-2.5 rounded-lg px-2 py-1.5 hover:bg-raised">
+                                                <svg viewBox="0 0 16 16" class="mt-0.5 size-4 shrink-0 text-[#a371f7]" fill="currentColor" aria-label="Merged">
+                                                    <path d="M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.95-.218ZM4.25 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm8.5-4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM5 3.25a.75.75 0 1 0 0 .005V3.25Z" />
+                                                </svg>
+                                                <span class="min-w-0 grow text-[13.5px] leading-snug group-hover:text-ink">
+                                                    {pr.title}
+                                                    <span class="ml-1 font-mono text-xs text-faint">#{pr.number}</span>
+                                                </span>
+                                                <time datetime={pr.mergedAt} class="shrink-0 font-mono text-xs text-faint">{formatDate(pr.mergedAt)}</time>
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </article>
+                        );
+                    })}
+                </div>
+            </section>
         )
     }
-    {
-        oss.length > 0 && (
-            <Section title="Open source and tools" id="open-source">
-                <ProjectList projects={oss} />
-            </Section>
-        )
-    }
-    {
-        archive.length > 0 && (
-            <Section title="Earlier work" id="earlier">
-                <ProjectList projects={archive} />
-            </Section>
-        )
-    }
+
+    <section class="reveal mt-16" style="--delay: 0.2s" data-work-index data-component="ProjectIndex">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <h2 class="text-xl">Index</h2>
+            <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filter projects">
+                <button type="button" data-filter="all" aria-pressed="true" class="filter">
+                    All <span>{projects.length}</span>
+                </button>
+                {
+                    sections.map(s => (
+                        <button type="button" data-filter={s.key} aria-pressed="false" class="filter">
+                            {s.label} <span>{projects.filter(p => p.section === s.key).length}</span>
+                        </button>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div class="card overflow-hidden">
+            <div class="hidden grid-cols-[64px_1.4fr_1fr_1.4fr_72px] gap-4 border-b border-line px-5 py-2.5 font-mono text-[11px] tracking-wider text-faint uppercase md:grid">
+                <span>Year</span><span>Project</span><span>Type</span><span>Stack</span><span class="text-right">Links</span>
+            </div>
+            <ol data-rows>
+                {
+                    index.map((project, i) => {
+                        const href = hrefOf(project);
+                        const extra = (project.links ?? []).filter(l => l.url !== href);
+                        return (
+                            <li
+                                data-row
+                                data-section={project.section}
+                                data-preview={i}
+                                class="group relative grid grid-cols-[48px_1fr_auto] items-center gap-x-4 gap-y-1 border-b border-line px-5 py-3.5 transition-colors last:border-b-0 hover:bg-raised focus-within:bg-raised md:grid-cols-[64px_1.4fr_1fr_1.4fr_72px]"
+                            >
+                                <span class="font-mono text-xs text-faint">{project.year}</span>
+                                <div class="min-w-0">
+                                    {href ? (
+                                        <a
+                                            href={href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            data-row-link
+                                            class="truncate text-[15px] font-medium outline-none after:absolute after:inset-0"
+                                        >
+                                            {project.title}
+                                        </a>
+                                    ) : (
+                                        <span class="truncate text-[15px] font-medium" data-row-link tabindex="0">
+                                            {project.title}
+                                        </span>
+                                    )}
+                                    <p class="mt-0.5 text-[13px] text-faint md:hidden">{kindOf(project)}</p>
+                                </div>
+                                <span class="hidden text-sm text-dim md:block">{kindOf(project)}</span>
+                                <div class="hidden flex-wrap gap-1 md:flex">
+                                    {project.stack?.slice(0, 3).map(tag => <span class="chip">{tag}</span>)}
+                                </div>
+                                <div class="relative z-10 flex items-center justify-end gap-2.5 text-[13px] text-faint">
+                                    {extra.map(link => (
+                                        <a href={link.url} target="_blank" rel="noopener noreferrer" class="hidden hover:text-ink sm:inline">
+                                            {link.label}
+                                        </a>
+                                    ))}
+                                    {href && <span class="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent">↗</span>}
+                                </div>
+                                <p class="col-span-full line-clamp-2 pt-1 text-[13px] leading-relaxed text-dim md:hidden">{project.summary}</p>
+                            </li>
+                        );
+                    })
+                }
+            </ol>
+        </div>
+        <p class="mt-3 hidden items-center gap-1.5 text-xs text-faint md:flex">
+            <span class="kbd">↑</span><span class="kbd">↓</span> to move through the list, <span class="kbd">↵</span> to open
+        </p>
+    </section>
+
+    <!-- Follows the cursor over the index with the hovered project's image. -->
+    <div
+        data-preview-layer
+        aria-hidden="true"
+        class="pointer-events-none fixed top-0 left-0 z-50 hidden w-[320px] overflow-hidden rounded-xl border border-line-strong bg-card opacity-0 shadow-2xl transition-opacity duration-200 md:block"
+    >
+        {
+            index.map((project, i) => (
+                <div data-preview-item={i} hidden>
+                    {project.thumbnail ? (
+                        <Image src={image(project.thumbnail)} alt="" widths={[320, 640]} sizes="320px" class="aspect-[1200/630] w-full border-b border-line object-cover" />
+                    ) : (
+                        <div class="grid aspect-[1200/630] place-items-center border-b border-line bg-[radial-gradient(circle_at_30%_20%,var(--glow),transparent_60%)] p-6 text-center">
+                            <span class="text-lg font-semibold tracking-tight">{project.title}</span>
+                        </div>
+                    )}
+                    <p class="p-3.5 text-[13px] leading-relaxed text-dim">{project.summary}</p>
+                </div>
+            ))
+        }
+    </div>
 </Base>
+
+<style>
+    .filter {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        padding: 0.3rem 0.75rem;
+        font-size: 13px;
+        color: var(--dim);
+        transition:
+            color 0.2s,
+            background 0.2s,
+            border-color 0.2s;
+    }
+    .filter span {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--faint);
+    }
+    .filter:hover {
+        color: var(--ink);
+        border-color: var(--line-strong);
+    }
+    .filter[aria-pressed='true'] {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--page);
+    }
+    .filter[aria-pressed='true'] span {
+        color: inherit;
+        opacity: 0.6;
+    }
+</style>
+
+<script>
+    const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.addEventListener('astro:page-load', () => {
+        const root = document.querySelector<HTMLElement>('[data-work-index]');
+        if (!root) return;
+        const rows = [...root.querySelectorAll<HTMLElement>('[data-row]')];
+        const layer = document.querySelector<HTMLElement>('[data-preview-layer]')!;
+        const visible = () => rows.filter(row => !row.hidden);
+
+        root.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button =>
+            button.addEventListener('click', () => {
+                const filter = button.dataset.filter;
+                root.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+                rows.forEach(row => (row.hidden = filter !== 'all' && row.dataset.section !== filter));
+            })
+        );
+
+        // Arrow keys move between rows; Enter follows the focused link.
+        root.addEventListener('keydown', event => {
+            if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+            const list = visible();
+            const current = list.findIndex(row => row.contains(document.activeElement));
+            if (current === -1) return;
+            event.preventDefault();
+            const next = list[Math.min(Math.max(current + (event.key === 'ArrowDown' ? 1 : -1), 0), list.length - 1)];
+            next.querySelector<HTMLElement>('[data-row-link]')?.focus();
+        });
+
+        // The preview eases toward the cursor rather than snapping to it.
+        let x = 0;
+        let y = 0;
+        let targetX = 0;
+        let targetY = 0;
+        let frame = 0;
+        const follow = () => {
+            const ease = reduce() ? 1 : 0.18;
+            x += (targetX - x) * ease;
+            y += (targetY - y) * ease;
+            layer.style.transform = `translate3d(${x + 24}px, ${y - layer.offsetHeight / 2}px, 0)`;
+            frame = Math.abs(targetX - x) + Math.abs(targetY - y) > 0.5 ? requestAnimationFrame(follow) : 0;
+        };
+        const show = (row: HTMLElement) => {
+            layer.querySelectorAll<HTMLElement>('[data-preview-item]').forEach(item => {
+                item.hidden = item.dataset.previewItem !== row.dataset.preview;
+            });
+            layer.style.opacity = '1';
+        };
+
+        rows.forEach(row => {
+            row.addEventListener('pointerenter', event => {
+                if (event.pointerType !== 'mouse') return;
+                if (layer.style.opacity !== '1') {
+                    x = targetX = event.clientX;
+                    y = targetY = event.clientY;
+                }
+                show(row);
+            });
+            row.addEventListener('pointermove', event => {
+                targetX = event.clientX;
+                targetY = event.clientY;
+                if (!frame) frame = requestAnimationFrame(follow);
+            });
+        });
+        root.querySelector('[data-rows]')!.addEventListener('pointerleave', () => (layer.style.opacity = '0'));
+        addEventListener('scroll', () => (layer.style.opacity = '0'), { passive: true });
+    });
+</script>

@@ -50,6 +50,8 @@ export type Video = {
     description?: string | null;
     publishedAt?: string | null;
     thumbnail?: Media | null;
+    // Which YouTube channel it's on; unset for the main channel.
+    channel?: string | null;
 };
 
 export type Job = {
