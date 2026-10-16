@@ -9,6 +9,9 @@
         "prettier": "prettier -w .",
         "lint": "eslint ."
     },
+    "engines": {
+        "node": "24.x"
+    },
     "keywords": [],
     "author": "Pranav Agarwal<p2012agarwal@gmail.com>",
     "license": "MIT",
