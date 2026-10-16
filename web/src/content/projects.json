@@ -62,7 +62,7 @@
         "title": "react-native-liquid-tabs",
         "slug": "react-native-liquid-tabs",
         "section": "featured",
-        "showOnHome": true,
+        "showOnHome": false,
         "order": 30,
         "summary": "The iOS 26 Liquid Glass tab bar for Android: a refracting, draggable droplet lens over a real blur at 120 Hz. Native tabs on iOS, one API for both.",
         "thumbnail": {
