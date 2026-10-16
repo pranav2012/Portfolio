@@ -1,0 +1,15 @@
+// The site is static: a Worker with no script, serving the Astro build.
+// Same setup as grain and NomadSafe's sites.
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "pranav-portfolio",
+    "account_id": "47ce54bb4054713dd861df805a7b1cf2",
+    "compatibility_date": "2026-10-01",
+    "assets": {
+        "directory": "./dist",
+        "not_found_handling": "404-page",
+        "html_handling": "auto-trailing-slash"
+    }
+    // Custom domains (pranav-agarwal.com, www) are attached in the Cloudflare
+    // dashboard, so deploys never touch DNS.
+}

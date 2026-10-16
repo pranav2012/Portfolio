@@ -1,0 +1,53 @@
+---
+import Icon from './Icon.astro';
+import type { Social } from '../lib/content';
+
+interface Props {
+    email?: string;
+    socials: Social[];
+}
+const { email, socials } = Astro.props;
+
+const icons: Record<string, string> = {
+    github: 'github-fill',
+    linkedin: 'linkedin-box-fill',
+    x: 'twitter-x-fill',
+    medium: 'medium-fill',
+    youtube: 'youtube-fill',
+    stackoverflow: 'stack-overflow-fill',
+    website: 'global-line'
+};
+const others = socials.filter(s => s.platform !== 'email');
+---
+
+{
+    email && (
+        <a
+            href={`mailto:${email}`}
+            data-magnetic
+            class="inline-block font-display text-[clamp(1.6rem,5vw,2.75rem)] leading-tight font-semibold tracking-tight [font-stretch:85%] break-all"
+        >
+            <span class="link">{email}</span>
+        </a>
+    )
+}
+<ul class="mt-8 flex flex-wrap gap-2">
+    {
+        others.map(social => (
+            <li>
+                <a
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group inline-flex items-center gap-2 rounded-full border border-line py-2 pr-4 pl-3 text-[0.95rem] transition-colors hover:border-ink"
+                >
+                    <Icon
+                        name={icons[social.platform] ?? 'global-line'}
+                        class="size-[18px] transition-transform duration-300 ease-out-soft group-hover:-rotate-8 group-hover:scale-110"
+                    />
+                    {social.label}
+                </a>
+            </li>
+        ))
+    }
+</ul>

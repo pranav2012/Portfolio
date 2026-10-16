@@ -1,0 +1,159 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque/standard.css';
+@import '@fontsource-variable/instrument-sans';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* The palette is taken from the desk scene in the hero: the wall, his navy
+   tee, the teal rug, the wooden floor and the code on the monitor. */
+@theme {
+    --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, sans-serif;
+    --font-sans: 'Instrument Sans Variable', ui-sans-serif, sans-serif;
+
+    --color-wall: var(--wall);
+    --color-surface: var(--surface);
+    --color-ink: var(--ink);
+    --color-muted: var(--muted);
+    --color-line: var(--line);
+    --color-accent: var(--accent);
+    --color-wood: #c9a27a;
+    --color-highlight: #ff63c3;
+
+    --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+    --wall: #eef1f4;
+    --surface: #f8f9fb;
+    --ink: #1b2340;
+    --muted: #59607a;
+    --line: rgb(27 35 64 / 0.12);
+    --accent: #3f7f86;
+    color-scheme: light;
+}
+
+[data-theme='dark'] {
+    --wall: #121726;
+    --surface: #1a2033;
+    --ink: #e7eaf2;
+    --muted: #9aa2b8;
+    --line: rgb(231 234 242 / 0.12);
+    --accent: #6fb3b9;
+    color-scheme: dark;
+}
+
+@layer base {
+    html {
+        background: var(--wall);
+        color: var(--ink);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+    ::selection {
+        background: var(--color-highlight);
+        color: #fff;
+    }
+    :focus-visible {
+        outline: 2px solid var(--color-highlight);
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-display);
+        text-wrap: balance;
+    }
+    p {
+        text-wrap: pretty;
+    }
+}
+
+@layer components {
+    /* Text links: an underline that draws in from the left. */
+    .link {
+        background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px
+            no-repeat;
+        transition: background-size 0.35s var(--ease-out-soft);
+    }
+    .link:hover,
+    .link:focus-visible {
+        background-size: 100% 1.5px;
+    }
+    .link-quiet {
+        text-decoration: underline;
+        text-decoration-color: var(--line);
+        text-underline-offset: 0.2em;
+        text-decoration-thickness: 1.5px;
+        transition: text-decoration-color 0.2s;
+    }
+    .link-quiet:hover {
+        text-decoration-color: currentColor;
+    }
+
+    /* Long-form text from the CMS. */
+    .prose {
+        line-height: 1.7;
+        font-size: 1.0625rem;
+    }
+    .prose > * + * {
+        margin-top: 1.1em;
+    }
+    .prose a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+        text-decoration-thickness: 1.5px;
+    }
+    .prose h2,
+    .prose h3,
+    .prose h4 {
+        margin-top: 2em;
+        line-height: 1.25;
+        font-weight: 650;
+    }
+    .prose h2 {
+        font-size: 1.5rem;
+    }
+    .prose h3 {
+        font-size: 1.25rem;
+    }
+    .prose ul {
+        list-style: disc;
+        padding-left: 1.25em;
+    }
+    .prose ol {
+        list-style: decimal;
+        padding-left: 1.25em;
+    }
+    .prose li + li {
+        margin-top: 0.35em;
+    }
+    .prose blockquote {
+        border-left: 3px solid var(--color-wood);
+        padding-left: 1em;
+        color: var(--muted);
+    }
+    .prose code {
+        font-size: 0.9em;
+        padding: 0.1em 0.35em;
+        border-radius: 5px;
+        background: var(--line);
+    }
+    .prose img {
+        border-radius: 12px;
+    }
+    .prose hr {
+        border-color: var(--line);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

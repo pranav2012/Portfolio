@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "title": "Google Developer Student Clubs welcome kit unboxing",
+        "url": "https://www.youtube.com/watch?v=LbRAVuS3vgI",
+        "youtubeId": "LbRAVuS3vgI",
+        "description": "Unboxing the kit Google sends new GDSC leads.",
+        "publishedAt": "2021-11-22T00:00:00.000Z",
+        "order": 10,
+        "thumbnail": null
+    },
+    {
+        "id": 2,
+        "title": "What is GDSC? The lead application process",
+        "url": "https://www.youtube.com/watch?v=USYhMbLjv5Q",
+        "youtubeId": "USYhMbLjv5Q",
+        "description": "What Google Developer Student Clubs are, the opportunities, and my interview experience.",
+        "publishedAt": "2022-03-12T00:00:00.000Z",
+        "order": 20,
+        "thumbnail": null
+    },
+    {
+        "id": 3,
+        "title": "My DSC lead application, 2021",
+        "url": "https://www.youtube.com/watch?v=473F3LRym9U",
+        "youtubeId": "473F3LRym9U",
+        "description": "The application video that got me selected as a DSC lead.",
+        "publishedAt": "2021-04-19T00:00:00.000Z",
+        "order": 30,
+        "thumbnail": null
+    },
+    {
+        "id": 4,
+        "title": "Home desk setup 2022",
+        "url": "https://www.youtube.com/watch?v=K8qDMjz881A",
+        "youtubeId": "K8qDMjz881A",
+        "description": "A tour of the desk I work from.",
+        "publishedAt": "2022-02-10T00:00:00.000Z",
+        "order": 40,
+        "thumbnail": null
+    }
+]

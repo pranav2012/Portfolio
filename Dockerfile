@@ -1,29 +1,34 @@
-FROM node:24-alpine AS base
+# Runs the CMS (Payload, /admin). After each change it exports the content
+# into the site's GitHub repo and pushes it; Cloudflare builds and deploys
+# the site (web/) from there.
+FROM node:24-slim AS base
 RUN corepack enable
 WORKDIR /app
 
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY cms/package.json cms/
 RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN pnpm build
+COPY --from=deps /app/cms/node_modules ./cms/node_modules
+COPY package.json pnpm-workspace.yaml ./
+COPY cms ./cms
+RUN pnpm --filter portfolio-cms build
 
-FROM node:24-alpine AS runner
-WORKDIR /app
+FROM base AS runner
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 ENV NODE_ENV=production
 ENV DATABASE_URL=file:/app/data/portfolio.db
 ENV MEDIA_DIR=/app/data/media
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/next.config.mjs ./next.config.mjs
-# Images used to seed an empty database on first boot.
-COPY --from=builder /app/src/payload/seed/images ./src/payload/seed/images
-# The CMS database and uploaded images live here; mount a volume on it.
+ENV CMS_URL=http://localhost:3000
+ENV PUBLISH_COMMAND='sh /app/cms/scripts/publish.sh'
+COPY --from=builder /app /app
+WORKDIR /app/cms
+# The CMS database, uploaded images and the site checkout live here; mount a
+# volume on it.
 VOLUME /app/data
 EXPOSE 3000
-CMD ["node_modules/.bin/next", "start"]
+CMD ["node_modules/.bin/next", "start", "-p", "3000"]

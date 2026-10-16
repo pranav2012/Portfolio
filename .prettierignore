@@ -1,7 +1,11 @@
 node_modules
-.next
-app/(payload)
-src/migrations
-src/payload/payload-types.ts
+**/.next
+**/dist
+**/.astro
+cms/app/(payload)
+cms/src/migrations
+cms/src/payload/payload-types.ts
 pnpm-lock.yaml
-next-env.d.ts
+**/next-env.d.ts
+# Written by the CMS (cms/scripts/export-content.mjs)
+web/src/content

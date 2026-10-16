@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import { formatDate, youtubeThumbnail, type Video } from '../lib/content';
+
+interface Props {
+    video: Video;
+}
+const { video } = Astro.props;
+const thumbnail = youtubeThumbnail(video);
+---
+
+<article>
+    <div class="relative overflow-hidden rounded-2xl border border-line bg-black" data-video={video.youtubeId}>
+        <button
+            type="button"
+            class="group relative block w-full cursor-pointer"
+            aria-label={`Play ${video.title}`}
+        >
+            <Image
+                src={thumbnail}
+                alt=""
+                inferSize={typeof thumbnail === 'string'}
+                widths={[480, 720]}
+                sizes="(min-width: 768px) 420px, 100vw"
+                class="aspect-video w-full object-cover opacity-90 transition-[transform,opacity] duration-700 ease-out-soft group-hover:scale-[1.03] group-hover:opacity-100"
+            />
+            <span
+                class="absolute top-1/2 left-1/2 grid size-14 -translate-1/2 place-items-center rounded-full bg-wall/90 text-ink shadow-lg backdrop-blur transition-transform duration-300 ease-out-soft group-hover:scale-110 group-active:scale-95"
+                aria-hidden="true"
+            >
+                <svg viewBox="0 0 24 24" class="ml-0.5 size-6" fill="currentColor">
+                    <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"></path>
+                </svg>
+            </span>
+        </button>
+    </div>
+    <h3 class="mt-4 font-display text-lg leading-snug font-semibold tracking-tight">
+        <a href={video.url} target="_blank" rel="noopener noreferrer" class="link">
+            {video.title}
+        </a>
+    </h3>
+    {video.description && <p class="mt-1 text-[0.95rem] leading-relaxed text-muted">{video.description}</p>}
+    {
+        video.publishedAt && (
+            <time datetime={video.publishedAt} class="mt-1 block text-sm text-muted">
+                {formatDate(video.publishedAt)}
+            </time>
+        )
+    }
+</article>

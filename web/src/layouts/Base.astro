@@ -1,0 +1,106 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import { getImage } from 'astro:assets';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Interactions from '../components/Interactions.astro';
+import { getProfile, getSite, image as imageOf } from '../lib/content';
+
+interface Props {
+    title?: string;
+    description?: string | null;
+    image?: string;
+    type?: 'website' | 'article';
+}
+const { title, description, image, type = 'website' } = Astro.props;
+const [site, profile] = await Promise.all([getSite(), getProfile()]);
+
+const pageTitle = title ? `${title} | ${site.title}` : site.title;
+const summary = description || site.description || '';
+const ogImage =
+    image ??
+    (site.ogImage
+        ? (await getImage({ src: imageOf(site.ogImage), width: 1200 })).src
+        : '/images/card.png');
+const ogUrl = new URL(ogImage, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{pageTitle}</title>
+        {summary && <meta name="description" content={summary} />}
+        <meta name="author" content={profile.name} />
+        <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+        <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+        <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
+        <meta property="og:type" content={type} />
+        <meta property="og:title" content={title ?? site.title} />
+        {summary && <meta property="og:description" content={summary} />}
+        <meta property="og:image" content={ogUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+        {site.twitterHandle && <meta name="twitter:creator" content={site.twitterHandle} />}
+        <meta name="theme-color" content="#eef1f4" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#121726" media="(prefers-color-scheme: dark)" />
+
+        <script is:inline>
+            // Set the theme before the first paint, and again after each
+            // client-side navigation swaps the document.
+            const theme = () =>
+                localStorage.getItem('theme') ||
+                (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.dataset.theme = theme();
+            document.addEventListener('astro:after-swap', () => {
+                document.documentElement.dataset.theme = theme();
+            });
+        </script>
+        <ClientRouter />
+
+        {
+            site.analyticsId && (
+                <>
+                    <script
+                        is:inline
+                        async
+                        src={`https://www.googletagmanager.com/gtag/js?id=${site.analyticsId}`}
+                    />
+                    <script is:inline define:vars={{ id: site.analyticsId }}>
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag() {
+                            dataLayer.push(arguments);
+                        }
+                        gtag('js', new Date());
+                        gtag('config', id);
+                    </script>
+                </>
+            )
+        }
+    </head>
+    <body class="flex min-h-dvh flex-col">
+        <a
+            href="#main"
+            class="sr-only rounded-full bg-ink px-4 py-2 text-wall focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+        >
+            Skip to content
+        </a>
+        <Nav name={profile.name} />
+        <main id="main" class="flex-1">
+            <slot />
+        </main>
+        <Footer name={profile.name} />
+        <Interactions />
+    </body>
+</html>
+
+<style is:global>
+    /* The theme switch reveals itself in a circle (see ThemeToggle). */
+    html.theme-switching::view-transition-old(root),
+    html.theme-switching::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+    }
+</style>

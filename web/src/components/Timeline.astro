@@ -1,0 +1,40 @@
+---
+import type { Job } from '../lib/content';
+
+interface Props {
+    jobs: Job[];
+}
+const { jobs } = Astro.props;
+---
+
+<ol class="relative border-l border-line pl-7">
+    {
+        jobs.map((job, i) => (
+            <li class:list={['relative', i > 0 && 'mt-9']}>
+                {/* The current job's marker breathes gently. */}
+                <span
+                    class:list={[
+                        'absolute top-1.5 -left-[2.06rem] size-2.5 rounded-full ring-4 ring-wall',
+                        i === 0 ? 'bg-accent' : 'bg-wood'
+                    ]}
+                    aria-hidden="true"
+                >
+                    {i === 0 && <span class="absolute inset-0 animate-ping rounded-full bg-accent/50 [animation-duration:2.4s]" />}
+                </span>
+                <p class="text-sm text-muted">{job.period}</p>
+                <h3 class="mt-1 font-display text-lg font-semibold tracking-tight">
+                    {job.role},{' '}
+                    {job.companyUrl ? (
+                        <a href={job.companyUrl} target="_blank" rel="noopener noreferrer" class="link-quiet">
+                            {job.company}
+                        </a>
+                    ) : (
+                        job.company
+                    )}
+                </h3>
+                {job.location && <p class="text-[0.95rem] text-muted">{job.location}</p>}
+                {job.description && <p class="mt-2 leading-relaxed">{job.description}</p>}
+            </li>
+        ))
+    }
+</ol>

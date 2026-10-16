@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import ProjectList from '../components/ProjectList.astro';
+import { getProjects } from '../lib/content';
+
+const projects = await getProjects();
+const featured = projects.filter(p => p.section === 'featured');
+const oss = projects.filter(p => p.section === 'oss');
+const archive = projects.filter(p => p.section === 'archive');
+---
+
+<Base title="Work" description="Things Pranav Agarwal has built: apps, developer tools and open source.">
+    <PageHeader title="Work" intro="Apps, developer tools and open source I've built, newest first." />
+
+    {
+        featured.length > 0 && (
+            <Section title="Featured" id="featured" wide>
+                <div class="space-y-16">
+                    {featured.map((project, i) => (
+                        <ProjectRow project={project} flip={i % 2 === 1} />
+                    ))}
+                </div>
+            </Section>
+        )
+    }
+    {
+        oss.length > 0 && (
+            <Section title="Open source and tools" id="open-source">
+                <ProjectList projects={oss} />
+            </Section>
+        )
+    }
+    {
+        archive.length > 0 && (
+            <Section title="Earlier work" id="earlier">
+                <ProjectList projects={archive} />
+            </Section>
+        )
+    }
+</Base>

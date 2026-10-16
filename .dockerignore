@@ -1,6 +1,13 @@
 node_modules
+**/node_modules
 .next
+**/.next
 .git
 *.md
 data
+**/data
 .env*
+**/.env*
+portfolio.env
+**/dist
+**/.astro
