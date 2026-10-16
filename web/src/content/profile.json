@@ -12,49 +12,31 @@
     "resumeUrl": "/resume.pdf",
     "experience": [
         {
-            "id": "6ad29a7df2cb79000104d444",
+            "id": "6ad2a229cebb9a0001a8b86f",
             "role": "Senior Software Engineer",
             "company": "Headout",
             "companyUrl": "https://www.headout.com",
             "location": "Bangalore, India",
-            "period": "May 2025 – Present",
-            "description": "An LLM-powered interface that answers experience questions, an app sync engine for offline ticket data, and an internal app debugging tool."
+            "period": "Jan 2022 – Present",
+            "description": "Web and mobile apps for travellers."
         },
         {
-            "id": "6ad29a7df2cb79000104d445",
-            "role": "Software Engineer",
-            "company": "Headout",
-            "companyUrl": "https://www.headout.com",
-            "location": "Bangalore, India",
-            "period": "May 2023 – Apr 2025",
-            "description": "Web-to-app handoff (+61% app adoption, +33% retention), personalised homepages (+20% conversion, 60% faster), a shared A/B testing framework, and push nudges that took opt-in from 18% to 38%."
-        },
-        {
-            "id": "6ad29a7df2cb79000104d446",
-            "role": "Software Engineering Intern",
-            "company": "Headout",
-            "companyUrl": "https://www.headout.com",
-            "location": "Bangalore, India · Remote",
-            "period": "Jan 2022 – Apr 2023",
-            "description": "Moved the mailing and ticketing systems from JSP to Next.js, and sent payment receipts to customers automatically."
-        },
-        {
-            "id": "6ad29a7df2cb79000104d447",
+            "id": "6ad2a229cebb9a0001a8b870",
             "role": "Software Engineering Intern",
             "company": "American Express",
             "companyUrl": "https://www.americanexpress.com",
-            "location": "Gurugram, India · Remote",
+            "location": "Gurugram, India",
             "period": "Jun 2022 – Aug 2022",
-            "description": "A call automation API for the IVR, so calls arrive with the customer’s context."
+            "description": null
         },
         {
-            "id": "6ad29a7df2cb79000104d448",
+            "id": "6ad2a229cebb9a0001a8b871",
             "role": "Founding Engineer",
             "company": "Moyyn",
             "companyUrl": null,
             "location": "Berlin, Germany · Remote",
             "period": "Nov 2020 – Jan 2022",
-            "description": "A GDPR-compliant candidate sourcing platform and recruitment automation that made sourcing-to-hire 70% more efficient."
+            "description": null
         }
     ],
     "education": [
@@ -99,5 +81,5 @@
         }
     ],
     "globalType": "profile",
-    "aboutHtml": "<p>I’m a senior frontend engineer at <a href=\"https://www.headout.com\" rel=\"noopener noreferrer\" target=\"_blank\">Headout</a>, working across the React Native app and the Next.js web: an LLM-powered assistant that answers questions about experiences, an offline sync engine for tickets, and the web-to-app journey that grew app adoption by 61%.</p><p>Outside work I build things I want to use myself: <a href=\"https://nomadsafe.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">NomadSafe</a>, a travel companion app, and <a href=\"https://grain.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">grain</a>, a tool for reviewing pull requests as user flows. Most days that means React, Next.js, React Native and TypeScript, with some Rust and Go when the problem asks for it.</p>"
+    "aboutHtml": "<p>I care about the details most people only notice when they’re missing: motion, performance, and how a screen behaves on a slow phone. These days I do that at <a href=\"https://www.headout.com\" rel=\"noopener noreferrer\" target=\"_blank\">Headout</a>, across React Native and Next.js.</p><p>Outside work I make things I want to use myself, like <a href=\"https://nomadsafe.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">NomadSafe</a>, a travel companion app, and <a href=\"https://grain.pranav-agarwal.com\" rel=\"noopener noreferrer\" target=\"_blank\">grain</a>, a tool for reviewing pull requests as user flows. I also write about what I learn along the way: shaders, GPU memory, and running models on phones.</p>"
 }
