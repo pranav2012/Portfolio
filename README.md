@@ -46,7 +46,7 @@ pnpm --filter portfolio-cms migrate:create <name>   # production applies migrati
 
 ## Deploying
 
-**Site**: Cloudflare → Workers & Pages → `pranav-portfolio`, connected to this GitHub repo, with root directory `web`, build command `pnpm install --frozen-lockfile && pnpm build` and deploy command `npx wrangler deploy`. The custom domains (pranav-agarwal.com, www) are attached in the dashboard. The Worker's name and account are in `web/wrangler.jsonc`.
+**Site**: Cloudflare → Workers & Pages → `portfolio`, connected to this GitHub repo, with root directory `web`, build command `pnpm install --frozen-lockfile && pnpm build` and deploy command `npx wrangler deploy`. The custom domains (pranav-agarwal.com, www) are attached in the dashboard. The Worker's name and account are in `web/wrangler.jsonc`.
 
 **CMS**: the Docker image (see `docker-compose.yml`). Its database, uploads and repo checkout live in `/app/data`, so mount a volume there, and provide these in `portfolio.env`:
 

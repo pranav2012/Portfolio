@@ -2,7 +2,8 @@
 // Same setup as grain and NomadSafe's sites.
 {
     "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "pranav-portfolio",
+    // Must match the Worker's name in the Cloudflare dashboard.
+    "name": "portfolio",
     "account_id": "47ce54bb4054713dd861df805a7b1cf2",
     "compatibility_date": "2026-10-01",
     "assets": {
