@@ -7,28 +7,29 @@
         "build": "next build",
         "start": "next start",
         "prettier": "prettier -w .",
-        "lint": "next lint"
+        "lint": "eslint ."
     },
     "keywords": [],
     "author": "Pranav Agarwal<p2012agarwal@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "@chakra-ui/icons": "^1.0.15",
-        "@chakra-ui/react": "^1.6.9",
-        "@emotion/react": "^11.4.1",
-        "@emotion/styled": "^11.3.0",
-        "framer-motion": "^4.1.17",
-        "next": "^12.0.8",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "react-icons": "^4.3.1",
-        "three": "^0.134.0"
+        "@chakra-ui/react": "^3.37.0",
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.1",
+        "framer-motion": "^14.3.0",
+        "next": "^16.4.2",
+        "next-themes": "^0.4.6",
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1",
+        "react-icons": "^5.7.0",
+        "three": "^0.186.1"
     },
     "devDependencies": {
-        "@types/node": "20.6.2",
-        "eslint": "^7.32.0",
-        "eslint-config-next": "^11.1.2",
-        "prettier": "^2.4.1",
-        "typescript": "5.2.2"
+        "@types/node": "^26.6.5",
+        "@types/react": "^19.3.0",
+        "eslint": "^10.12.0",
+        "eslint-config-next": "^16.4.2",
+        "prettier": "^3.9.10",
+        "typescript": "^6"
     }
 }

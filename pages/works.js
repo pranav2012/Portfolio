@@ -1,4 +1,4 @@
-import { Container, Heading, SimpleGrid, Divider } from '@chakra-ui/react';
+import { Container, Heading, SimpleGrid, Separator } from '@chakra-ui/react';
 import Layout from 'Layouts/article';
 import Section from 'Elements/section';
 import { WorkGridItem } from 'Elements/grid-item';
@@ -50,7 +50,7 @@ const Works = () => (
                 </Section>
                 <Section delay={0.1}>
                     <WorkGridItem
-                        link="nefilus.vercel.app"
+                        link="https://nefilus.vercel.app"
                         thumbnail={thumbFace}
                         title="Nefilus"
                     >
@@ -60,7 +60,7 @@ const Works = () => (
             </SimpleGrid>
 
             <Section delay={0.2}>
-                <Divider my={6} />
+                <Separator my={6} />
 
                 <Heading as="h3" fontSize={20} mb={4}>
                     Collaborations
@@ -90,7 +90,7 @@ const Works = () => (
             </SimpleGrid>
 
             <Section delay={0.4}>
-                <Divider my={6} />
+                <Separator my={6} />
 
                 <Heading as="h3" fontSize={20} mb={4}>
                     Old works
