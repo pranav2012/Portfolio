@@ -62,7 +62,7 @@
         "title": "react-native-liquid-tabs",
         "slug": "react-native-liquid-tabs",
         "section": "featured",
-        "showOnHome": null,
+        "showOnHome": true,
         "order": 30,
         "summary": "The iOS 26 Liquid Glass tab bar for Android: a refracting, draggable droplet lens over a real blur at 120 Hz. Native tabs on iOS, one API for both.",
         "thumbnail": {
@@ -91,7 +91,7 @@
         "title": "Skia GPU memory investigation",
         "slug": "skia-gpu-memory-investigation",
         "section": "oss",
-        "showOnHome": null,
+        "showOnHome": true,
         "order": 40,
         "summary": "A minimal repro and measurements of GPU memory growth in react-native-skia v3 on Android, with raw data across devices and upstream patch drafts.",
         "thumbnail": null,
@@ -134,7 +134,7 @@
         "section": "oss",
         "showOnHome": null,
         "order": 60,
-        "summary": "A small npm package for deterministic A/B test bucketing in JavaScript apps, with exposure and split control.",
+        "summary": "Deterministic A/B test bucketing for Node backends and any frontend framework (React, Remix and more), with exposure and split control.",
         "thumbnail": null,
         "url": "https://www.npmjs.com/package/abtestify",
         "links": [
@@ -147,28 +147,8 @@
         "year": "2024",
         "stack": [
             "TypeScript",
+            "Node",
             "npm"
-        ]
-    },
-    {
-        "id": 7,
-        "title": "Moyyn",
-        "slug": "moyyn",
-        "section": "archive",
-        "showOnHome": null,
-        "order": 70,
-        "summary": "An AI-based reverse job search platform for a Berlin startup. Freelance frontend work.",
-        "thumbnail": {
-            "file": "moyyn.png",
-            "alt": "Moyyn",
-            "width": 1898,
-            "height": 913
-        },
-        "url": null,
-        "links": [],
-        "year": "2021",
-        "stack": [
-            "React"
         ]
     },
     {
@@ -178,7 +158,7 @@
         "section": "archive",
         "showOnHome": null,
         "order": 80,
-        "summary": "A blockchain-based dApp that removes repeated e-KYC across banks. Built at the American Express hackathon.",
+        "summary": "A blockchain dApp that removes repeated e-KYC across banks. Won the American Express CodeStreet ’21 hackathon.",
         "thumbnail": {
             "file": "open-kyc.jpg",
             "alt": "Open KYC",
@@ -191,6 +171,30 @@
         "stack": [
             "Blockchain",
             "Open Banking"
+        ]
+    },
+    {
+        "id": 9,
+        "title": "Home automation with Alexa",
+        "slug": "home-automation",
+        "section": "archive",
+        "showOnHome": null,
+        "order": 90,
+        "summary": "Plug-and-play switches for a room, controlled by voice through Alexa with a manual fallback. Built on a NodeMCU.",
+        "thumbnail": null,
+        "url": "https://www.youtube.com/watch?v=Uib0XXfhzd4",
+        "links": [
+            {
+                "id": "6ad29a7df2cb79000104d44a",
+                "label": "GitHub",
+                "url": "https://github.com/pranav2012/Nodemcu-Home-Automation"
+            }
+        ],
+        "year": "2018",
+        "stack": [
+            "C++",
+            "NodeMCU",
+            "IoT"
         ]
     }
 ]

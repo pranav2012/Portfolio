@@ -1,6 +1,6 @@
 services:
     portfolio:
-        image: 100.126.38.45:5000/pranav/portfolio:d076b1b
+        image: 100.126.38.45:5000/pranav/portfolio:3ef068d
         pull_policy: always
         container_name: portfolio
         restart: unless-stopped

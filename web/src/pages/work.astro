@@ -22,7 +22,8 @@ const kinds: Record<string, string> = {
     'claude-statusline-pro': 'CLI',
     abtestify: 'npm package',
     moyyn: 'Freelance',
-    'open-kyc': 'Hackathon'
+    'open-kyc': 'Hackathon',
+    'home-automation': 'IoT'
 };
 const kindOf = (p: Project) => kinds[p.slug] ?? sections.find(s => s.key === p.section)?.label ?? '';
 const hrefOf = (p: Project) => p.url ?? p.links?.[0]?.url;
