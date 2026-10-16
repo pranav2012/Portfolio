@@ -1,11 +1,17 @@
 services:
-  portfolio:
-    image: 100.126.38.45:5000/pranav/portfolio:e30158d
-    pull_policy: always
-    container_name: portfolio
-    restart: unless-stopped
-    mem_limit: 192m
-    ports:
-      - "100.126.38.45:3000:3000"
-    expose:
-      - "3000"
+    portfolio:
+        image: 100.126.38.45:5000/pranav/portfolio:e30158d
+        pull_policy: always
+        container_name: portfolio
+        restart: unless-stopped
+        mem_limit: 768m
+        env_file: portfolio.env
+        volumes:
+            - portfolio-data:/app/data
+        ports:
+            - '100.126.38.45:3000:3000'
+        expose:
+            - '3000'
+
+volumes:
+    portfolio-data:

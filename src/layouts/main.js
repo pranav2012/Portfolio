@@ -3,14 +3,16 @@ import dynamic from 'next/dynamic';
 import NavBar from 'Components/navbar';
 import { Box, Container } from '@chakra-ui/react';
 import Footer from 'Components/footer';
-import VoxelDogLoader from 'Elements/voxel-dog-loader';
+import VoxelLoader from 'Elements/voxel-loader';
 
-const LazyVoxelDog = dynamic(() => import('Components/voxel-dog'), {
+const LazyVoxelPranav = dynamic(() => import('Components/voxel-pranav'), {
     ssr: false,
-    loading: () => <VoxelDogLoader />
+    loading: () => <VoxelLoader />
 });
 
-const Main = ({ children, router }) => {
+const Main = ({ children, router, site = {} }) => {
+    const name = site.name || 'Pranav Agarwal';
+    const ogImage = site.ogImage?.url || '/images/card.png';
     return (
         <Box as="main" pb={8}>
             <Head>
@@ -18,8 +20,10 @@ const Main = ({ children, router }) => {
                     name="viewport"
                     content="width=device-width, initial-scale=1"
                 />
-                <meta name="description" content="Pranav's Portfolio" />
-                <meta name="author" content="Pranav Agarwal" />
+                {site.description && (
+                    <meta name="description" content={site.description} />
+                )}
+                <meta name="author" content={name} />
                 <link
                     rel="apple-touch-icon"
                     href="/favicon/apple-touch-icon.png"
@@ -30,26 +34,33 @@ const Main = ({ children, router }) => {
                     type="image/x-icon"
                 />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:site" content="@Pranav__agr" />
-                <meta name="twitter:creator" content="@Pranav__agr" />
-                <meta name="twitter:image" content="/images/card.png" />
-                <meta
-                    property="og:site_name"
-                    content="Pranav Agarwal's Portfolio"
-                />
-                <meta property="og:type" content="website" />
-                <meta property="og:image" content="/images/card.png" />
-                <title>Pranav Agarwal - Homepage</title>
+                {site.twitterHandle && (
+                    <>
+                        <meta
+                            name="twitter:site"
+                            content={site.twitterHandle}
+                        />
+                        <meta
+                            name="twitter:creator"
+                            content={site.twitterHandle}
+                        />
+                    </>
+                )}
+                <meta name="twitter:image" content={ogImage} />
+                <meta property="og:site_name" content={site.title || name} />
+                <meta property="og:type" content="website" key="og:type" />
+                <meta property="og:image" content={ogImage} key="og:image" />
+                <title>{site.title || name}</title>
             </Head>
 
-            <NavBar path={router.asPath} />
+            <NavBar path={router.asPath} name={name} />
 
             <Container maxW="3xl" pt={14}>
-                <LazyVoxelDog />
+                <LazyVoxelPranav />
 
                 {children}
 
-                <Footer />
+                <Footer name={name} />
             </Container>
         </Box>
     );

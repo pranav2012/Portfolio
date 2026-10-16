@@ -4,6 +4,44 @@ const config = defineConfig({
     globalCss: {
         'html, body': {
             bg: 'bg.page'
+        },
+        '.rich-text': {
+            lineHeight: '1.7',
+            '& > * + *': { marginTop: '1em' },
+            '& a': {
+                color: 'link',
+                textUnderlineOffset: '3px',
+                _hover: { textDecoration: 'underline' }
+            },
+            '& h1, & h2, & h3, & h4': {
+                fontFamily: 'heading',
+                fontWeight: 'bold',
+                lineHeight: '1.3',
+                marginTop: '1.6em'
+            },
+            '& h1': { fontSize: '2xl' },
+            '& h2': { fontSize: 'xl' },
+            '& h3, & h4': { fontSize: 'lg' },
+            '& ul, & ol': { paddingInlineStart: '1.5em' },
+            '& ul': { listStyleType: 'disc' },
+            '& ol': { listStyleType: 'decimal' },
+            '& li + li': { marginTop: '0.25em' },
+            '& blockquote': {
+                borderInlineStartWidth: '4px',
+                borderColor: 'grassTeal',
+                paddingInlineStart: '1em',
+                fontStyle: 'italic',
+                opacity: 0.85
+            },
+            '& code': {
+                fontFamily: 'mono',
+                fontSize: '0.9em',
+                px: '1',
+                borderRadius: 'sm',
+                bg: { base: 'blackAlpha.100', _dark: 'whiteAlpha.200' }
+            },
+            '& img': { borderRadius: 'lg', maxWidth: '100%', height: 'auto' },
+            '& hr': { borderColor: 'border', marginBlock: '2em' }
         }
     },
     theme: {

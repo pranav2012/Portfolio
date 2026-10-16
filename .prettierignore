@@ -1,2 +1,7 @@
 node_modules
 .next
+app/(payload)
+src/migrations
+src/payload/payload-types.ts
+pnpm-lock.yaml
+next-env.d.ts

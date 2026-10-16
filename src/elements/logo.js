@@ -18,7 +18,7 @@ const LogoBox = styled.span`
     }
 `;
 
-const Logo = () => {
+const Logo = ({ name = 'Pranav Agarwal' }) => {
     return (
         <Link href="/">
             <LogoBox>
@@ -29,7 +29,7 @@ const Logo = () => {
                     fontWeight="bold"
                     ml={3}
                 >
-                    Pranav Agarwal
+                    {name}
                 </Text>
             </LogoBox>
         </Link>

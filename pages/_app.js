@@ -7,19 +7,24 @@ import { AnimatePresence } from 'framer-motion';
 import Script from 'next/script';
 
 function Website({ Component, pageProps, router }) {
+    const analyticsId = pageProps.site?.analyticsId;
     return (
         <>
-            <Script
-                id="gtag-src"
-                strategy="lazyOnload"
-                src="https://www.googletagmanager.com/gtag/js?id=G-D1FQW8B99F"
-            />
-            <Script id="gtag-init" strategy="lazyOnload">
-                {` window.dataLayer = window.dataLayer || [];
+            {analyticsId && (
+                <>
+                    <Script
+                        id="gtag-src"
+                        strategy="lazyOnload"
+                        src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}
+                    />
+                    <Script id="gtag-init" strategy="lazyOnload">
+                        {` window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-D1FQW8B99F');`}
-            </Script>
+            gtag('config', '${analyticsId}');`}
+                    </Script>
+                </>
+            )}
             <ChakraProvider value={system}>
                 <ThemeProvider
                     attribute="class"
@@ -28,7 +33,7 @@ function Website({ Component, pageProps, router }) {
                     disableTransitionOnChange
                 >
                     <Fonts />
-                    <Layout router={router}>
+                    <Layout router={router} site={pageProps.site}>
                         <AnimatePresence mode="wait" initial={true}>
                             <Component {...pageProps} key={router.route} />
                         </AnimatePresence>
