@@ -14,8 +14,7 @@ import {
 import { IoMenu } from 'react-icons/io5';
 import ThemeToggleButton from 'Elements/theme-toggle-button';
 
-const LinkItem = ({ href, path, _target, children, ...props }) => {
-    const active = path === href;
+const LinkItem = ({ href, active, _target, children, ...props }) => {
     return (
         <Link
             asChild
@@ -35,8 +34,8 @@ const LinkItem = ({ href, path, _target, children, ...props }) => {
     );
 };
 
-const Navbar = props => {
-    const { path } = props;
+const Navbar = ({ path, name }) => {
+    const isActive = href => path === href || path.startsWith(`${href}/`);
 
     return (
         <Box
@@ -46,7 +45,6 @@ const Navbar = props => {
             bg={{ base: '#ffffff40', _dark: '#20202380' }}
             style={{ backdropFilter: 'blur(10px)' }}
             zIndex={1}
-            {...props}
         >
             <Container
                 display="flex"
@@ -58,7 +56,7 @@ const Navbar = props => {
             >
                 <Flex align="center" mr={5}>
                     <Heading as="h1" size="lg" letterSpacing={'tighter'}>
-                        <Logo />
+                        <Logo name={name} />
                     </Heading>
                 </Flex>
 
@@ -70,11 +68,11 @@ const Navbar = props => {
                     flexGrow={1}
                     mt={{ base: 4, md: 0 }}
                 >
-                    <LinkItem href="/works" path={path}>
+                    <LinkItem href="/works" active={isActive('/works')}>
                         Works
                     </LinkItem>
-                    <LinkItem href="/posts" path={path}>
-                        Posts
+                    <LinkItem href="/blog" active={isActive('/blog')}>
+                        Blog
                     </LinkItem>
                 </Stack>
 
@@ -102,9 +100,9 @@ const Navbar = props => {
                                                 Works
                                             </NextLink>
                                         </Menu.Item>
-                                        <Menu.Item value="posts" asChild>
-                                            <NextLink href="/posts">
-                                                Posts
+                                        <Menu.Item value="blog" asChild>
+                                            <NextLink href="/blog">
+                                                Blog
                                             </NextLink>
                                         </Menu.Item>
                                     </Menu.Content>

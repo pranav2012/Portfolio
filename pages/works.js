@@ -1,126 +1,63 @@
-import { Container, Heading, SimpleGrid, Separator } from '@chakra-ui/react';
+import {
+    Container,
+    Heading,
+    SimpleGrid,
+    Separator,
+    Text
+} from '@chakra-ui/react';
 import Layout from 'Layouts/article';
 import Section from 'Elements/section';
 import { WorkGridItem } from 'Elements/grid-item';
-import thumbBuisness from 'Assets/works/buisness.jpg';
-import thumbCovid from 'Assets/works/covid-care.png';
-import thumbFace from 'Assets/works/nefilus.png';
-import thumbMoyyn from 'Assets/works/moyyn.png';
-import thumbCompiler from 'Assets/works/online-compiler.png';
-import thumbKyc from 'Assets/works/open-kyc.jpg';
-import thumbProject from 'Assets/works/project-showcase.png';
-import thumbVideo from 'Assets/works/video-connect.png';
+import { withLayout } from 'Lib/cms';
 
-const Works = () => (
-    <Layout title="Works">
-        <Container>
-            <Heading as="h3" fontSize={20} mb={4}>
-                My Work
-            </Heading>
+const sections = [
+    { value: 'featured', title: 'My Work' },
+    { value: 'oss', title: 'Open source & tools' },
+    { value: 'archive', title: 'Earlier work' }
+];
 
-            <SimpleGrid columns={[1, 1, 2]} gap={6}>
-                <Section>
-                    <WorkGridItem
-                        link="https://covidcare-alpha.vercel.app"
-                        title="Covide Care"
-                        thumbnail={thumbCovid}
-                    >
-                        A Web App to request and volunteer for help during covid
-                        pandamic
-                    </WorkGridItem>
-                </Section>
-                <Section>
-                    <WorkGridItem
-                        link="https://code-editor-rust.vercel.app"
-                        title="Frontend IDE"
-                        thumbnail={thumbCompiler}
-                    >
-                        Online HTML / CSS / JS Code Compiler
-                    </WorkGridItem>
-                </Section>
+const Works = ({ projects }) => {
+    const groups = sections
+        .map(section => ({
+            ...section,
+            items: projects.filter(p => p.section === section.value)
+        }))
+        .filter(group => group.items.length > 0);
 
-                <Section delay={0.1}>
-                    <WorkGridItem
-                        link="https://github.com/pranav2012/VideoConnect-with-amplify-auth"
-                        thumbnail={thumbVideo}
-                        title="Video Connect"
-                    >
-                        Short Video Showcase Web App using AWS Amplify
-                    </WorkGridItem>
-                </Section>
-                <Section delay={0.1}>
-                    <WorkGridItem
-                        link="https://nefilus.vercel.app"
-                        thumbnail={thumbFace}
-                        title="Nefilus"
-                    >
-                        NFT Market Place
-                    </WorkGridItem>
-                </Section>
-            </SimpleGrid>
+    return (
+        <Layout title="Works">
+            <Container>
+                {groups.length === 0 && <Text>Nothing here yet.</Text>}
+                {groups.map((group, i) => (
+                    <Section key={group.value} delay={i * 0.2}>
+                        {i > 0 && <Separator my={6} />}
+                        <Heading as="h3" fontSize={20} mb={4}>
+                            {group.title}
+                        </Heading>
+                        <SimpleGrid columns={[1, 1, 2]} gap={6}>
+                            {group.items.map(project => (
+                                <WorkGridItem
+                                    key={project.id}
+                                    project={project}
+                                />
+                            ))}
+                        </SimpleGrid>
+                    </Section>
+                ))}
+            </Container>
+        </Layout>
+    );
+};
 
-            <Section delay={0.2}>
-                <Separator my={6} />
-
-                <Heading as="h3" fontSize={20} mb={4}>
-                    Collaborations
-                </Heading>
-            </Section>
-
-            <SimpleGrid columns={[1, 1, 2]} gap={6}>
-                <Section delay={0.3}>
-                    <WorkGridItem
-                        link="https://github.com/pranav2012/AmexHack"
-                        thumbnail={thumbKyc}
-                        title="Open KYC"
-                    >
-                        Blockchain based Web D-App for Banking / Financial KYC
-                        proccess
-                    </WorkGridItem>
-                </Section>
-                <Section delay={0.3}>
-                    <WorkGridItem
-                        link="https://moyyn.com"
-                        thumbnail={thumbMoyyn}
-                        title="Moyyn"
-                    >
-                        A.I based reverse job searhing platform
-                    </WorkGridItem>
-                </Section>
-            </SimpleGrid>
-
-            <Section delay={0.4}>
-                <Separator my={6} />
-
-                <Heading as="h3" fontSize={20} mb={4}>
-                    Old works
-                </Heading>
-            </Section>
-
-            <SimpleGrid columns={[1, 1, 2]} gap={6}>
-                <Section delay={0.5}>
-                    <WorkGridItem
-                        link="https://pranavportfolio.netlify.app"
-                        thumbnail={thumbProject}
-                        title="Project Showcase"
-                    >
-                        It contains all information about me all my projects and
-                        work at one place
-                    </WorkGridItem>
-                </Section>
-                <Section delay={0.5}>
-                    <WorkGridItem
-                        link="https://agitated-wiles-fd5a49.netlify.app"
-                        thumbnail={thumbBuisness}
-                        title="Buisness Website"
-                    >
-                        It showcases about the compnay, their Products and
-                        conatct Details
-                    </WorkGridItem>
-                </Section>
-            </SimpleGrid>
-        </Container>
-    </Layout>
-);
+export const getServerSideProps = () =>
+    withLayout(async cms => {
+        const { docs } = await cms.find({
+            collection: 'projects',
+            sort: 'order',
+            limit: 100,
+            depth: 1
+        });
+        return { projects: docs };
+    });
 
 export default Works;

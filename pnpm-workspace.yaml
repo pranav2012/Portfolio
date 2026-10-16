@@ -1,0 +1,17 @@
+minimumReleaseAge: 2880 # 2 days
+# Next 16.4.2, React 19.3.1, framer-motion 14.3.0 and Payload 3.91.0 were taken
+# early (published 2026-10-14/15); drop these once they're past the window.
+minimumReleaseAgeExclude:
+    - next
+    - '@next/*'
+    - eslint-config-next
+    - react
+    - react-dom
+    - framer-motion
+    - motion-dom
+    - payload
+    - '@payloadcms/*'
+allowBuilds:
+    esbuild: true
+    sharp: true
+    unrs-resolver: true
