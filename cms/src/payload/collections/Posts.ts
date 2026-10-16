@@ -2,6 +2,7 @@ import type { Access, CollectionConfig } from 'payload';
 import { loggedIn } from '../access';
 import { slugField } from '../fields/slug';
 import { htmlOf } from '../fields/html';
+import { postContent } from '../fields/postContent';
 import { publishAfterChange, publishAfterDelete } from '../publish';
 
 const publishedOrLoggedIn: Access = ({ req: { user } }) =>
@@ -61,7 +62,7 @@ export const Posts: CollectionConfig = {
             admin: { description: 'Shown in the blog list and link previews.' }
         },
         { name: 'cover', type: 'upload', relationTo: 'media' },
-        { name: 'content', type: 'richText', required: true },
+        postContent,
         htmlOf('content')
     ]
 };
