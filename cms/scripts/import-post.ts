@@ -9,7 +9,7 @@
 //   PAYLOAD_ADMIN_PASSWORD
 //
 // The Markdown starts with "# Title", then optional "> excerpt: …" and
-// "> tags: a, b" lines. Image paths are relative to the Markdown file.
+// "> tags: a, b" and "> slug: …" lines. Image paths are relative to the Markdown file.
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -63,14 +63,14 @@ const tags = markdown
     .split(',')
     .map(tag => tag.trim())
     .filter(Boolean);
-markdown = markdown
-    .replace(/^# .+\n/m, '')
-    .replace(/^> (excerpt|tags): .+\n/gm, '')
-    .trim();
-const slug = title
+const slug = (markdown.match(/^> slug: (.+)$/m)?.[1].trim() ?? title)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+markdown = markdown
+    .replace(/^# .+\n/m, '')
+    .replace(/^> (excerpt|tags|slug): .+\n/gm, '')
+    .trim();
 
 // Images: upload each (replacing an earlier upload with the same name) and
 // leave a placeholder paragraph to swap for an upload node.
