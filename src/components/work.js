@@ -1,12 +1,15 @@
+import NextLink from 'next/link';
 import { Heading, Box, Image, Link, Badge } from '@chakra-ui/react';
-import { ChevronRightIcon } from '@chakra-ui/icons';
+import { IoChevronForward } from 'react-icons/io5';
 
 export const Title = ({ children }) => (
     <Box>
-            <Link href="/works">Works</Link>
+        <Link asChild>
+            <NextLink href="/works">Works</NextLink>
+        </Link>
         <span>
             {' '}
-            <ChevronRightIcon />{' '}
+            <IoChevronForward style={{ display: 'inline' }} />{' '}
         </span>
         <Heading display="inline-block" as="h3" fontSize={20} mb={4}>
             {children}
@@ -19,7 +22,7 @@ export const WorkImage = ({ src, alt }) => (
 );
 
 export const Meta = ({ children }) => (
-    <Badge colorScheme="green" mr={2}>
+    <Badge colorPalette="green" mr={2}>
         {children}
     </Badge>
 );
