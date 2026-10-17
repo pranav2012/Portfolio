@@ -82,7 +82,8 @@ const content = {
             'where[_status][equals]=published&sort=-publishedAt'
         )
     ).map(post => ({ ...post, contentHtml: cleanHtml(post.contentHtml) })),
-    videos: clean(await docs('videos', 'sort=order'))
+    videos: clean(await docs('videos', 'sort=order')),
+    community: clean(await docs('community', 'sort=order'))
 };
 delete content.profile.about;
 

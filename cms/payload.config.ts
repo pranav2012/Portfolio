@@ -10,6 +10,7 @@ import { Media } from './src/payload/collections/Media';
 import { Projects } from './src/payload/collections/Projects';
 import { Posts } from './src/payload/collections/Posts';
 import { Videos } from './src/payload/collections/Videos';
+import { Community } from './src/payload/collections/Community';
 import { Profile } from './src/payload/globals/Profile';
 import { Site } from './src/payload/globals/Site';
 import { seed } from './src/payload/seed';
@@ -28,7 +29,7 @@ export default buildConfig({
             titleSuffix: ' - Portfolio CMS'
         }
     },
-    collections: [Projects, Posts, Videos, Media, Users],
+    collections: [Projects, Posts, Videos, Community, Media, Users],
     globals: [Profile, Site],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',

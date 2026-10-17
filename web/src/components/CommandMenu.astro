@@ -10,6 +10,7 @@ const commands: Command[] = [
     { group: 'Pages', label: 'Work', href: '/work' },
     { group: 'Pages', label: 'Blog', href: '/blog' },
     { group: 'Pages', label: 'Videos', href: '/videos' },
+    { group: 'Pages', label: 'Community', href: '/community' },
     ...getProjects()
         .filter(p => p.url ?? p.links?.[0]?.url)
         .map(p => ({ group: 'Projects', label: p.title, hint: p.year ?? undefined, href: (p.url ?? p.links?.[0]?.url)!, external: true })),

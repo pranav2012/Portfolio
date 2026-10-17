@@ -41,6 +41,7 @@ pnpm --filter portfolio-cms migrate:create <name>   # production applies migrati
 - **Projects**: the Work page. `Section` picks the group, `Order` sorts within it, `Show on home page` puts it under Selected work.
 - **Posts**: the blog. Save as draft, then Publish. Only published posts are public.
 - **Videos**: YouTube links for the Videos section. Thumbnails come from YouTube unless you upload one.
+- **Community**: the Community page. `Kind` puts an entry under communities, talks, or mentoring and judging; `Order` sorts within it.
 - **Profile**: everything on the home page.
 - **SEO & site**: title, description, link preview image, analytics ID.
 

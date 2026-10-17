@@ -6,6 +6,7 @@ import profile from '../content/profile.json';
 import projects from '../content/projects.json';
 import posts from '../content/posts.json';
 import videos from '../content/videos.json';
+import community from '../content/community.json';
 
 // The site's content. The CMS writes these files (cms/scripts/
 // export-content.mjs) and pushes them, which redeploys the site.
@@ -55,6 +56,20 @@ export type Video = {
     channel?: string | null;
 };
 
+export type CommunityEntry = {
+    id: number;
+    title: string;
+    kind: 'community' | 'talk' | 'mentoring';
+    organisation?: string | null;
+    role?: string | null;
+    period?: string | null;
+    description?: string | null;
+    highlights?: string[] | null;
+    url?: string | null;
+    image?: Media | null;
+    order?: number | null;
+};
+
 export type Job = {
     id: string;
     role: string;
@@ -100,6 +115,7 @@ export const getProfile = () => profile as Profile;
 export const getProjects = () => projects as Project[];
 export const getPosts = () => posts as Post[];
 export const getVideos = () => videos as Video[];
+export const getCommunity = () => community as CommunityEntry[];
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
     '../content/media/*',

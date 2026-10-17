@@ -70,6 +70,7 @@ export interface Config {
     projects: Project;
     posts: Post;
     videos: Video;
+    community: Community;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -82,6 +83,7 @@ export interface Config {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
+    community: CommunitySelect<false> | CommunitySelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -273,6 +275,48 @@ export interface Video {
   createdAt: string;
 }
 /**
+ * Communities led, talks given, and hackathons mentored or judged, for the Community page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "community".
+ */
+export interface Community {
+  id: number;
+  /**
+   * The community's name, or the talk's title.
+   */
+  title: string;
+  kind: 'community' | 'talk' | 'mentoring';
+  /**
+   * Where it happened, e.g. the meetup or hackathon. Leave empty when the title says it.
+   */
+  organisation?: string | null;
+  /**
+   * e.g. Founder, Lead, Speaker, Mentor.
+   */
+  role?: string | null;
+  /**
+   * e.g. "Dec 2022 – present" or "2023".
+   */
+  period?: string | null;
+  description?: string | null;
+  /**
+   * Short facts shown as chips, e.g. "1,000+ students".
+   */
+  highlights?: string[] | null;
+  /**
+   * Where the entry links to.
+   */
+  url?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * Lower numbers come first within each kind.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -333,6 +377,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'videos';
         value: number | Video;
+      } | null)
+    | ({
+        relationTo: 'community';
+        value: number | Community;
       } | null)
     | ({
         relationTo: 'media';
@@ -439,6 +487,24 @@ export interface VideosSelect<T extends boolean = true> {
   order?: T;
   channel?: T;
   thumbnail?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "community_select".
+ */
+export interface CommunitySelect<T extends boolean = true> {
+  title?: T;
+  kind?: T;
+  organisation?: T;
+  role?: T;
+  period?: T;
+  description?: T;
+  highlights?: T;
+  url?: T;
+  image?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }

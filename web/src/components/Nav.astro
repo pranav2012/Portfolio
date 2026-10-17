@@ -9,7 +9,8 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const links = [
     { href: '/work', label: 'Work' },
     { href: '/blog', label: 'Blog' },
-    { href: '/videos', label: 'Videos' }
+    { href: '/videos', label: 'Videos' },
+    { href: '/community', label: 'Community' }
 ];
 const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
