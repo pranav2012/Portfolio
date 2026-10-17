@@ -2,24 +2,44 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import { getCommunity, image, type CommunityEntry } from '../lib/content';
+import { getCommunity, image, type CommunityEntry, type Media } from '../lib/content';
 
 const entries = getCommunity();
 const of = (kind: CommunityEntry['kind']) =>
     entries.filter(e => e.kind === kind).sort((a, b) => (a.order ?? 100) - (b.order ?? 100));
 const communities = of('community');
-const lists = [
-    { title: 'Talks', about: 'Sessions at meetups and student developer events.', items: of('talk') },
-    { title: 'Mentoring & judging', about: 'Helping other people build, at hackathons and open-source programmes.', items: of('mentoring') }
-].filter(l => l.items.length > 0);
+const talks = of('talk');
+const mentoring = of('mentoring');
+const events = of('event');
+
+// Event photos (not posters or graphics) for the mosaic: one landscape photo
+// per community and event, one big tile then four small.
+const isPhoto = (p: Media) => p.width > p.height * 1.15;
+const moments = [...communities, ...events]
+    .map(entry => {
+        // Community cards already show the first photo, so the mosaic takes the next one.
+        const landscape = (entry.photos ?? []).filter(isPhoto);
+        return { entry, photo: entry.kind === 'community' ? (landscape[1] ?? landscape[0]) : landscape[0] };
+    })
+    .filter((m): m is { entry: CommunityEntry; photo: Media } => Boolean(m.photo))
+    .slice(0, 5);
+const initials = (title: string) =>
+    title
+        .split(/\s+/)
+        .filter(w => /^[A-Z]/.test(w))
+        .map(w => w[0])
+        .join('')
+        .slice(0, 4);
+
 const counts = [
-    [communities.length, 'communities'],
-    [of('talk').length, 'talks'],
-    [of('mentoring').length, 'mentor and judge roles']
+    [communities.length, communities.length === 1 ? 'community' : 'communities'],
+    [talks.length, talks.length === 1 ? 'talk' : 'talks'],
+    [mentoring.length, 'mentor and judge roles'],
+    [events.length, 'events']
 ].filter(([n]) => Number(n) > 0);
 ---
 
-<Base title="Community" description="Communities Pranav Agarwal has founded and led, talks he has given, and hackathons he has mentored and judged." wide>
+<Base title="Community" description="Communities Pranav Agarwal has founded and led, talks he has given, hackathons he has mentored and judged, and the events in between." wide>
     <header class="reveal flex flex-wrap items-end justify-between gap-4 pt-10 md:pt-14">
         <div>
             <p class="eyebrow">Community</p>
@@ -32,79 +52,213 @@ const counts = [
     </header>
 
     {
-        communities.length > 0 && (
-            <section class="reveal mt-12" style="--delay: 0.1s" data-component="Communities">
-                <h2 class="mb-5 text-xl">Communities</h2>
-                <div class="grid gap-4 md:grid-cols-2">
-                    {communities.map(c => (
-                        <article class="card group relative flex flex-col p-5 transition-colors hover:border-line-strong sm:p-6">
-                            <div class="flex items-start gap-4">
-                                {c.image && (
-                                    <Image src={image(c.image)} alt="" widths={[96]} sizes="48px" class="size-12 shrink-0 rounded-xl border border-line object-cover" />
-                                )}
-                                <div class="min-w-0 grow">
-                                    <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
-                                        {c.role && <span class="eyebrow">{c.role}</span>}
-                                        {c.period && <span class="font-mono text-xs text-faint">{c.period}</span>}
-                                    </p>
-                                    <h3 class="mt-1.5 text-lg leading-snug font-medium text-pretty">
-                                        {c.url ? (
-                                            <a href={c.url} target="_blank" rel="noopener noreferrer" class="after:absolute after:inset-0 group-hover:text-accent">
-                                                {c.title}
-                                            </a>
-                                        ) : (
-                                            c.title
-                                        )}
-                                    </h3>
+        moments.length > 0 && (
+            <section class="reveal mt-10" style="--delay: 0.05s" aria-label="Moments" data-component="Moments">
+                <div class="grid auto-rows-[130px] grid-cols-2 gap-2 sm:auto-rows-[160px] sm:gap-3 md:grid-cols-4 md:auto-rows-[170px]">
+                    {moments.map(({ entry, photo }, i) => {
+                        const Tag = entry.postUrl ? 'a' : 'div';
+                        return (
+                            <Tag
+                                {...(entry.postUrl ? { href: entry.postUrl, target: '_blank', rel: 'noopener noreferrer' } : {})}
+                                class:list={['group relative overflow-hidden rounded-2xl border border-line bg-raised', i === 0 && 'col-span-2 row-span-2']}
+                            >
+                                <Image
+                                    src={image(photo)}
+                                    alt={photo.alt}
+                                    widths={i === 0 ? [640, 1080] : [360, 640]}
+                                    sizes={i === 0 ? '(min-width: 768px) 560px, 100vw' : '(min-width: 768px) 280px, 50vw'}
+                                    loading={i < 3 ? 'eager' : 'lazy'}
+                                    class="size-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-[1.04]"
+                                />
+                                <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent px-3 pt-10 pb-2.5 sm:px-4 sm:pb-3">
+                                    <p class:list={['leading-snug font-medium text-white', i === 0 ? 'text-base sm:text-lg' : 'text-[13px]']}>{entry.title}</p>
+                                    {entry.period && <p class="mt-0.5 font-mono text-[11px] text-white/70">{entry.period}</p>}
                                 </div>
-                                {c.url && <Icon name="arrow-right-up-line" class="size-4 shrink-0 text-faint transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />}
-                            </div>
-                            {c.description && <p class="mt-3 text-[14px] leading-relaxed text-dim">{c.description}</p>}
-                            {c.highlights && c.highlights.length > 0 && (
-                                <p class="mt-4 flex flex-wrap gap-1.5">
-                                    {c.highlights.map(h => <span class="chip">{h}</span>)}
-                                </p>
-                            )}
-                        </article>
-                    ))}
+                                {entry.postUrl && (
+                                    <Icon name="linkedin-box-fill" class="absolute top-2.5 right-2.5 size-5 text-white/90 opacity-0 drop-shadow transition-opacity group-hover:opacity-100" />
+                                )}
+                            </Tag>
+                        );
+                    })}
                 </div>
             </section>
         )
     }
 
     {
-        lists.map((list, i) => (
-            <section class="reveal mt-14" style={`--delay: ${0.15 + i * 0.05}s`} data-component="CommunityList">
+        communities.length > 0 && (
+            <section class="reveal mt-16" style="--delay: 0.1s" data-component="Communities">
+                <h2 class="mb-5 text-xl">Communities</h2>
+                <div class="grid gap-4 md:grid-cols-2">
+                    {communities.map(c => {
+                        const [cover, ...more] = c.photos ?? [];
+                        return (
+                            <article class="card flex flex-col overflow-hidden transition-colors hover:border-line-strong">
+                                {!cover && (
+                                    <div class="relative grid aspect-[16/9] place-items-center overflow-hidden border-b border-line bg-[radial-gradient(circle_at_50%_60%,var(--glow),transparent_65%)]" aria-hidden="true">
+                                        <div class="grid-backdrop absolute inset-0 opacity-60" />
+                                        <span class="relative font-mono text-5xl font-semibold tracking-tight text-faint">{initials(c.title)}</span>
+                                    </div>
+                                )}
+                                {cover && (
+                                    <a href={c.postUrl ?? c.url ?? undefined} target="_blank" rel="noopener noreferrer" class="group block overflow-hidden border-b border-line bg-white" tabindex="-1" aria-hidden="true">
+                                        <Image
+                                            src={image(cover)}
+                                            alt=""
+                                            widths={[560, 1000]}
+                                            sizes="(min-width: 768px) 540px, 100vw"
+                                            class:list={['aspect-[16/9] w-full transition-transform duration-700 ease-out-soft group-hover:scale-[1.03]', isPhoto(cover) ? 'object-cover' : 'object-contain']}
+                                        />
+                                    </a>
+                                )}
+                                <div class="flex grow flex-col p-5 sm:p-6">
+                                    <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                                        {c.role && <span class="eyebrow">{c.role}</span>}
+                                        {c.period && <span class="font-mono text-xs text-faint">{c.period}</span>}
+                                    </p>
+                                    <h3 class="mt-1.5 text-lg leading-snug font-medium text-pretty">{c.title}</h3>
+                                    {c.description && <p class="mt-2.5 text-[14px] leading-relaxed text-dim">{c.description}</p>}
+                                    {c.highlights && c.highlights.length > 0 && (
+                                        <p class="mt-4 flex flex-wrap gap-1.5">
+                                            {c.highlights.map(h => <span class="chip">{h}</span>)}
+                                        </p>
+                                    )}
+                                    {more.length > 0 && (
+                                        <div class="mt-4 flex gap-2">
+                                            {more.slice(0, 4).map(p => (
+                                                <a href={c.postUrl ?? undefined} target="_blank" rel="noopener noreferrer" class="block overflow-hidden rounded-lg border border-line">
+                                                    <Image src={image(p)} alt={p.alt} widths={[160]} sizes="80px" class="h-12 w-16 object-cover transition-opacity hover:opacity-80" />
+                                                </a>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {(c.url || c.postUrl) && (
+                                        <p class="mt-auto flex flex-wrap gap-2 pt-5">
+                                            {c.url && (
+                                                <a href={c.url} target="_blank" rel="noopener noreferrer" class="community-link">
+                                                    <Icon name="global-line" class="size-4" />
+                                                    Website
+                                                </a>
+                                            )}
+                                            {c.postUrl && (
+                                                <a href={c.postUrl} target="_blank" rel="noopener noreferrer" class="community-link">
+                                                    <Icon name="linkedin-box-fill" class="size-4" />
+                                                    LinkedIn post
+                                                </a>
+                                            )}
+                                        </p>
+                                    )}
+                                </div>
+                            </article>
+                        );
+                    })}
+                </div>
+            </section>
+        )
+    }
+
+    {
+        talks.length > 0 && (
+            <section class="reveal mt-16" style="--delay: 0.15s" data-component="Talks">
                 <div class="mb-5">
-                    <h2 class="text-xl">{list.title}</h2>
-                    <p class="mt-1 text-[13.5px] text-dim">{list.about}</p>
+                    <h2 class="text-xl">Talks</h2>
+                    <p class="mt-1 text-[13.5px] text-dim">Sessions at meetups and student developer events.</p>
+                </div>
+                <div class="grid gap-4 md:grid-cols-2">
+                    {talks.map(t => {
+                        const poster = t.photos?.[0];
+                        const href = t.postUrl ?? t.url;
+                        return (
+                            <article class="card group relative flex gap-4 p-4 transition-colors hover:border-line-strong sm:gap-5 sm:p-5">
+                                <div class="size-24 shrink-0 overflow-hidden rounded-xl border border-line bg-raised sm:size-32">
+                                    {poster ? (
+                                        <Image src={image(poster)} alt={poster.alt} widths={[200, 320]} sizes="128px" class="size-full object-cover" />
+                                    ) : (
+                                        <span class="grid size-full place-items-center text-faint">
+                                            <Icon name="mic-line" class="size-7" />
+                                        </span>
+                                    )}
+                                </div>
+                                <div class="min-w-0 grow">
+                                    {t.period && <p class="font-mono text-xs text-faint">{t.period}</p>}
+                                    <h3 class="mt-1 text-base leading-snug font-medium text-pretty sm:text-[17px]">
+                                        {href ? (
+                                            <a href={href} target="_blank" rel="noopener noreferrer" class="after:absolute after:inset-0 group-hover:text-accent">
+                                                {t.title}
+                                            </a>
+                                        ) : (
+                                            t.title
+                                        )}
+                                    </h3>
+                                    {t.organisation && <p class="mt-1 text-sm text-dim">{t.organisation}</p>}
+                                    {t.description && <p class="mt-2 text-[13.5px] leading-relaxed text-dim">{t.description}</p>}
+                                    {href && (
+                                        <p class="mt-3 flex items-center gap-1.5 text-xs text-faint group-hover:text-ink">
+                                            <Icon name={t.postUrl ? 'linkedin-box-fill' : 'external-link-line'} class="size-3.5" />
+                                            {t.postUrl ? 'LinkedIn post' : 'Course repo'}
+                                        </p>
+                                    )}
+                                </div>
+                            </article>
+                        );
+                    })}
+                </div>
+            </section>
+        )
+    }
+
+    {
+        mentoring.length > 0 && (
+            <section class="reveal mt-16" style="--delay: 0.2s" data-component="Mentoring">
+                <div class="mb-5">
+                    <h2 class="text-xl">Mentoring & judging</h2>
+                    <p class="mt-1 text-[13.5px] text-dim">Helping other people build, at hackathons and open-source programmes.</p>
                 </div>
                 <ol class="card divide-y divide-line overflow-hidden">
-                    {list.items.map(item => (
-                        <li class:list={['group relative grid gap-x-8 gap-y-1.5 px-5 py-5 sm:grid-cols-[1fr_auto] sm:px-6', item.url && 'transition-colors hover:bg-raised']}>
-                            <div class="min-w-0">
-                                <h3 class="text-base leading-snug font-medium text-pretty sm:text-[17px]">
-                                    {item.url ? (
-                                        <a href={item.url} target="_blank" rel="noopener noreferrer" class="after:absolute after:inset-0 group-hover:text-accent">
-                                            {item.title}
-                                        </a>
-                                    ) : (
-                                        item.title
-                                    )}
-                                </h3>
-                                <p class="mt-1 text-sm text-dim">{[item.role, item.organisation].filter(Boolean).join(' · ')}</p>
-                                {item.description && <p class="mt-2 max-w-[70ch] text-sm leading-relaxed text-dim">{item.description}</p>}
-                                {item.highlights && item.highlights.length > 0 && (
-                                    <p class="mt-3 flex flex-wrap gap-1.5">
-                                        {item.highlights.map(h => <span class="chip">{h}</span>)}
-                                    </p>
-                                )}
-                            </div>
-                            {item.period && <p class="order-first font-mono text-xs text-faint sm:order-none sm:pt-1 sm:text-right">{item.period}</p>}
-                        </li>
-                    ))}
+                    {mentoring.map(m => {
+                        const href = m.postUrl ?? m.url;
+                        return (
+                            <li class:list={['group relative grid gap-x-8 gap-y-1 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-baseline sm:px-6', href && 'transition-colors hover:bg-raised']}>
+                                <div class="min-w-0">
+                                    <h3 class="text-base font-medium">
+                                        {href ? (
+                                            <a href={href} target="_blank" rel="noopener noreferrer" class="after:absolute after:inset-0 group-hover:text-accent">
+                                                {m.title}
+                                            </a>
+                                        ) : (
+                                            m.title
+                                        )}
+                                        {m.role && <span class="ml-2 text-sm font-normal text-dim">{m.role}</span>}
+                                    </h3>
+                                    {m.description && <p class="mt-1 text-[13.5px] leading-relaxed text-dim">{m.description}</p>}
+                                </div>
+                                {m.period && <p class="order-first font-mono text-xs text-faint sm:order-none">{m.period}</p>}
+                            </li>
+                        );
+                    })}
                 </ol>
             </section>
-        ))
+        )
     }
 </Base>
+
+<style>
+    .community-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--line-strong);
+        background: var(--soft);
+        padding: 0.35rem 0.7rem;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--ink);
+        transition:
+            background 0.2s,
+            border-color 0.2s;
+    }
+    .community-link:hover {
+        background: var(--raised);
+    }
+</style>

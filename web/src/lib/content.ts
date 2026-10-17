@@ -59,13 +59,15 @@ export type Video = {
 export type CommunityEntry = {
     id: number;
     title: string;
-    kind: 'community' | 'talk' | 'mentoring';
+    kind: 'community' | 'talk' | 'mentoring' | 'event';
     organisation?: string | null;
     role?: string | null;
     period?: string | null;
     description?: string | null;
     highlights?: string[] | null;
     url?: string | null;
+    postUrl?: string | null;
+    photos?: Media[] | null;
     image?: Media | null;
     order?: number | null;
 };

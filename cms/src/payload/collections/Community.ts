@@ -16,7 +16,7 @@ export const Community: CollectionConfig = {
         defaultColumns: ['title', 'kind', 'role', 'period', 'order'],
         group: 'Content',
         description:
-            'Communities led, talks given, and hackathons mentored or judged, for the Community page.'
+            'Communities led, talks given, hackathons mentored or judged, and events attended, for the Community page.'
     },
     defaultSort: 'order',
     hooks: {
@@ -41,7 +41,8 @@ export const Community: CollectionConfig = {
             options: [
                 { label: 'Community', value: 'community' },
                 { label: 'Talk', value: 'talk' },
-                { label: 'Mentoring & judging', value: 'mentoring' }
+                { label: 'Mentoring & judging', value: 'mentoring' },
+                { label: 'Event attended', value: 'event' }
             ],
             admin: { position: 'sidebar' }
         },
@@ -62,8 +63,16 @@ export const Community: CollectionConfig = {
             hasMany: true,
             admin: { description: 'Short facts shown as chips, e.g. "1,000+ students".' }
         },
-        { name: 'url', type: 'text', admin: { description: 'Where the entry links to.' } },
-        { name: 'image', type: 'upload', relationTo: 'media' },
+        { name: 'url', type: 'text', label: 'Website', admin: { description: "The community's or event's own site." } },
+        { name: 'postUrl', type: 'text', label: 'LinkedIn post', admin: { description: 'The post about it, opened from the entry.' } },
+        {
+            name: 'photos',
+            type: 'upload',
+            relationTo: 'media',
+            hasMany: true,
+            admin: { description: 'The first photo is the cover; photos also appear in the Moments mosaic.' }
+        },
+        { name: 'image', type: 'upload', relationTo: 'media', label: 'Logo', admin: { description: 'Optional.' } },
         {
             name: 'order',
             type: 'number',

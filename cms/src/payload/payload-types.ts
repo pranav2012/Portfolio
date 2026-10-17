@@ -275,7 +275,7 @@ export interface Video {
   createdAt: string;
 }
 /**
- * Communities led, talks given, and hackathons mentored or judged, for the Community page.
+ * Communities led, talks given, hackathons mentored or judged, and events attended, for the Community page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "community".
@@ -286,7 +286,7 @@ export interface Community {
    * The community's name, or the talk's title.
    */
   title: string;
-  kind: 'community' | 'talk' | 'mentoring';
+  kind: 'community' | 'talk' | 'mentoring' | 'event';
   /**
    * Where it happened, e.g. the meetup or hackathon. Leave empty when the title says it.
    */
@@ -305,9 +305,20 @@ export interface Community {
    */
   highlights?: string[] | null;
   /**
-   * Where the entry links to.
+   * The community's or event's own site.
    */
   url?: string | null;
+  /**
+   * The post about it, opened from the entry.
+   */
+  postUrl?: string | null;
+  /**
+   * The first photo is the cover; photos also appear in the Moments mosaic.
+   */
+  photos?: (number | Media)[] | null;
+  /**
+   * Optional.
+   */
   image?: (number | null) | Media;
   /**
    * Lower numbers come first within each kind.
@@ -503,6 +514,8 @@ export interface CommunitySelect<T extends boolean = true> {
   description?: T;
   highlights?: T;
   url?: T;
+  postUrl?: T;
+  photos?: T;
   image?: T;
   order?: T;
   updatedAt?: T;

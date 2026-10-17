@@ -1,76 +1,48 @@
 [
     {
-        "id": 8,
-        "title": "GirlScript Summer of Code",
-        "kind": "mentoring",
-        "organisation": null,
-        "role": "Mentor",
-        "period": "Feb 2022 – present",
-        "description": "Mentoring contributors in GirlScript's open-source programme.",
-        "highlights": [],
-        "url": null,
-        "image": null,
-        "order": 10
-    },
-    {
-        "id": 5,
-        "title": "How Browsers Bring Web Pages to Life",
-        "kind": "talk",
-        "organisation": "GDSC WOW Delhi NCR",
-        "role": "Speaker",
-        "period": "2024",
-        "description": "What a browser does between receiving HTML and painting pixels: rendering engines, applying CSS, and handing work to the GPU.",
-        "highlights": [],
-        "url": null,
-        "image": null,
-        "order": 10
-    },
-    {
-        "id": 1,
         "title": "TheFrontendClub",
         "kind": "community",
-        "organisation": null,
         "role": "Founder",
         "period": "Dec 2022 – present",
         "description": "A community for people starting out in frontend. Its meetup, Coffee with TFC, brings people together for talks on everything from the GitHub Student Developer Pack to Flutter, Firebase and web accessibility.",
         "highlights": [
-            "Coffee with TFC meetups"
+            "Coffee with TFC meetups",
+            "First meetup, Nov 2023"
         ],
-        "url": "https://bento.me/thefrontendclub",
-        "image": null,
-        "order": 10
+        "url": "https://www.thefrontendclub.in",
+        "order": 10,
+        "postUrl": "https://www.linkedin.com/posts/pranav-agr_thefrontendclub-brewingfrontend-ugcPost-7134842926362222592-heBv/",
+        "photos": [
+            {
+                "file": "community-coffee-with-tfc-1.jpg",
+                "alt": "Group photo of attendees at the first Coffee with TFC meetup",
+                "width": 1080,
+                "height": 810
+            },
+            {
+                "file": "community-coffee-with-tfc-2.jpg",
+                "alt": "The Coffee with TFC organising team outdoors",
+                "width": 1080,
+                "height": 810
+            },
+            {
+                "file": "community-coffee-with-tfc-3.jpg",
+                "alt": "A speaker running the ice-breaking activity at Coffee with TFC",
+                "width": 1080,
+                "height": 1440
+            },
+            {
+                "file": "community-coffee-with-tfc-4.jpg",
+                "alt": "The Coffee with Frontend Club welcome banner at the venue entrance",
+                "width": 900,
+                "height": 1600
+            }
+        ],
+        "id": 1
     },
     {
-        "id": 9,
-        "title": "Hack4inclusion",
-        "kind": "mentoring",
-        "organisation": null,
-        "role": "Judge",
-        "period": "May 2022",
-        "description": "Judged the hackathon's projects.",
-        "highlights": [],
-        "url": null,
-        "image": null,
-        "order": 20
-    },
-    {
-        "id": 6,
-        "title": "React performance: what we overlook",
-        "kind": "talk",
-        "organisation": "React Delhi Meetup #1",
-        "role": "Speaker",
-        "period": "2023",
-        "description": "The performance costs React projects tend to underestimate, and the habits that keep apps fast.",
-        "highlights": [],
-        "url": null,
-        "image": null,
-        "order": 20
-    },
-    {
-        "id": 2,
         "title": "Google Developer Student Clubs MRIIRS",
         "kind": "community",
-        "organisation": null,
         "role": "Lead",
         "period": "Sep 2020 – Jun 2022",
         "description": "Joined the core team as tech lead, then led the chapter for 2021–22: workshops and technical sessions with a core team of about 20, and software built for the local community.",
@@ -78,12 +50,97 @@
             "1,000+ students guided",
             "Tech lead, then lead"
         ],
-        "url": null,
-        "image": null,
-        "order": 20
+        "order": 20,
+        "postUrl": "https://www.linkedin.com/posts/pranav-agr_graduated-as-a-gdsc-lead-made-lot-of-share-6953386346585473026-2Nmp/",
+        "photos": [
+            {
+                "file": "community-gdsc-lead-graduation-1.jpg",
+                "alt": "Google Developer Student Club leads in matching t-shirts",
+                "width": 800,
+                "height": 533
+            },
+            {
+                "file": "community-gdsc-lead-graduation-2.jpg",
+                "alt": "The graduating GDSC leads in caps at the 2022 graduation event",
+                "width": 800,
+                "height": 600
+            },
+            {
+                "file": "community-gdsc-lead-graduation-3.jpg",
+                "alt": "GDSC leads together at the graduation event",
+                "width": 800,
+                "height": 599
+            }
+        ],
+        "id": 2
     },
     {
-        "id": 7,
+        "title": "Hack The Mountains",
+        "kind": "community",
+        "role": "Coordinator",
+        "period": "Apr 2021 – present",
+        "description": "Organised meetups, virtual sessions and a large-scale hackathon.",
+        "order": 30,
+        "id": 3,
+        "photos": []
+    },
+    {
+        "title": "GDSC WOW Delhi NCR",
+        "kind": "community",
+        "role": "Organiser",
+        "period": "Oct 2021 – Mar 2022",
+        "description": "One of three points of contact for GDSC WOW, the regional event run by the Google Developer Student Clubs of Delhi NCR, covering tech, management and anchoring the event.",
+        "order": 40,
+        "postUrl": "https://www.linkedin.com/feed/update/urn:li:share:6910235222701723648/",
+        "photos": [
+            {
+                "file": "community-gdsc-wow-team-1.jpg",
+                "alt": "GDSC WOW \"Meet the POCs\" card listing Pranav Agarwal, GDSC MRIIRS Lead, for tech, management and anchoring",
+                "width": 996,
+                "height": 996
+            }
+        ],
+        "id": 4
+    },
+    {
+        "title": "Unraveling the Mystery: How Browsers Bring Web Pages to Life",
+        "kind": "talk",
+        "organisation": "GDSC WOW Delhi NCR",
+        "role": "Speaker",
+        "period": "21 Apr 2024",
+        "description": "What a browser does between receiving HTML and painting pixels: rendering engines, applying CSS, and handing work to the GPU.",
+        "order": 10,
+        "postUrl": "https://www.linkedin.com/posts/pranav-agr_gdscwowdelhi-webdevelopment-techtalks-share-7186737365418160129-sZ6E/",
+        "photos": [
+            {
+                "file": "community-gdsc-wow-talk-1.jpg",
+                "alt": "GDSC WOW Delhi NCR speaker card: \"Unraveling the Mystery: How Browsers Bring Web Pages to Life\", 21 April 2024",
+                "width": 1179,
+                "height": 1179
+            }
+        ],
+        "id": 5
+    },
+    {
+        "title": "Maximizing React Performance",
+        "kind": "talk",
+        "organisation": "React Delhi Meetup #1",
+        "role": "Speaker",
+        "period": "24 Sep 2023",
+        "description": "The performance costs React projects tend to underestimate, and the habits that keep apps fast.",
+        "order": 20,
+        "postUrl": "https://www.linkedin.com/posts/pranav-agr_reactdelhi-reactperformance-share-7106911556306673665-iT9_/",
+        "photos": [
+            {
+                "file": "community-react-delhi-talk-1.jpg",
+                "alt": "React Delhi speaker card: Maximizing React Performance, 24 September 2023",
+                "width": 800,
+                "height": 800
+            }
+        ],
+        "id": 6
+    },
+    {
         "title": "Firebase live sessions",
         "kind": "talk",
         "organisation": "30 Days of Web, Developer Student Clubs",
@@ -94,33 +151,100 @@
             "450+ forks of the course repo"
         ],
         "url": "https://github.com/30DaysofWebDEV/DSC-30-Days-of-Web",
-        "image": null,
-        "order": 30
+        "order": 30,
+        "id": 7,
+        "photos": []
     },
     {
-        "id": 3,
-        "title": "Hack The Mountains",
-        "kind": "community",
-        "organisation": null,
-        "role": "Coordinator",
-        "period": "Apr 2021 – present",
-        "description": "Organised meetups, virtual sessions and a large-scale hackathon.",
-        "highlights": [],
-        "url": null,
-        "image": null,
-        "order": 30
+        "title": "GirlScript Summer of Code",
+        "kind": "mentoring",
+        "role": "Mentor",
+        "period": "Feb 2022 – present",
+        "description": "Mentoring contributors in GirlScript's open-source programme.",
+        "order": 10,
+        "id": 8,
+        "photos": []
     },
     {
-        "id": 4,
-        "title": "GDSC WOW Delhi NCR",
-        "kind": "community",
-        "organisation": null,
-        "role": "Organiser",
-        "period": "Oct 2021 – Mar 2022",
-        "description": "Helped organise GDSC WOW, the regional developer event run by the Google Developer Student Clubs of Delhi NCR.",
-        "highlights": [],
-        "url": null,
-        "image": null,
-        "order": 40
+        "title": "Hack4inclusion",
+        "kind": "mentoring",
+        "role": "Judge",
+        "period": "May 2022",
+        "description": "Judged the hackathon's projects.",
+        "order": 20,
+        "id": 9,
+        "photos": []
+    },
+    {
+        "title": "Google I/O Extended 2022",
+        "kind": "event",
+        "organisation": "GDG New Delhi",
+        "role": "Attended",
+        "period": "Jun 2022",
+        "postUrl": "https://www.linkedin.com/posts/pranav-agr_google-gdg-gdgdelhi-share-6942170073696452608-eqfG/",
+        "photos": [
+            {
+                "file": "community-google-io-extended-1.jpg",
+                "alt": "A packed room of attendees at Google I/O Extended 2022 by GDG New Delhi",
+                "width": 984,
+                "height": 553
+            }
+        ],
+        "order": 10,
+        "id": 10
+    },
+    {
+        "title": "GDG Noida meetup",
+        "kind": "event",
+        "organisation": "GDG Noida",
+        "role": "Attended",
+        "period": "2022",
+        "postUrl": "https://www.linkedin.com/posts/pranav-agr_gdg-gdgnoida-googledevelopers-share-6926866405908717568-XtdF/",
+        "photos": [
+            {
+                "file": "community-gdg-noida-1.jpg",
+                "alt": "Group photo at the GDG Noida meetup",
+                "width": 800,
+                "height": 599
+            },
+            {
+                "file": "community-gdg-noida-3.jpg",
+                "alt": "A selfie with attendees at the GDG Noida meetup",
+                "width": 800,
+                "height": 600
+            },
+            {
+                "file": "community-gdg-noida-2.jpg",
+                "alt": "Friends at the GDG Noida meetup",
+                "width": 800,
+                "height": 599
+            }
+        ],
+        "order": 20,
+        "id": 11
+    },
+    {
+        "title": "Google Developers community meetup",
+        "kind": "event",
+        "organisation": "Google Developers, Delhi",
+        "role": "Attended",
+        "period": "Apr 2022",
+        "postUrl": "https://www.linkedin.com/posts/pranav-agr_google-community-gdsc-share-6916276122129166336-0ftJ/",
+        "photos": [
+            {
+                "file": "community-google-devs-delhi-1.jpg",
+                "alt": "The Delhi developer community together at a Google Developers event",
+                "width": 800,
+                "height": 601
+            },
+            {
+                "file": "community-google-devs-delhi-2.jpg",
+                "alt": "Student club leads at the Google Developers event in Delhi",
+                "width": 800,
+                "height": 600
+            }
+        ],
+        "order": 30,
+        "id": 12
     }
 ]
